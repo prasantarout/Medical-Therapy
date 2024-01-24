@@ -8,4 +8,5 @@ export const colors = {
   ternaryTextColor: '#444444',
   navyBlue: '#1D2C42',
   placeholder: '#979797',
+  bgColor: '#F8FAFD',
 };

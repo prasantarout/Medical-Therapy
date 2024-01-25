@@ -291,5 +291,14 @@ const css = StyleSheet.create({
   pr18: {paddingRight: normalize(36)},
   pr19: {paddingRight: normalize(38)},
   pr20: {paddingRight: normalize(40)},
+
+  //align-items
+
+  aic: {alignItems: 'center'},
+  aife: {alignItems: 'flex-end'},
+  aifs: {alignContent: 'flex-start'},
+  jcc: {justifyContent: 'center'},
+  jcsb: {justifyContent: 'space-between'},
+  fdr: {flexDirection: 'row'},
 });
 export default css;

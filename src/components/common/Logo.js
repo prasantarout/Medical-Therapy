@@ -6,7 +6,7 @@ import normalize from '../../utils/normalize';
 
 const Logo = () => {
   return (
-    <View style={[css.m10, styles.logoContainer]}>
+    <View style={[css.mt5, styles.logoContainer]}>
       <Image style={[styles.logo]} source={images.logo} />
     </View>
   );

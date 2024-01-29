@@ -423,7 +423,7 @@ PODS:
   - RNScreens (3.29.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - SocketRocket (0.6.1)
+  - SocketRocket (0.6.0)
   - Toast (4.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -642,11 +642,11 @@ SPEC CHECKSUMS:
   ReactCommon: 85c98ab0a509e70bf5ee5d9715cf68dbf495b84c
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
-  SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: ea9355fdc4aea48ffc1065795e9672910fbfca1b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

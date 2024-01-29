@@ -20,8 +20,10 @@ import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 import CommonInput from '../../components/inputs/CommonInput';
 import {icons} from '../../themes/icons';
+import AuthHeader from '../../components/common/AuthHeader';
+import Input from '../../components/inputs/Input';
 
-const Signup = () => {
+const Signup = (props) => {
   const [loading, setLoading] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const [hideCfrmPassword, setHideCfrmPassword] = useState(true);
@@ -45,21 +47,23 @@ const Signup = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Logo />
-          <View style={[css.aic]}>
-            <Text style={styles.headerText}>Sign Up</Text>
-            <Text style={[styles.subHeaderText, css.mt5]}>
-              Please fill up this form to login your account.
-            </Text>
-          </View>
+          <AuthHeader 
+            headerText="Sign Up"
+            subHeaderText="Please fill up this form to login your account."
+          />
           <View style={[css.f1, css.py11, css.px16]}>
             <CommonInput
               title={'First Name'}
-              placeholder={'First name'}></CommonInput>
+              placeholder={'First name'}
+            />
 
             <CommonInput
               title={'Last Name'}
-              placeholder={'Last name'}></CommonInput>
+              placeholder={'Last name'}
+            />
+            <Input
+            
+            />
 
             <CommonInput title={'Email'} placeholder={'abc@gmail.com'}>
               <Image source={icons.email} style={[styles.ClosedEye]} />
@@ -90,7 +94,7 @@ const Signup = () => {
             />
             <View style={[css.row, css.aic, css.mt2, css.jcc]}>
               <Text style={[styles.subTxt]}>Already Have An Account?</Text>
-              <TouchableOpacity style={[styles.SignInTxt]}>
+              <TouchableOpacity activeOpacity={0.6} style={[styles.SignInTxt]} onPress={()=> props.navigation.navigate("Login")} >
                 <Text style={[styles.SignInTxt]}>Login</Text>
               </TouchableOpacity>
             </View>

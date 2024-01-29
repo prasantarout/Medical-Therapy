@@ -1,5 +1,7 @@
 import {Dimensions, Platform, StatusBar, StyleSheet} from 'react-native';
 import normalize from '../utils/normalize';
+import {colors} from './colors';
+import {fonts} from './fonts';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -291,5 +293,29 @@ const css = StyleSheet.create({
   pr18: {paddingRight: normalize(36)},
   pr19: {paddingRight: normalize(38)},
   pr20: {paddingRight: normalize(40)},
+
+  //align-items
+
+  aic: {alignItems: 'center'},
+  aife: {alignItems: 'flex-end'},
+  aifs: {alignContent: 'flex-start'},
+  jcc: {justifyContent: 'center'},
+  jcsb: {justifyContent: 'space-between'},
+  fdr: {flexDirection: 'row'},
+
+  headerTxt: {
+    fontFamily: fonts.Medium,
+    fontSize: normalize(18),
+    color: colors.primaryTextColor,
+  },
+  subHeaderTxt: {
+    fontFamily: fonts.Regular,
+    fontSize: normalize(9),
+    color: colors.secondaryTextColor,
+  },
+
+  row: {
+    flexDirection: 'row',
+  },
 });
 export default css;

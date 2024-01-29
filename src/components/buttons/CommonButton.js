@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: normalize(10),
+    height: normalize(30),
     backgroundColor: colors.primary,
-    borderRadius: 10,
+    borderRadius: normalize(5),
+    marginTop: normalize(15),
   },
   buttonText: {
     fontFamily: fonts.Regular,
-    fontSize: normalize(16),
+    fontSize: normalize(12),
     fontWeight: '600',
     color: colors.white,
   },

@@ -6,7 +6,7 @@ import normalize from '../../utils/normalize';
 
 const Logo = () => {
   return (
-    <View style={[css.m10, styles.logoContainer]}>
+    <View style={[css.mt4, styles.logoContainer]}>
       <Image style={[styles.logo]} source={images.logo} />
     </View>
   );
@@ -17,10 +17,12 @@ export default Logo;
 const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
+    paddingTop: normalize(30),
+    paddingBottom: normalize(10),
   },
   logo: {
     resizeMode: 'contain',
-    width: normalize(100),
-    height: normalize(100),
+    width: normalize(160),
+    height: normalize(40),
   },
 });

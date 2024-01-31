@@ -6,28 +6,43 @@ import SearchInput from '../../components/inputs/SearchInput';
 import SmallBtn from '../../components/buttons/SmallBtn';
 import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
+import SafeView from '../../components/common/SafeView';
+import NavBar from '../../components/common/NavBar';
 
 const MyPatient = () => {
+  const patientData = [
+    {
+      id: 1,
+      name: 'John Doe',
+      location: 'Lorem ipsum sit amet',
+      date: '01 Sep 2023',
+      time: '10:00 am',
+      // profile:
+    },
+  ];
   return (
-    <View style={[css.f1, css.py20, css.px5]}>
-      <TitleTxt title={'My Patients'} />
-      <View style={[css.py5, css.row, css.aic]}>
-        <SearchInput
-          style={{width: normalize(120)}}
-          placeholder={'Search here...'}
-        />
-        <SmallBtn
-          title={'Enrollment queue'}
-          style={styles.Button}
-          btnStyle={styles.btnTxt}
-        />
-        <SmallBtn
-          title={'Add new patient'}
-          style={styles.Button2}
-          btnStyle={styles.btnTxt2}
-        />
+    <SafeView>
+      <NavBar />
+      <View style={[css.px5, css.f1, css.bgColor, css.py10]}>
+        <TitleTxt title={'My Patients'} />
+        <View style={[css.row, css.aic, css.mt4]}>
+          <SearchInput
+            style={{width: normalize(120)}}
+            placeholder={'Search here...'}
+          />
+          <SmallBtn
+            title={'Enrollment queue'}
+            style={styles.Button}
+            btnStyle={styles.btnTxt}
+          />
+          <SmallBtn
+            title={'Add new patient'}
+            style={styles.Button2}
+            btnStyle={styles.btnTxt2}
+          />
+        </View>
       </View>
-    </View>
+    </SafeView>
   );
 };
 

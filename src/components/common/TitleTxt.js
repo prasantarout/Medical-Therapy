@@ -13,7 +13,7 @@ export default TitleTxt;
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: normalize(17),
+    fontSize: 40,
     color: colors.primaryTextColor,
     fontFamily: fonts.Regular,
     fontWeight: '600',

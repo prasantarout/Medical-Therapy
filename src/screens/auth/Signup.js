@@ -28,7 +28,7 @@ const Signup = (props) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
   const [signUpInfo, setSignUpInfo] = useState({
-    first_name: 'https://www.figma.com/file/rnwojBmrLjX30Q3X8pidLw/Therapy-Evaluator?type=design&node-id=2-617&mode=design&t=eJaRpKPvEw7kByxy-0',
+    first_name: '',
     last_name: '',
     email: '',
     password: '',

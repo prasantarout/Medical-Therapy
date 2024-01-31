@@ -6,4 +6,10 @@ export const icons = {
   closeIcon: require('../assets/icons/closeIcon.png'),
   searchLens: require('../assets/icons/searchLens.png'),
   filter: require('../assets/icons/filter.png'),
+  cloudRefresh: require('../assets/icons/cloudRefresh.png'),
+  bell: require('../assets/icons/bell.png'),
+  bellPoint: require('../assets/icons/bellPoint.png'),
+  user: require('../assets/icons/userMenu.png'),
+  logout: require('../assets/icons/logout.png'),
+  down: require('../assets/icons/down.png'),
 };

@@ -1,4 +1,4 @@
-import {call, put, select, takeLatest} from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   getTokenSuccess,
   getTokenFailure,
@@ -14,11 +14,8 @@ import {
   ProfileFailure,
 } from '../reducer/AuthReducer';
 
-import {getApi, postApi, putApi} from '../../utils/ApiRequest';
-import Toast from '../../utils/Toast';
+import { getApi, postApi } from '../../utils/ApiRequest';
 import constants from '../../utils/constants';
-import {Alert} from 'react-native';
-import {useEffect} from 'react';
 import CustomToast from '../../utils/Toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,6 +37,29 @@ export function* getTokenSaga() {
 }
 
 //Signup
+export function* signUpSaga(action) {
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+  };
+  try {
+    let response = yield call(postApi, 'register', action.payload, header);
+    console.log(response, 'signupResponse');
+    if (response?.status == '201') {
+      yield put(signUpSucces(response?.data));
+      console.log("response?.data", response?.data)
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(signUpFailure(response?.data));
+      CustomToast(response?.data?.message);
+    }
+  } catch (error) {
+    console.log('Catch', error);
+    yield put(signUpFailure(error?.response));
+  }
+}
+
+//verifyOtpsaga
 export function* verifyOtpsaga(action) {
   let header = {
     accept: 'application/json',
@@ -65,27 +85,7 @@ export function* verifyOtpsaga(action) {
     yield put(verifyOtpFailure(error?.response));
   }
 }
-//Signup
-export function* signUpSaga(action) {
-  let header = {
-    Accept: 'application/json',
-    contenttype: 'multipart/form-data',
-  };
-  try {
-    let response = yield call(postApi, 'auth/signup', action.payload, header);
-    console.log(response, 'signupResponse');
-    if (response?.status == '200') {
-      yield put(signUpSucces(response?.data));
-      CustomToast(response?.data?.message);
-    } else {
-      yield put(signUpFailure(response?.data));
-      CustomToast(response?.data?.message);
-    }
-  } catch (error) {
-    console.log('Catch', error);
-    yield put(signUpFailure(error?.response));
-  }
-}
+
 
 /////////////////////// signInSaga ///////////////////////
 export function* signInSaga(action) {

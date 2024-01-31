@@ -9,23 +9,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import css from '../../themes/space';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import CommonButton from '../../components/buttons/CommonButton';
-import {colors} from '../../themes/colors';
-import {images} from '../../themes/images';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '../../components/buttons/Button';
+import { colors } from '../../themes/colors';
+import { images } from '../../themes/images';
 import Logo from '../../components/common/Logo';
-import {fonts} from '../../themes/fonts';
+import { fonts } from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 import CommonInput from '../../components/inputs/CommonInput';
-import {icons} from '../../themes/icons';
+import { icons } from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
+import Input from '../../components/inputs/Input';
 
 const Login = (props) => {
   const [loading, setLoading] = useState(false);
-  const [hidePassword, setHidePassword] = useState(true);
-  const [hideCfrmPassword, setHideCfrmPassword] = useState(true);
+  const [isSecurePass, setIsSecurePass] = useState(true);
   const [signUpInfo, setSignUpInfo] = useState({
     first_name: '',
     last_name: '',
@@ -34,49 +34,49 @@ const Login = (props) => {
     cfmPassword: '',
   });
 
-  const handleSignup = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+  const handleLogin = () => {
+    props.navigation.navigate('OTPScreen')
   };
 
+  console.log("props-Login", props);
   return (
-    <SafeAreaView style={[css.f1, css.f1, {backgroundColor: colors.bgColor}]}>
+    <SafeAreaView style={[css.f1, css.f1, { backgroundColor: colors.bgColor }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <AuthHeader 
+          <AuthHeader
             headerText="Login"
             subHeaderText="Please fill up this form to login your account."
           />
           <View style={[css.f1, css.py11, css.px16]}>
-         
 
-            <CommonInput title={'Email'} placeholder={'abc@gmail.com'}>
-              <Image source={icons.email} style={[styles.ClosedEye]} />
-            </CommonInput>
+            <Input
+              title="Email"
+              placeholder="abc@gmail.com"
+              rightIcon={icons.email}
+              style={[css.mb3]}
+            />
 
-            <CommonInput
-              title={'Enter Password'}
-              placeholder={'**************'}>
-              <TouchableOpacity onPress={() => setHidePassword(false)}>
-                <Image source={icons.eyeClose} style={[styles.ClosedEye]} />
-              </TouchableOpacity>
-            </CommonInput>
+            <Input
+              title="Enter Password"
+              placeholder="**************"
+              rightIcon={isSecurePass ? icons.eyeClose : icons.eyeOpen}
+              style={[css.mb3]}
+              secureTextEntry={isSecurePass}
+              onPressIcon={() => setIsSecurePass(!isSecurePass)}
+              secure={true}
+            />
 
-           
-
-            <CommonButton
+            <Button
               onClick={() => {
-                handleSignup();
+                handleLogin();
               }}
-              title={'Sign Up'}
+              title="Login"
               isLoading={loading}
             />
-            <View style={[css.row, css.aic, css.mt2, css.jcc]}>
+            <View style={[css.row, css.aic, css.mt3, css.jcc]}>
               <Text style={[styles.subTxt]}>Don't Have An Account?</Text>
-              <TouchableOpacity activeOpacity={0.6} style={[styles.SignInTxt]} onPress={()=> props.navigation.navigate("Signup")} >
+              <TouchableOpacity activeOpacity={0.6} style={[styles.SignInTxt]} onPress={() => props.navigation.navigate("Signup")} >
                 <Text style={[styles.SignInTxt]}>Sign Up</Text>
               </TouchableOpacity>
             </View>

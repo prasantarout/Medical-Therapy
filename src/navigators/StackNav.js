@@ -6,7 +6,7 @@ import Splash from '../screens/auth/Splash';
 import Signup from '../screens/auth/Signup';
 import Login from '../screens/auth/Login';
 import ForgotPassword from '../screens/auth/ForgotPassword';
-import Verification from '../screens/auth/Verification';
+import OTPScreen from '../screens/auth/OTPScreen';
 import Home from '../screens/general/Home';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -17,9 +17,9 @@ const StackNav = () => {
     AuthReducer?.token == null
       ? {
           Signup: Signup,
-          Login: Login,
-          ForgotPassword: ForgotPassword,
-          Verification: Verification,
+          // Login: Login,
+          // ForgotPassword: ForgotPassword,
+          // OTPScreen: OTPScreen,
         }
       : {
           // Subscription:withIAPContext(Subscription),

@@ -10,12 +10,13 @@ import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
 
-const CommonButton = ({title, onClick, isLoading, isDisabled}) => {
+const Button = ({ title, onClick, isLoading, isDisabled, style }) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
       disabled={isLoading}
       onPress={onClick}
-      style={styles.button}>
+      style={[styles.button,style]}>
       {isLoading ? (
         <ActivityIndicator size={'large'} color={colors.white} />
       ) : (
@@ -25,13 +26,13 @@ const CommonButton = ({title, onClick, isLoading, isDisabled}) => {
   );
 };
 
-export default CommonButton;
+export default Button;
 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: normalize(30),
+    height: normalize(25),
     backgroundColor: colors.primary,
     borderRadius: normalize(5),
     marginTop: normalize(15),

@@ -1,6 +1,4 @@
 import {
-  Alert,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -12,35 +10,65 @@ import {
 import React, {useState} from 'react';
 import css from '../../themes/space';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CommonButton from '../../components/buttons/CommonButton';
+import Button from '../../components/buttons/Button';
 import {colors} from '../../themes/colors';
-import {images} from '../../themes/images';
-import Logo from '../../components/common/Logo';
 import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
-import CommonInput from '../../components/inputs/CommonInput';
 import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
+import { isValidEmail, isValidPassword, isValidPhoneNumber } from '../../utils/Validation';
+import CustomToast from '../../utils/Toast';
+import { useDispatch } from 'react-redux';
+import { signUpReq } from '../../redux/reducer/AuthReducer';
 
 const Signup = (props) => {
   const [loading, setLoading] = useState(false);
-  const [hidePassword, setHidePassword] = useState(true);
-  const [hideCfrmPassword, setHideCfrmPassword] = useState(true);
+  const [isSecurePass, setIsSecurePass] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
   const [signUpInfo, setSignUpInfo] = useState({
-    first_name: '',
+    first_name: 'https://www.figma.com/file/rnwojBmrLjX30Q3X8pidLw/Therapy-Evaluator?type=design&node-id=2-617&mode=design&t=eJaRpKPvEw7kByxy-0',
     last_name: '',
     email: '',
     password: '',
-    cfmPassword: '',
   });
 
+  const dispatch = useDispatch()
+  // 
+  const validEmail = isValidEmail(signUpInfo.email);
+  const validPhoneNumber = isValidPhoneNumber(signUpInfo.phone);
+  const isValidPass = isValidPassword(signUpInfo.password);
+  
   const handleSignup = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    if (signUpInfo?.first_name == '') {
+      CustomToast('Please enter your first name');
+    } else if (signUpInfo?.last_name == '') {
+      CustomToast('Please enter your last name');
+    } else if (signUpInfo?.email == '') {
+      CustomToast('Please enter email');
+    }else if (signUpInfo?.password == '') {
+      CustomToast('Please enter password');
+    }else if (signUpInfo?.password != confirmPassword){
+      CustomToast("Password dosen't match");
+    }else if (!validEmail) {
+      CustomToast('Please enter valid email');
+    }else if (!isValidPass) {
+      CustomToast('The password should contain at least one number, one capital letter, and one special character');
+    }else{
+      dispatch(signUpReq(signUpInfo))
+    }
   };
+
+  const handleInputChange = (key, value) => {
+    setSignUpInfo({...signUpInfo, [key]: value});
+  }
+
+  // signUpReq
+  // signUpSucces
+  // signUpFailure
+
+
 
   return (
     <SafeAreaView style={[css.f1, css.f1, {backgroundColor: colors.bgColor}]}>
@@ -52,40 +80,65 @@ const Signup = (props) => {
             subHeaderText="Please fill up this form to login your account."
           />
           <View style={[css.f1, css.py11, css.px16]}>
-            <CommonInput
-              title={'First Name'}
-              placeholder={'First name'}
-            />
-
-            <CommonInput
-              title={'Last Name'}
-              placeholder={'Last name'}
+          
+            <Input
+              title="First Name"
+              placeholder="First Name"
+              style={[css.mb3]}
+              value={signUpInfo.first_name}
+              onChangeText={text =>
+                handleInputChange('first_name', text)
+              }
             />
             <Input
-            
+              title="Last"
+              placeholder="Last Name"
+              style={[css.mb3]}              
+              value={signUpInfo.last_name}
+              onChangeText={text =>
+                handleInputChange('last_name', text)
+              }
+            />
+            <Input
+              title="Email"
+              placeholder="abc@gmail.com"
+              rightIcon={icons.email}
+              style={[css.mb3]}
+              value={signUpInfo.email}
+              autoCapitalize='none'
+              onChangeText={text =>
+                handleInputChange('email', text)
+              }
             />
 
-            <CommonInput title={'Email'} placeholder={'abc@gmail.com'}>
-              <Image source={icons.email} style={[styles.ClosedEye]} />
-            </CommonInput>
+         
+            <Input
+              title="Enter Password"
+              placeholder="**************"
+              rightIcon={isSecurePass ? icons.eyeClose: icons.eyeOpen}
+              style={[css.mb3]}
+              secureTextEntry={isSecurePass}
+              onPressIcon={() => setIsSecurePass(!isSecurePass)}
+              secure={true}
+              value={signUpInfo.password}
+              onChangeText={text =>
+                handleInputChange('password', text)
+              }
+            />          
+         
+            <Input
+              title="Confirm Password"
+              placeholder="**************"
+              rightIcon={isSecureConfrmPass ? icons.eyeClose: icons.eyeOpen}
+              style={[css.mb3]}
+              secureTextEntry={isSecureConfrmPass}
+              onPressIcon={() => setIsSecureConfrmPass(!isSecureConfrmPass)}
+              secure={true}
+              onChangeText={(text) => setConfirmPassword(text)}
+              value={confirmPassword}
+            />          
 
-            <CommonInput
-              title={'Enter Password'}
-              placeholder={'**************'}>
-              <TouchableOpacity onPress={() => setHidePassword(false)}>
-                <Image source={icons.eyeClose} style={[styles.ClosedEye]} />
-              </TouchableOpacity>
-            </CommonInput>
-
-            <CommonInput
-              title={'Confirm Password'}
-              placeholder={'**************'}>
-              <TouchableOpacity onPress={() => setHideCfrmPassword(false)}>
-                <Image source={icons.eyeClose} style={[styles.ClosedEye]} />
-              </TouchableOpacity>
-            </CommonInput>
-
-            <CommonButton
+            <Button
               onClick={() => {
                 handleSignup();
               }}

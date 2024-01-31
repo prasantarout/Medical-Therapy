@@ -10,6 +10,7 @@ import OTPScreen from '../screens/auth/OTPScreen';
 import Home from '../screens/general/Home';
 import {NavigationContainer} from '@react-navigation/native';
 import MyPatient from '../screens/general/MyPatient';
+import EnrolmentQueue from '../screens/general/EnrolmentQueue';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
@@ -25,7 +26,9 @@ const StackNav = () => {
     // :
     {
       // Subscription:withIAPContext(Subscription),
+
       MyPatient: MyPatient,
+      EnrolmentQueue: EnrolmentQueue,
       Home: Home,
     };
 

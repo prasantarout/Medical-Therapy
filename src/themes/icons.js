@@ -12,4 +12,7 @@ export const icons = {
   user: require('../assets/icons/userMenu.png'),
   logout: require('../assets/icons/logout.png'),
   down: require('../assets/icons/down.png'),
+  Clock: require('../assets/icons/Clock.png'),
+  Calendar: require('../assets/icons/Calendar.png'),
+  Location: require('../assets/icons/Location.png'),
 };

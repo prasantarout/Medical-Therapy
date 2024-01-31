@@ -4,4 +4,10 @@ export const icons = {
   eyeClose: require('../assets/icons/eyeClose.png'),
   emailLink: require('../assets/icons/emailLink.png'),
   closeIcon: require('../assets/icons/closeIcon.png'),
+  cloudRefresh: require('../assets/icons/cloudRefresh.png'),
+  bell: require('../assets/icons/bell.png'),
+  bellPoint: require('../assets/icons/bellPoint.png'),
+  user: require('../assets/icons/userMenu.png'),
+  logout: require('../assets/icons/logout.png'),
+  down: require('../assets/icons/down.png'),
 };

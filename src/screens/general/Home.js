@@ -1,11 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import css from '../../themes/space';
+import NavBar from '../../components/common/NavBar';
+import SafeView from '../../components/common/SafeView';
 
-const Home = () => {
+const Home = (props) => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <SafeView>
+      <NavBar />
+    </SafeView>
   );
 };
 

@@ -4,4 +4,6 @@ export const icons = {
   eyeClose: require('../assets/icons/eyeClose.png'),
   emailLink: require('../assets/icons/emailLink.png'),
   closeIcon: require('../assets/icons/closeIcon.png'),
+  searchLens: require('../assets/icons/searchLens.png'),
+  filter: require('../assets/icons/filter.png'),
 };

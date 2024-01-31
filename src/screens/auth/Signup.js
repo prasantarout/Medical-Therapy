@@ -64,9 +64,7 @@ const Signup = (props) => {
     setSignUpInfo({...signUpInfo, [key]: value});
   }
 
-  // signUpReq
-  // signUpSucces
-  // signUpFailure
+
 
 
 

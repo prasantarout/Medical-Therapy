@@ -9,22 +9,25 @@ import ForgotPassword from '../screens/auth/ForgotPassword';
 import OTPScreen from '../screens/auth/OTPScreen';
 import Home from '../screens/general/Home';
 import {NavigationContainer} from '@react-navigation/native';
+import MyPatient from '../screens/general/MyPatient';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
   const AuthReducer = useSelector(state => state.AuthReducer);
   const Screens =
-    AuthReducer?.token == null
-      ? {
-          Signup: Signup,
-          // Login: Login,
-          // ForgotPassword: ForgotPassword,
-          // OTPScreen: OTPScreen,
-        }
-      : {
-          // Subscription:withIAPContext(Subscription),
-          Home: Home,
-        };
+    // AuthReducer?.token == null  ?
+    // {
+    //   Signup: Signup,
+    //   Login: Login,
+    //   ForgotPassword: ForgotPassword,
+    //   OTPScreen: OTPScreen,
+    // }
+    // :
+    {
+      // Subscription:withIAPContext(Subscription),
+      MyPatient: MyPatient,
+      Home: Home,
+    };
 
   if (AuthReducer.isLoading) {
     return <Splash />;

@@ -9,4 +9,5 @@ export const colors = {
   navyBlue: '#1D2C42',
   placeholder: '#979797',
   bgColor: '#F8FAFD',
+  searchPlaceholder: '#8D97A5',
 };

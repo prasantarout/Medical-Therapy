@@ -15,4 +15,8 @@ export const icons = {
   Clock: require('../assets/icons/Clock.png'),
   Calendar: require('../assets/icons/Calendar.png'),
   Location: require('../assets/icons/Location.png'),
+  closeBtn: require('../assets/icons/closeBtn.png'),
+  backArrow: require('../assets/icons/backArrow.png'),
+  nextArrow: require('../assets/icons/nextArrow.png'),
+  loader: require('../assets/icons/loader.png'),
 };

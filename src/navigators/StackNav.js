@@ -11,6 +11,9 @@ import Home from '../screens/general/Home';
 import {NavigationContainer} from '@react-navigation/native';
 import MyPatient from '../screens/general/MyPatient';
 import EnrolmentQueue from '../screens/general/EnrolmentQueue';
+import Assignment from '../screens/general/Assignment';
+import ServiceEnrollment from '../screens/general/ServiceEnrollment';
+import AddPatient from '../screens/general/AddPatient';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
@@ -26,9 +29,11 @@ const StackNav = () => {
     // :
     {
       // Subscription:withIAPContext(Subscription),
-
       MyPatient: MyPatient,
       EnrolmentQueue: EnrolmentQueue,
+      ServiceEnrolment: ServiceEnrollment,
+      AddPatient: AddPatient,
+      Assignment: Assignment,
       Home: Home,
     };
 

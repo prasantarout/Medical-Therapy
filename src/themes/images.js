@@ -4,4 +4,5 @@ export const images = {
   patient1: require('../assets/images/patient1.png'),
   patient2: require('../assets/images/patient2.png'),
   patient3: require('../assets/images/patient3.png'),
+  patientZoomPic: require('../assets/images/patientZoomPic.png'),
 };

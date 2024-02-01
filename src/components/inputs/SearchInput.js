@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: normalize(26),
     backgroundColor: colors.white,
-    paddingLeft: normalize(12),
+    paddingLeft: normalize(10),
     paddingRight: normalize(9),
     borderRadius: normalize(2),
     paddingVertical: normalize(3),
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '85%',
     color: colors.primaryTextColor,
-    fontSize: normalize(10),
+    fontSize: normalize(9),
   },
   icon: {
     height: normalize(14),

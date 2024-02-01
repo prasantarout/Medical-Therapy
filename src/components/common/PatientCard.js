@@ -1,5 +1,12 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
 import Txt from '../micro/Txt';
@@ -7,9 +14,12 @@ import css from '../../themes/space';
 import {icons} from '../../themes/icons';
 
 const PatientCard = props => {
-  const {name, location, date, time, image, Button} = props;
+  const {name, location, date, time, image, Button, onPress} = props;
   return (
-    <View style={[styles.mainCard]}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      style={[styles.mainCard]}>
       <Image source={image} style={styles.profile} />
       <Txt style={styles.titleTxt}>{name}</Txt>
       <View style={[css.row, css.aic]}>
@@ -39,7 +49,7 @@ const PatientCard = props => {
           New
         </Txt>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -10,11 +10,11 @@ import Txt from '../../components/micro/Txt';
 import {fonts} from '../../themes/fonts';
 
 const AddPatient = () => {
-  const InputField = () => {
+  const InputField = props => {
     return (
-      <View style={[styles.InputField]}>
-        <Txt style={styles.fieldTitle}>Name</Txt>
-        <TextInput value="Jhon" style={styles.input} />
+      <View style={[styles.InputField, props.style]}>
+        <Txt style={styles.fieldTitle}>{props.title}</Txt>
+        <TextInput value={props.Value} style={styles.input} />
       </View>
     );
   };
@@ -25,16 +25,19 @@ const AddPatient = () => {
         <TitleTxt title={'Add New Patient'} />
         <View style={styles.container}>
           <View style={[css.row, css.jcsb]}>
-            <InputField />
-            <InputField />
+            <InputField title={'First Name'} Value={'John'} />
+            <InputField title={'Last Name'} Value={'Doe'} />
           </View>
           <View style={[css.row, css.jcsb]}>
-            <InputField />
-            <InputField />
+            <InputField title={'Email'} Value={'johndoe@gmail.com'} />
+            <InputField title={'Phone Number'} Value={'+1 123 321 4567'} />
           </View>
           <View style={[css.row, css.jcsb]}>
-            <InputField />
-            <InputField />
+            <InputField
+              title={'Address'}
+              Value={'Type here'}
+              style={{width: '100%'}}
+            />
           </View>
         </View>
       </View>

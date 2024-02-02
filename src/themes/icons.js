@@ -19,4 +19,6 @@ export const icons = {
   backArrow: require('../assets/icons/backArrow.png'),
   nextArrow: require('../assets/icons/nextArrow.png'),
   loader: require('../assets/icons/loader.png'),
+  uploadBg: require('../assets/icons/uploadBg.png'),
+  upload: require('../assets/icons/upload.png'),
 };

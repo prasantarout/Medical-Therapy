@@ -136,6 +136,7 @@ const MyPatient = () => {
         time={item.time}
         image={item.profile}
         Button={true}
+        navigateTo={() => navigation.navigate('ServiceEnrolment')}
       />
     );
   };

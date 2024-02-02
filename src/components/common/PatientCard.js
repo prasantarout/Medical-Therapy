@@ -14,7 +14,8 @@ import css from '../../themes/space';
 import {icons} from '../../themes/icons';
 
 const PatientCard = props => {
-  const {name, location, date, time, image, Button, onPress} = props;
+  const {name, location, date, time, image, Button, onPress, navigateTo} =
+    props;
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -35,7 +36,7 @@ const PatientCard = props => {
         <Txt style={styles.subTxt}>{time}</Txt>
       </View>
       {Button && (
-        <TouchableOpacity style={[styles.btn]}>
+        <TouchableOpacity onPress={navigateTo} style={[styles.btn]}>
           <Txt style={[styles.btnTxt]}>Service Enroll now</Txt>
         </TouchableOpacity>
       )}

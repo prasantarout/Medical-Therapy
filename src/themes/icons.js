@@ -21,4 +21,11 @@ export const icons = {
   loader: require('../assets/icons/loader.png'),
   uploadBg: require('../assets/icons/uploadBg.png'),
   upload: require('../assets/icons/upload.png'),
+  assignment: require('../assets/icons/assignment.png'),
+  totalPatient: require('../assets/icons/totalPatient.png'),
+  pendingAssignment: require('../assets/icons/pendingAssignment.png'),
+  activePatient: require('../assets/icons/activePatient.png'),
+  completeAssignment: require('../assets/icons/completeAssignment.png'),
+  inactivePatient: require('../assets/icons/inactivePatient.png'),
+  attach: require('../assets/icons/attach.png'),
 };

@@ -43,6 +43,11 @@ const css = StyleSheet.create({
   bgYellow: {backgroundColor: 'yellow'},
   bgGreen: {backgroundColor: 'green'},
   asc: {alignSelf: 'center'},
+  card:{
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: normalize(10),
+  },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -375,6 +380,7 @@ const css = StyleSheet.create({
   w10: {width: '10%'},
   w20: {width: '20%'},
   w30: {width: '30%'},
+  w33: {width: '33%'},
   w40: {width: '40%'},
   w50: {width: '50%'},
   w60: {width: '60%'},
@@ -382,6 +388,7 @@ const css = StyleSheet.create({
   w80: {width: '80%'},
   w90: {width: '90%'},
   w100: {width: '100%'},
+  mw33:{minWidth: '33%'},
 
   //align-items
 

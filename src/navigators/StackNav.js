@@ -14,6 +14,7 @@ import EnrolmentQueue from '../screens/general/EnrolmentQueue';
 import Assignment from '../screens/general/Assignment';
 import ServiceEnrollment from '../screens/general/ServiceEnrollment';
 import AddPatient from '../screens/general/AddPatient';
+import HelpnSupport from '../screens/general/HelpnSupport';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ const StackNav = () => {
     {
       // Subscription:withIAPContext(Subscription),
       MyPatient: MyPatient,
+      HelpnSupport: HelpnSupport,
       EnrolmentQueue: EnrolmentQueue,
       ServiceEnrolment: ServiceEnrollment,
       AddPatient: AddPatient,

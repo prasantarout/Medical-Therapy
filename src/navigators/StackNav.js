@@ -25,7 +25,7 @@ const StackNav = () => {
     // :
     {
       // Subscription:withIAPContext(Subscription),
-      MyPatient: MyPatient,
+      // MyPatient: MyPatient,
       Home: Home,
     };
 

@@ -4,18 +4,16 @@ import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
 import Txt from '../micro/Txt';
 
-const TitleTxt = props => {
+const HeaderTitle = props => {
   return <Txt style={styles.txt}>{props.title}</Txt>;
 };
 
-export default TitleTxt;
+export default HeaderTitle;
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: 40,
+    fontSize: 45,
     color: colors.primaryTextColor,
-    fontFamily: fonts.Regular,
-    fontWeight: '600',
-    textTransform: 'capitalize'
+    fontFamily: fonts.Bold,
   },
 });

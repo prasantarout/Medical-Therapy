@@ -31,6 +31,7 @@ const CustomModal = (props) => {
     )
 }
 
+
 export default CustomModal
 
 const styles = StyleSheet.create({

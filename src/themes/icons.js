@@ -12,4 +12,10 @@ export const icons = {
   user: require('../assets/icons/userMenu.png'),
   logout: require('../assets/icons/logout.png'),
   down: require('../assets/icons/down.png'),
+  assignment: require('../assets/icons/assignment.png'),
+  totalPatient: require('../assets/icons/totalPatient.png'),
+  pendingAssignment: require('../assets/icons/pendingAssignment.png'),
+  activePatient: require('../assets/icons/activePatient.png'),
+  completeAssignment: require('../assets/icons/completeAssignment.png'),
+  inactivePatient: require('../assets/icons/inactivePatient.png'),
 };

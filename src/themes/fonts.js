@@ -1,5 +1,9 @@
 export const fonts = {
+  Light: 'Poppins-Light',
   Regular: 'Poppins-Regular',
-  Bold: 'Poppins-Bold',
   Medium: 'Poppins-Medium',
+  Bold: 'Poppins-Bold',
+  SemiBold: 'Poppins-SemiBold',
+  ExtraBold: 'Poppins-ExtraBold',
+  Black: 'Poppins-Black',
 };

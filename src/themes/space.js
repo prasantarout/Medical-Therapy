@@ -148,6 +148,9 @@ const css = StyleSheet.create({
   ml18: {marginLeft: normalize(36)},
   ml19: {marginLeft: normalize(38)},
   ml20: {marginLeft: normalize(40)},
+  ml21: {marginLeft: normalize(41)},
+
+  ml22: {marginLeft: normalize(44)},
 
   // Right Margin Classes
   mr0: {marginRight: 0},

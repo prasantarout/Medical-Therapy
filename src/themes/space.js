@@ -34,6 +34,20 @@ const css = StyleSheet.create({
     paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : null,
   },
 
+  regular:{
+    fontFamily: fonts.Regular,
+  },
+  medium:{
+    fontFamily: fonts.Medium,
+  },
+  bold:{
+    fontFamily: fonts.Bold
+  },
+
+  textPrimary:{
+    color: colors.primaryTextColor
+  },
+
   f1: {flex: 1},
   fg1: {flexGrow: 1},
   tac: {textAlign: 'center'},
@@ -47,6 +61,7 @@ const css = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     padding: normalize(10),
+    overflow: 'hidden'
   },
   center: {
     justifyContent: 'center',

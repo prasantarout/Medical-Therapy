@@ -30,10 +30,10 @@ const StackNav = () => {
     {
       // Subscription:withIAPContext(Subscription),
       // MyPatient: MyPatient,
-      EnrolmentQueue: EnrolmentQueue,
-      ServiceEnrolment: ServiceEnrollment,
-      AddPatient: AddPatient,
-      Assignment: Assignment,
+      // EnrolmentQueue: EnrolmentQueue,
+      // ServiceEnrolment: ServiceEnrollment,
+      // AddPatient: AddPatient,
+      // Assignment: Assignment,
       Home: Home,
     };
 

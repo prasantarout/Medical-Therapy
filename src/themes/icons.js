@@ -25,4 +25,7 @@ export const icons = {
   activePatient: require('../assets/icons/activePatient.png'),
   completeAssignment: require('../assets/icons/completeAssignment.png'),
   inactivePatient: require('../assets/icons/inactivePatient.png'),
+  calender: require('../assets/icons/calender.png'),
+  clock2: require('../assets/icons/clock2.png'),
+  location2: require('../assets/icons/location2.png'),
 };

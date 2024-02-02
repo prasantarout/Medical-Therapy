@@ -11,35 +11,41 @@ import { icons } from '../../themes/icons';
 import { colors } from '../../themes/colors';
 import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
 import useScreenWidth from '../../utils/useScreenWidth';
+import useOrientation from '../../utils/useOrientation';
+import AssignmentChart from '../../components/common/AssignmentChart';
+import CalenderView from '../../components/common/CalenderView';
 
 
 const Home = (props) => {
   const [visible, setVisible] = useState(false);
   const [years, setYears] = useState("");
-  let screenWidthh =  useScreenWidth()
+  let screenWidthh = useScreenWidth()
+  let orientation = useOrientation()
+
+
 
   const data = [
     {
       label: '2024',
       value: '2024'
-  },
-  {
+    },
+    {
       label: '2025',
       value: '2025'
-  },
-  {
+    },
+    {
       label: '2026',
       value: '2026'
-  },
-  {
+    },
+    {
       label: '2027',
       value: '2027'
-  },
-  {
+    },
+    {
       label: '2028',
       value: '2028'
-  },
-];
+    },
+  ];
 
   return (
     <SafeView>
@@ -121,11 +127,16 @@ const Home = (props) => {
             </View>
           </View>
         </View>
-      
+
         <View style={[css.mt4]}>
           <PatientEnrolmentChart />
         </View>
-
+        <View style={[css.mt4]}>
+          <AssignmentChart />
+        </View>
+        <View style={[css.mt4]}>
+          <CalenderView />
+        </View>
       </View>
     </SafeView>
   );
@@ -140,16 +151,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: 'hidden',
   },
-  quickCounterStyle:{
-   
+  quickCounterStyle: {
+
   },
   counterPadding: {
     paddingRight: 16,
   },
-  menuStyle:{
+  menuStyle: {
     borderWidth: 1
   },
-  textStyle:{
+  textStyle: {
     color: colors.primaryTextColor
   },
 });

@@ -78,7 +78,9 @@ const AddPatient = () => {
     <SafeView>
       <NavBar />
       <View style={[css.px5, css.f1, css.bgColor, css.py9]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{paddingBottom: normalize(35)}}
+          showsVerticalScrollIndicator={false}>
           <TitleTxt title={'Add New Patient'} />
           <View style={styles.container}>
             <View style={[css.row, css.jcsb]}>

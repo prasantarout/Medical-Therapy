@@ -18,7 +18,7 @@ const NavBar = props => {
                     <Image source={images.logo} style={[styles.imgResponsive]} />
                 </View>
                 <View style={[styles.rightSection, css.row, css.aic]}>
-                    <TouchableOpacity activeOpacity={0.8}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={()=>props.navigation.navigate("MyPatient")}>
                         <Image
                             style={[styles.cloudRefreshStyle]}
                             source={icons.cloudRefresh}
@@ -29,6 +29,7 @@ const NavBar = props => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.8}
+                        style={[css.row,css.aic]}
                         onPress={() => setIsShowMenu(!isShowMenu)}>
                         <Image
                             style={[styles.iconRoundStyle]}
@@ -36,6 +37,8 @@ const NavBar = props => {
                                 uri: 'https://images.unsplash.com/photo-1532170579297-281918c8ae72?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8M3wyMTM1OTR8fGVufDB8fHx8fA%3D%3D',
                             }}
                         />
+                        <Txt style={[css.fs18, css.ml1, css.medium]}> Welcome, Manish</Txt>
+                        <Image source={icons.down} style={[styles.arrowStyle]} />
                     </TouchableOpacity>
                 </View>
                 {isShowMenu ? (
@@ -66,17 +69,11 @@ export default NavBar;
 const styles = StyleSheet.create({
     navWrap: {
         padding: 16,
-        height: 100,
+        // height: 100,
         backgroundColor: '#fff',
         zIndex: 99,
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 20,
-        // },
-        // shadowOpacity: 0.27,
-        // shadowRadius: 4.65,
-        // elevation: 6,
+        top: -50,
+        paddingTop: 50,
     },
     logoArea: {
         maxWidth: width / 2.5,
@@ -100,8 +97,8 @@ const styles = StyleSheet.create({
         marginLeft: normalize(10),
     },
     iconRoundStyle: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         marginLeft: normalize(10),
         borderRadius: 100,
     },
@@ -133,4 +130,10 @@ const styles = StyleSheet.create({
         height: 60,
         resizeMode: 'contain',
     },
+    arrowStyle:{
+        width:15,
+        height:15,
+        resizeMode: 'contain',
+        marginLeft: 5,
+    }
 });

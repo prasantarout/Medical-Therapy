@@ -1,15 +1,15 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import TitleTxt from '../../components/common/TitleTxt';
-import css from '../../themes/space';
-import normalize from '../../utils/normalize';
-import {colors} from '../../themes/colors';
-import Txt from '../../components/micro/Txt';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import TitleTxt from '../../../components/common/TitleTxt';
+import css from '../../../themes/space';
+import normalize from '../../../utils/normalize';
+import {colors} from '../../../themes/colors';
+import Txt from '../../../components/micro/Txt';
 import moment from 'moment';
-import {fonts} from '../../themes/fonts';
-import {icons} from '../../themes/icons';
+import {fonts} from '../../../themes/fonts';
+import {icons} from '../../../themes/icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const ServiceEnrollment = () => {

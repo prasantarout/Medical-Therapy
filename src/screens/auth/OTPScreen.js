@@ -24,8 +24,9 @@ const OTPScreen = (props) => {
   };
 
   const handleVerifyOTP = () => {
+    props.navigation.navigate('Login')
     const enteredOTP = otp.join('');
-    console.log('Entered OTP:', enteredOTP);
+    // console.log('Entered OTP:', enteredOTP);
   };
 const handleFocus = (index) => {
   setIsFocused(index)
@@ -62,7 +63,7 @@ const handleFocus = (index) => {
             />
           ))}
         </View>
-        <Button title="Verify" onPress={handleVerifyOTP} />
+        <Button title="Verify" onPress={() => props.navigation.navigate('Login')} />
       </View>
 
     </AuthTemplate>

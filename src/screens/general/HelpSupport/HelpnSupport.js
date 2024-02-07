@@ -10,18 +10,18 @@ import {
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import css from '../../themes/space';
-import TitleTxt from '../../components/common/TitleTxt';
-import {colors} from '../../themes/colors';
-import normalize from '../../utils/normalize';
-import {fonts} from '../../themes/fonts';
-import QuestionCard from '../../components/common/QuestionCard';
-import Txt from '../../components/micro/Txt';
-import {icons} from '../../themes/icons';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import css from '../../../themes/space';
+import TitleTxt from '../../../components/common/TitleTxt';
+import {colors} from '../../../themes/colors';
+import normalize from '../../../utils/normalize';
+import {fonts} from '../../../themes/fonts';
+import QuestionCard from '../../../components/common/QuestionCard';
+import Txt from '../../../components/micro/Txt';
+import {icons} from '../../../themes/icons';
 import Modal from 'react-native-modal';
-import {images} from '../../themes/images';
+import {images} from '../../../themes/images';
 
 const HelpnSupport = () => {
   const [selected, setSelected] = useState('Accounts');

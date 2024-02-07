@@ -10,22 +10,25 @@ import { fonts } from '../../themes/fonts';
 
 
 const CustomModal = (props) => {
+
+    const { isVisible, style, onCloseRequest, children, icon, title, subtitle } = props
+
     return (
-        <Modal isVisible={props.isVisible}>
+        <Modal isVisible={isVisible}>
             <View style={[css.f1, css.center]}>
-                <View style={[styles.modalStyle, css.p5, props.style, css.bgWhite]}>
-                    <TouchableOpacity style={[styles.closeButtonStyle]} onPress={props.onCloseRequest} >
+                <ImageBackground resizeMode='stretch' source={images.modalBg} style={[styles.modalStyle, css.p5, style ]}>
+                    <TouchableOpacity activeOpacity={0.8} style={[styles.closeButtonStyle]} onPress={onCloseRequest} >
                         <Image source={icons.closeIcon} style={[styles.closeButtonInner]} />
                     </TouchableOpacity>
-                    {props.children}
+                    {children}
                     <View style={[styles.panel, css.px4]}>
-                        <Image source={props.icon} style={[styles.emailLinkStyle, css.asc]} />
-                        <View style={[]}>
-                            <Txt style={[styles.headerText, css.tac]}>{props?.title}</Txt>
-                            <Txt style={[styles.subHeaderText, css.mt5, css.tac]}>{props?.subtitle}</Txt>
+                        <Image source={icon} style={[styles.emailLinkStyle, css.asc]} />
+                        <View style={[css.mt2]}>
+                            <Txt style={[styles.headerText, css.tac]}>{title}</Txt>
+                            <Txt style={[styles.subHeaderText, css.tac]}>{subtitle}</Txt>
                         </View>
                     </View>
-                </View>
+                </ImageBackground>
             </View>
         </Modal>
     )
@@ -36,10 +39,9 @@ export default CustomModal
 
 const styles = StyleSheet.create({
     modalStyle: {
-        borderRadius: normalize(10),
-        minHeight: normalize(100),
-        minWidth: normalize(100),
-        // aspectRatio: 1
+        borderRadius: 10,
+        minHeight: normalize(90),
+        Width: normalize(300),
     },
     closeButtonStyle: {
         overflow: 'hidden',
@@ -79,9 +81,10 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: colors.secondaryTextColor,
         lineHeight: 30,
+        marginTop: 20
     },
     panel: {
         width: normalize(140),
         alignSelf: 'center',
-    }
+    },
 })

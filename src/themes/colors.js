@@ -10,4 +10,5 @@ export const colors = {
   placeholder: '#979797',
   bgColor: '#F8FAFD',
   searchPlaceholder: '#8D97A5',
+  borderColor: '#e5e5e5',
 };

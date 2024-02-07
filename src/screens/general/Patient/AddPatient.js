@@ -9,18 +9,18 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import css from '../../themes/space';
-import TitleTxt from '../../components/common/TitleTxt';
-import {colors} from '../../themes/colors';
-import normalize from '../../utils/normalize';
-import Txt from '../../components/micro/Txt';
-import {fonts} from '../../themes/fonts';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import css from '../../../themes/space';
+import TitleTxt from '../../../components/common/TitleTxt';
+import {colors} from '../../../themes/colors';
+import normalize from '../../../utils/normalize';
+import Txt from '../../../components/micro/Txt';
+import {fonts} from '../../../themes/fonts';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigationBuilder} from '@react-navigation/native';
-import {icons} from '../../themes/icons';
-import SmallBtn from '../../components/buttons/SmallBtn';
+import {icons} from '../../../themes/icons';
+import SmallBtn from '../../../components/buttons/SmallBtn';
 
 const AddPatient = () => {
   const [firstName, setFirstName] = useState('');

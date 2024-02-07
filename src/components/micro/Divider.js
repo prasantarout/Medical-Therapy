@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 const Divider = (style) => {
+    console.log("style", style)
   return (
       <View style={[styles.borderStyle, style]} />
   )

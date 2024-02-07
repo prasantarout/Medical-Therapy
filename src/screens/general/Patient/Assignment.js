@@ -1,16 +1,16 @@
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import css from '../../themes/space';
-import TitleTxt from '../../components/common/TitleTxt';
-import SearchInput from '../../components/inputs/SearchInput';
-import normalize from '../../utils/normalize';
-import Txt from '../../components/micro/Txt';
-import {fonts} from '../../themes/fonts';
-import {colors} from '../../themes/colors';
-import {icons} from '../../themes/icons';
-import AssignmentCard from '../../components/common/AssignmentCard';
+import NavBar from '../../../components/common/NavBar';
+import css from '../../../themes/space';
+import TitleTxt from '../../../components/common/TitleTxt';
+import SearchInput from '../../../components/inputs/SearchInput';
+import normalize from '../../../utils/normalize';
+import Txt from '../../../components/micro/Txt';
+import {fonts} from '../../../themes/fonts';
+import {colors} from '../../../themes/colors';
+import {icons} from '../../../themes/icons';
+import AssignmentCard from '../../../components/common/AssignmentCard';
+import SafeView from '../../../components/common/SafeView';
 
 const Assignment = () => {
   const assignmentData = [

@@ -4,7 +4,7 @@ import CustomDropdown from './CustomDropdown'
 import { years } from '../../utils/dumpAPI'
 import TitleTxt from './TitleTxt'
 import css, { width } from '../../themes/space'
-import useScreenWidth from '../../utils/useScreenWidth'
+import useScreenDimension from '../../utils/useScreenDimension'
 import Divider from '../micro/Divider'
 import Txt from '../micro/Txt'
 import { LineChart } from "react-native-gifted-charts"
@@ -13,7 +13,7 @@ import useOrientation from '../../utils/useOrientation'
 const AssignmentChart = () => {
 
     const [selectedyear, setSelectedYear] = useState("");
-    const screenWidth = useScreenWidth()
+    const screenWidth = useScreenDimension()
     let orientation = useOrientation()
 
     const lineData = [

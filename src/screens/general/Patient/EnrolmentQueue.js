@@ -1,14 +1,14 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import TitleTxt from '../../components/common/TitleTxt';
-import SearchInput from '../../components/inputs/SearchInput';
-import SmallBtn from '../../components/buttons/SmallBtn';
-import {images} from '../../themes/images';
-import PatientCard from '../../components/common/PatientCard';
-import css from '../../themes/space';
-import normalize from '../../utils/normalize';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import TitleTxt from '../../../components/common/TitleTxt';
+import SearchInput from '../../../components/inputs/SearchInput';
+import SmallBtn from '../../../components/buttons/SmallBtn';
+import {images} from '../../../themes/images';
+import PatientCard from '../../../components/common/PatientCard';
+import css from '../../../themes/space';
+import normalize from '../../../utils/normalize';
 
 const EnrolmentQueue = () => {
   const patientData = [

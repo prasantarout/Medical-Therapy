@@ -7,21 +7,21 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import TitleTxt from '../../components/common/TitleTxt';
-import css, {height, width} from '../../themes/space';
-import SearchInput from '../../components/inputs/SearchInput';
-import SmallBtn from '../../components/buttons/SmallBtn';
-import normalize from '../../utils/normalize';
-import {colors} from '../../themes/colors';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import {images} from '../../themes/images';
-import PatientCard from '../../components/common/PatientCard';
+import TitleTxt from '../../../components/common/TitleTxt';
+import css, {height, width} from '../../../themes/space';
+import SearchInput from '../../../components/inputs/SearchInput';
+import SmallBtn from '../../../components/buttons/SmallBtn';
+import normalize from '../../../utils/normalize';
+import {colors} from '../../../themes/colors';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import {images} from '../../../themes/images';
+import PatientCard from '../../../components/common/PatientCard';
 import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
-import {icons} from '../../themes/icons';
-import Txt from '../../components/micro/Txt';
-import {fonts} from '../../themes/fonts';
+import {icons} from '../../../themes/icons';
+import Txt from '../../../components/micro/Txt';
+import {fonts} from '../../../themes/fonts';
 
 const MyPatient = () => {
   const navigation = useNavigation();

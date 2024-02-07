@@ -299,7 +299,7 @@ PODS:
   - React-jsinspector (0.71.8)
   - React-logger (0.71.8):
     - glog
-  - react-native-safe-area-context (4.8.2):
+  - react-native-safe-area-context (4.9.0):
     - React-Core
   - react-native-simple-toast (3.2.0):
     - React-Core
@@ -389,6 +389,9 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.6.2):
     - React-Core
+  - RNGestureHandler (2.14.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - RNReanimated (3.6.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -466,6 +469,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -565,6 +569,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -608,7 +614,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 9101857bcffac8dae43d76a7bc0a39bda593c756
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
-  react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
+  react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-simple-toast: 2079d417c52fc3ca295edba094d5632f7720e68d
   React-perflogger: d21f182895de9d1b077f8a3cd00011095c8c9100
   React-RCTActionSheet: 0151f83ef92d2a7139bba7dfdbc8066632a6d47b
@@ -625,6 +631,7 @@ SPEC CHECKSUMS:
   ReactCommon: 739352444061f8625428e6ff0620c30362c3d9af
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
+  RNGestureHandler: fe2be3be5598dc74329b211c58c9f2d231461769
   RNReanimated: 738543ef6ec0024ea0bc9f4ab3ac99af6f068448
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
@@ -635,4 +642,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aa13138fdd15434a6aa8768f1c4145f33c61f0e5
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

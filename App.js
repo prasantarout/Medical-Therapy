@@ -12,7 +12,7 @@ const App = () => {
   return (
     <>
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         hidden={false}
         backgroundColor="transparent"
         translucent={true}

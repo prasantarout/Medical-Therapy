@@ -3,20 +3,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import React from 'react';
-import normalize from '../../utils/normalize';
-import {colors} from '../../themes/colors';
-import {fonts} from '../../themes/fonts';
+import { colors } from '../../themes/colors';
+import { fonts } from '../../themes/fonts';
 
-const Button = ({ title, onClick, isLoading, isDisabled, style }) => {
+const Button = ({ title, onPress, isLoading, isDisabled, style }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       disabled={isLoading}
-      onPress={onClick}
-      style={[styles.button,style]}>
+      onPress={onPress}
+      style={[styles.button, style]}>
       {isLoading ? (
         <ActivityIndicator size={'large'} color={colors.white} />
       ) : (
@@ -32,15 +30,14 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: normalize(25),
     backgroundColor: colors.primary,
-    borderRadius: normalize(5),
-    marginTop: normalize(15),
+    borderRadius: 5,
+    paddingHorizontal: 30,
+    paddingVertical: 15,
   },
   buttonText: {
-    fontFamily: fonts.Regular,
-    fontSize: normalize(12),
-    fontWeight: '600',
+    fontFamily: fonts.Medium,
+    fontSize: 16,
     color: colors.white,
   },
 });

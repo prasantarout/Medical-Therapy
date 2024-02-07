@@ -12,7 +12,7 @@ import { colors } from '../../themes/colors';
 const CalenderView = (props) => {
 
     const customDatesStylesFunc = date => {
-        if (date.isoWeekday() === 5) { // Fridays
+        if (date.isoWeekday() === 5) {
             return {
                 dateNameStyle: { color: '#fff' },
                 dateNumberStyle: { color: '#fff' },
@@ -21,7 +21,6 @@ const CalenderView = (props) => {
         }
     }
     let orientation = useOrientation()
-    let numColumns = 3
     let cardWidth = orientation == "LANDSCAPE" ? "33.3%" : "50%"
 
 
@@ -36,6 +35,8 @@ const CalenderView = (props) => {
                     <CalendarStrip
                         customDatesStyles={customDatesStylesFunc}
                         scrollable
+                        // numDaysInWeek={1}
+                        calendarAnimation={{type: 'sequence', duration: 30}}
                         style={{ height: 200, paddingTop: 20, paddingBottom: 10 }}
                         calendarColor='transparent'
                         calendarHeaderStyle={{ color: 'black' }}
@@ -49,7 +50,7 @@ const CalenderView = (props) => {
                         assignmentList?.map((item, index) => {
                             let borderLeftColor = orientation == "LANDSCAPE" ?(index % 3 === 0 ? colors.primary :
                                 index % 3 === 1 ? colors.secondary :
-                                    colors.primary):index % 2 === 0 ? colors.primary : colors.secondary``
+                                    colors.primary):index % 2 === 0 ? colors.primary : colors.secondary
                             return (
                                 <View style={[styles.cardStyle, { width: cardWidth, borderLeftColor: borderLeftColor }]}>
                                     <Txt style={[css.bold, css.fs18]} >{item?.title}</Txt>

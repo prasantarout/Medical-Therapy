@@ -41,23 +41,24 @@ const Signup = (props) => {
   const isValidPass = isValidPassword(signUpInfo.password);
   
   const handleSignup = () => {
-    if (signUpInfo?.first_name == '') {
-      CustomToast('Please enter your first name');
-    } else if (signUpInfo?.last_name == '') {
-      CustomToast('Please enter your last name');
-    } else if (signUpInfo?.email == '') {
-      CustomToast('Please enter email');
-    }else if (signUpInfo?.password == '') {
-      CustomToast('Please enter password');
-    }else if (signUpInfo?.password != confirmPassword){
-      CustomToast("Password dosen't match");
-    }else if (!validEmail) {
-      CustomToast('Please enter valid email');
-    }else if (!isValidPass) {
-      CustomToast('The password should contain at least one number, one capital letter, and one special character');
-    }else{
-      dispatch(signUpReq(signUpInfo))
-    }
+    props.navigation.navigate("OTPScreen")
+    // if (signUpInfo?.first_name == '') {
+    //   CustomToast('Please enter your first name');
+    // } else if (signUpInfo?.last_name == '') {
+    //   CustomToast('Please enter your last name');
+    // } else if (signUpInfo?.email == '') {
+    //   CustomToast('Please enter email');
+    // }else if (signUpInfo?.password == '') {
+    //   CustomToast('Please enter password');
+    // }else if (signUpInfo?.password != confirmPassword){
+    //   CustomToast("Password dosen't match");
+    // }else if (!validEmail) {
+    //   CustomToast('Please enter valid email');
+    // }else if (!isValidPass) {
+    //   CustomToast('The password should contain at least one number, one capital letter, and one special character');
+    // }else{
+    //   dispatch(signUpReq(signUpInfo))
+    // }
   };
 
   const handleInputChange = (key, value) => {
@@ -137,7 +138,7 @@ const Signup = (props) => {
             />          
 
             <Button
-              onClick={() => {
+              onPress={() => {
                 handleSignup();
               }}
               title={'Sign Up'}

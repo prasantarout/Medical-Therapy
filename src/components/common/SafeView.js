@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
     avoidStatusBar: {
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 10 : null,
         flex: 1,
-        backgroundColor: '#f0f5fb',
+        backgroundColor: '#f8fafd',
     }
 })

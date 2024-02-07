@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Divider = (style) => {
+const Divider = (props) => {
     console.log("style", style)
+    const { style } = props
   return (
       <View style={[styles.borderStyle, style]} />
   )

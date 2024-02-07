@@ -50,4 +50,5 @@ export const icons = {
   check: require('../assets/icons/check.png'),
   modalTop: require('../assets/icons/modalTop.png'),
   modalBottom: require('../assets/icons/modalBottom.png'),
+  edit: require('../assets/icons/edit.png'),
 };

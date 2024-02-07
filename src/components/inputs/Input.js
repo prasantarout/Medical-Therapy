@@ -1,15 +1,12 @@
 import {
   Image,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
 import css from '../../themes/space';
-import {icons} from '../../themes/icons';
-import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
 import Txt from '../micro/Txt';
@@ -44,7 +41,7 @@ const Input = props => {
         style,
       ]}>
       <View style={[css.f1]}>
-        <Txt style={[styles.titleStyle]}>{title}</Txt>
+        <Txt style={[styles.titleStyle, css.fs20, css.medium]}>{title}</Txt>
         <TextInput
           placeholder={placeholder}
           placeholderTextColor={colors.placeholder}
@@ -77,8 +74,6 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: colors.primaryTextColor,
     fontFamily: fonts.Regular,
-    fontSize: normalize(10),
-    fontWeight: '400',
   },
   bbw1: {
     borderBottomWidth: 1,
@@ -96,13 +91,13 @@ const styles = StyleSheet.create({
     elevation: 34,
   },
   textInput: {
-    height: normalize(20),
-    fontSize: normalize(9),
+    height: 50,
+    fontSize: 16,
     color: colors.primaryTextColor,
   },
   inputIconStyle: {
-    height: normalize(15),
-    width: normalize(15),
+    height: 30,
+    width: 30,
     resizeMode: 'contain',
     opacity: 0.6,
   },

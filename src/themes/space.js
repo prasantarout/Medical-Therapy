@@ -271,6 +271,52 @@ const css = StyleSheet.create({
   p19: { padding: normalize(38) },
   p20: { padding: normalize(40) },
 
+  // Bottom Padding Classes
+  pb0: { paddingBottom: 0 },
+  pb1: { paddingBottom: normalize(2) },
+  pb2: { paddingBottom: normalize(4) },
+  pb3: { paddingBottom: normalize(6) },
+  pb4: { paddingBottom: normalize(8) },
+  pb5: { paddingBottom: normalize(10) },
+  pb6: { paddingBottom: normalize(12) },
+  pb7: { paddingBottom: normalize(14) },
+  pb8: { paddingBottom: normalize(16) },
+  pb9: { paddingBottom: normalize(18) },
+  pb10: { paddingBottom: normalize(20) },
+  pb11: { paddingBottom: normalize(22) },
+  pb12: { paddingBottom: normalize(24) },
+  pb13: { paddingBottom: normalize(26) },
+  pb14: { paddingBottom: normalize(28) },
+  pb15: { paddingBottom: normalize(30) },
+  pb16: { paddingBottom: normalize(32) },
+  pb17: { paddingBottom: normalize(34) },
+  pb18: { paddingBottom: normalize(36) },
+  pb19: { paddingBottom: normalize(38) },
+  pb20: { paddingBottom: normalize(40) },
+
+  // Top Padding Classes
+  pt0: { paddingTop: 0 },
+  pt1: { paddingTop: normalize(2) },
+  pt2: { paddingTop: normalize(4) },
+  pt3: { paddingTop: normalize(6) },
+  pt4: { paddingTop: normalize(8) },
+  pt5: { paddingTop: normalize(10) },
+  pt6: { paddingTop: normalize(12) },
+  pt7: { paddingTop: normalize(14) },
+  pt8: { paddingTop: normalize(16) },
+  pt9: { paddingTop: normalize(18) },
+  pt10: { paddingTop: normalize(20) },
+  pt11: { paddingTop: normalize(22) },
+  pt12: { paddingTop: normalize(24) },
+  pt13: { paddingTop: normalize(26) },
+  pt14: { paddingTop: normalize(28) },
+  pt15: { paddingTop: normalize(30) },
+  pt16: { paddingTop: normalize(32) },
+  pt17: { paddingTop: normalize(34) },
+  pt18: { paddingTop: normalize(36) },
+  pt19: { paddingTop: normalize(38) },
+  pt20: { paddingTop: normalize(40) },
+
   // Horizontal Padding Classes
   px0: { paddingHorizontal: 0 },
   px1: { paddingHorizontal: normalize(2) },
@@ -416,6 +462,8 @@ const css = StyleSheet.create({
   w90: { width: '90%' },
   w100: { width: '100%' },
   mw33: { minWidth: '33%' },
+  mw40: { minWidth: '40%' },
+  mw50: { minWidth: '50%' },
 
   //align-items
 
@@ -455,6 +503,18 @@ const css = StyleSheet.create({
 
   bgColor: {
     backgroundColor: colors.bgColor,
+  },
+  closeIconWrapStyle:{
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: -25,
+    right: -25,
+  },
+  closeIconStyle:{
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
 });
 export default css;

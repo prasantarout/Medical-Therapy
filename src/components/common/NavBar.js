@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import css, { width } from '../../themes/space';
 import Txt from '../micro/Txt';
@@ -6,11 +6,23 @@ import { images } from '../../themes/images';
 import normalize from '../../utils/normalize';
 import { icons } from '../../themes/icons';
 import Divider from '../micro/Divider';
+import Modal from 'react-native-modal';
+import TitleTxt from './TitleTxt';
+import Button from '../buttons/Button';
 
 let halfWidth = width / 2;
 
 const NavBar = props => {
     const [isShowMenu, setIsShowMenu] = useState(false);
+    const [logoutModal, setLogoutModal] = useState(false);
+
+    const handleLogout = () => {
+        setIsShowMenu(false)
+        setTimeout(() => {
+            setLogoutModal(true)
+        }, 100)
+    };
+
     return (
         <>
             <View style={[css.row, styles.navWrap, css.aic]}>
@@ -18,18 +30,19 @@ const NavBar = props => {
                     <Image source={images.logo} style={[styles.imgResponsive]} />
                 </View>
                 <View style={[styles.rightSection, css.row, css.aic]}>
-                    <TouchableOpacity activeOpacity={0.8} onPress={()=>props.navigation.navigate("MyPatient")}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate("MyPatient")}>
                         <Image
                             style={[styles.cloudRefreshStyle]}
                             source={icons.cloudRefresh}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.8}>
+                    <TouchableOpacity activeOpacity={0.8}
+                        onPress={() => props?.navigation?.navigate("Notification")}>
                         <Image style={[styles.iconRoundStyle]} source={icons.bell} />
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        style={[css.row,css.aic]}
+                        style={[css.row, css.aic]}
                         onPress={() => setIsShowMenu(!isShowMenu)}>
                         <Image
                             style={[styles.iconRoundStyle]}
@@ -47,7 +60,7 @@ const NavBar = props => {
                             <Image source={icons.user} style={[styles.menuIcon]} />
                         </TouchableOpacity>
                         <Divider />
-                        <TouchableOpacity style={[css.row, css.center, css.f1]}>
+                        <TouchableOpacity style={[css.row, css.center, css.f1]} onPress={handleLogout} >
                             <Image source={icons.logout} style={[styles.menuIcon]} />
                         </TouchableOpacity>
                     </View>
@@ -60,6 +73,25 @@ const NavBar = props => {
                     style={[StyleSheet.absoluteFill, styles.backdrop]}
                 />
             ) : null}
+
+            <Modal isVisible={logoutModal}>
+                <View style={[css.f1, css.center]}>
+                    <ImageBackground resizeMode='stretch' source={images.modalBg} style={[css.p3, styles.modalPanel]} >
+                        <TouchableOpacity onPress={() => setLogoutModal(false)} style={[css.closeIconWrapStyle]} >
+                            <Image source={icons.closeIcon} style={[css.closeIconStyle]} />
+                        </TouchableOpacity>
+                        <View style={[css.center, css.py4]} >
+                            <Image source={icons.off} style={[styles.logoStyle]} />
+                            <TitleTxt style={[css.mt3]} title="Do You Want To Logout" />
+                            <Txt style={[styles.textLighte]} >Lorem ipsum dolor sit amet, consectetur adipiscing elit sagittis.</Txt>
+                        </View>
+                        <View style={[css.row, css.jcc]} >
+                            <Button style={[styles.btn]} title="Yes" />
+                            <Button onPress={() => setLogoutModal(false)} style={[styles.btn, styles.btnlight, css.ml2]} title="Cancel" />
+                        </View>
+                    </ImageBackground>
+                </View>
+            </Modal>
         </>
     );
 };
@@ -130,10 +162,32 @@ const styles = StyleSheet.create({
         height: 60,
         resizeMode: 'contain',
     },
-    arrowStyle:{
-        width:15,
-        height:15,
+    arrowStyle: {
+        width: 15,
+        height: 15,
         resizeMode: 'contain',
         marginLeft: 5,
+    },
+    modalPanel: {
+        minWidth: width / 2.5,
+        minHeight: width / 4
+    },
+    logoStyle: {
+        width: 120,
+        height: 120,
+        resizeMode: 'contain',
+    },
+    textLighte: {
+        color: "#747A86",
+    },
+    btn: {
+        width: 150,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    btnlight: {
+        backgroundColor: '#b1b2bf'
     }
 });
+

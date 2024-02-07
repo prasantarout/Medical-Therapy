@@ -19,6 +19,7 @@ import BottomTab from './BottomTab';
 import Assignments from '../screens/general/Assignments/Assignments';
 import AssignmentDetails from '../screens/general/Assignments/AssignmentDetails';
 import EvaluationForm from '../screens/general/Assignments/EvaluationForm';
+import Notification from '../screens/general/other/Notification';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
@@ -34,7 +35,8 @@ const StackNav = () => {
   // :
   {
     // EvaluationForm:EvaluationForm,
-    BottomTab:BottomTab,
+    BottomTab: BottomTab,
+    Notification: Notification
     // 
 
     // Signup: Signup,

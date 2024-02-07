@@ -20,7 +20,7 @@ export default SmallBtn;
 
 const styles = StyleSheet.create({
   btn: {
-    paddingHorizontal: normalize(8),
+    paddingHorizontal: normalize(2),
     justifyContent: 'center',
     alignItems: 'center',
   },

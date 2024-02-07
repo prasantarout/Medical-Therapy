@@ -21,6 +21,8 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigationBuilder} from '@react-navigation/native';
 import {icons} from '../../../themes/icons';
 import SmallBtn from '../../../components/buttons/SmallBtn';
+import SimpleInput from '../../../components/inputs/SimpleInput';
+import SimpleDropDown from '../../../components/common/SimpleDropDown';
 
 const AddPatient = () => {
   const [firstName, setFirstName] = useState('');
@@ -60,117 +62,80 @@ const AddPatient = () => {
     },
   ];
 
-  const InputField = props => {
-    return (
-      <View style={[styles.InputField, props.style]}>
-        <Txt style={styles.fieldTitle}>{props.title}</Txt>
-        <TextInput
-          placeholder={props.placeholder}
-          value={props.Value}
-          onChange={props.onChange}
-          style={styles.input}
-        />
-      </View>
-    );
-  };
-
   return (
     <SafeView>
       <NavBar />
-      <View style={[css.px5, css.f1, css.bgColor, css.py9]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={[css.px5, css.f1, css.py4]}>
+        <ScrollView
+          style={[{paddingBottom: normalize(35)}]}
+          showsVerticalScrollIndicator={false}>
           <TitleTxt title={'Add New Patient'} />
           <View style={styles.container}>
-            <View style={[css.row, css.jcsb]}>
-              <InputField
-                title={'First Name'}
-                placeholder={'Jhon'}
-                Value={firstName}
-                onChange={val => setFirstName(val)}
-              />
-              <InputField
-                title={'Last Name'}
-                placeholder={'Doe'}
-                Value={lastName}
-                onChange={val => setLastName(val)}
-              />
-            </View>
-            <View style={[css.row, css.jcsb]}>
-              <InputField
-                title={'Email'}
-                placeholder={'johndoe@gmail.com'}
-                Value={email}
-                onChange={val => setEmail(val)}
-              />
-              <InputField
-                title={'Phone Number'}
-                placeholder={'+1 123 321 4567'}
-                Value={phone}
-                onChange={val => setPhone(val)}
-              />
-            </View>
-
-            <InputField
-              title={'Address'}
-              placeholder={'Type here'}
-              Value={address}
-              style={{width: '100%'}}
-              onChange={val => setAddress(val)}
-            />
-            <View style={styles.dropdownCtn}>
-              <View style={{width: '50%'}}>
-                <Txt style={styles.fieldTitle}>City</Txt>
-                <Dropdown
-                  style={[
-                    styles.dropdown,
-                    isFocus && {borderColor: colors.secondary},
-                  ]}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  itemTextStyle={styles.dropdownListTxt}
-                  iconStyle={styles.iconStyle}
-                  data={cityData}
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={'Select City'}
-                  searchPlaceholder="Search..."
-                  value={cityValue}
-                  onFocus={() => setIsFocus(true)}
-                  onBlur={() => setIsFocus(false)}
-                  onChange={item => {
-                    setCityValue(item.value);
-                    setIsFocus(false);
-                  }}
+            <View style={[css.row, css.fw, css.aic]}>
+              <View style={[css.w50]}>
+                <SimpleInput
+                  title="First Name"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Enter First Name"
+                  onChange={val => setFirstName(val)}
                 />
               </View>
-              <View style={{width: '50%', marginLeft: normalize(11)}}>
-                <Txt style={styles.fieldTitle}>Gender</Txt>
-                <Dropdown
-                  style={[
-                    styles.dropdown,
-                    isCityFocus && {borderColor: colors.secondary},
-                  ]}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  itemTextStyle={styles.dropdownListTxt}
-                  iconStyle={styles.iconStyle}
+              <View style={[css.w50]}>
+                <SimpleInput
+                  title="Last Name"
+                  style={[css.ml2]}
+                  value={[]}
+                  placeholder="Enter Last Name"
+                  onChange={val => setLastName(val)}
+                />
+              </View>
+              <View style={[css.w50, css.mt10]}>
+                <SimpleInput
+                  title="Email"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Enter Email"
+                  onChange={val => setEmail(val)}
+                />
+              </View>
+              <View style={[css.w50, css.mt10]}>
+                <SimpleInput
+                  title="Phone Number"
+                  style={[css.ml2]}
+                  value={[]}
+                  placeholder="Enter Phone Number"
+                  onChange={val => setPhone(val)}
+                />
+              </View>
+              <View style={[css.w100]}>
+                <SimpleInput
+                  title="Address"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Type here..."
+                  onChange={val => setAddress(val)}
+                />
+              </View>
+
+              <View style={[css.w50, css.mt10]}>
+                <SimpleDropDown
+                  data={cityData}
+                  title="City"
+                  style={[css.mr2]}
+                  value={cityValue}
+                  placeholder="Select City"
+                  onChange={item => setCityValue(item.value)}
+                />
+              </View>
+              <View style={[css.w50]}>
+                <SimpleDropDown
                   data={genderData}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={'Select Gender'}
-                  searchPlaceholder="Search..."
+                  title="Gender"
+                  style={[css.ml2]}
                   value={gender}
-                  onFocus={() => setIsCityFocus(true)}
-                  onBlur={() => setIsCityFocus(false)}
-                  onChange={item => {
-                    setGender(item.value);
-                    setIsCityFocus(false);
-                  }}
+                  placeholder="Select Gender"
+                  onChange={item => setGender(item.value)}
                 />
               </View>
             </View>
@@ -187,8 +152,8 @@ const AddPatient = () => {
                   fontFamily: fonts.Regular,
                   color: '#444444',
                   fontWeight: '500',
-                  fontSize: normalize(8),
-                  marginTop: normalize(8),
+                  fontSize: 18,
+                  marginTop: 14,
                 }}>
                 Upload Image
               </Txt>
@@ -197,8 +162,8 @@ const AddPatient = () => {
                   fontFamily: fonts.Regular,
                   color: '#9A9A9A',
                   fontWeight: '500',
-                  fontSize: normalize(8),
-                  marginTop: normalize(4),
+                  fontSize: 18,
+                  marginTop: 8,
                 }}>
                 Maximum Size 5MB
               </Txt>
@@ -289,54 +254,52 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   uploadImageCtn: {
-    paddingTop: normalize(20),
-    paddingBottom: normalize(15),
-    width: '38%',
-    borderWidth: normalize(1),
+    paddingTop: 22,
+    paddingBottom: 16,
+    width: '30%',
+    borderWidth: 1,
     borderStyle: 'dashed',
-    borderRadius: normalize(5),
+    borderRadius: 5,
     alignItems: 'center',
     borderColor: '#C5C5C5',
-    marginLeft: normalize(10),
-    marginTop: normalize(25),
+    marginTop: 25,
     backgroundColor: '#F9F9F9',
   },
   uploadSubContainer: {
-    height: normalize(55),
-    width: normalize(55),
+    height: normalize(45),
+    width: normalize(45),
     borderRadius: normalize(50),
     backgroundColor: '#EAEBEC',
     alignItems: 'center',
   },
   uploadCtnr: {
-    height: normalize(85),
-    width: normalize(85),
+    height: normalize(70),
+    width: normalize(70),
     resizeMode: 'contain',
     position: 'absolute',
-    top: normalize(9),
-  },
-  uploadIcon: {
-    height: normalize(20),
-    width: normalize(20),
-    resizeMode: 'contain',
-    position: 'absolute',
-    left: normalize(33),
     top: normalize(8),
   },
+  uploadIcon: {
+    height: normalize(16),
+    width: normalize(16),
+    resizeMode: 'contain',
+    position: 'absolute',
+    left: normalize(27),
+    top: normalize(6),
+  },
   btn: {
-    width: '38%',
-    marginLeft: normalize(10),
+    width: '32%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: normalize(7),
+    paddingVertical: normalize(6),
     backgroundColor: colors.primary,
     borderRadius: normalize(4),
-    marginTop: normalize(17),
+    marginTop: normalize(14),
   },
   btnTxt: {
     fontFamily: fonts.Regular,
     color: colors.white,
     fontWeight: '600',
-    fontSize: normalize(8),
+    fontSize: 20,
   },
 });

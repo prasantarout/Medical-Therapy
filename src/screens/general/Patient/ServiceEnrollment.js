@@ -11,14 +11,44 @@ import moment from 'moment';
 import {fonts} from '../../../themes/fonts';
 import {icons} from '../../../themes/icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import SimpleDropDown from '../../../components/common/SimpleDropDown';
+import SimpleInput from '../../../components/inputs/SimpleInput';
 
 const ServiceEnrollment = () => {
   const [date, setDate] = useState('10/11/23');
   const [time, setTime] = useState('10:30 am');
-  const [service, setService] = useState('Select');
+  const [service, setService] = useState('');
   const [remark, setRemark] = useState('Input');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
+
+  const ServiceData = [
+    {
+      id: 0,
+      label: 'Service 1',
+      value: 'Service 1',
+    },
+    {
+      id: 1,
+      label: 'Service 2',
+      value: 'Service 2',
+    },
+    {
+      id: 2,
+      label: 'Service 3',
+      value: 'Service 3',
+    },
+    {
+      id: 3,
+      label: 'Service 4',
+      value: 'Service 4',
+    },
+    {
+      id: 4,
+      label: 'Service 5',
+      value: 'Service 5',
+    },
+  ];
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -50,7 +80,7 @@ const ServiceEnrollment = () => {
   const ValueField = props => {
     return (
       <View style={styles.ValueField}>
-        <Txt style={styles.fieldTitle}>{props.title}</Txt>
+        <Txt style={[styles.fieldTitle, css.fs20]}>{props.title}</Txt>
         <TouchableOpacity
           onPress={props.onPress}
           style={styles.buttonCtnr}
@@ -66,7 +96,7 @@ const ServiceEnrollment = () => {
   return (
     <SafeView>
       <NavBar />
-      <View style={[css.px5, css.f1, css.bgColor, css.py9]}>
+      <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Service Enrolment'} />
         <View style={styles.container}>
           <View style={[css.row, css.jcsb]}>
@@ -90,10 +120,28 @@ const ServiceEnrollment = () => {
               value={time}
             />
           </View>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'Service'} icon={icons.down} value={service} />
-            <ValueField title={'Remark'} value={remark} />
+          <View style={[css.row, css.px5]}>
+            <View style={[css.w50, css.mt10]}>
+              <SimpleDropDown
+                data={ServiceData}
+                title="Service"
+                style={[css.mr2]}
+                value={service}
+                placeholder="Select"
+                onChange={item => setService(item.value)}
+              />
+            </View>
+            <View style={[css.w50, css.mt10, css.ml2]}>
+              <SimpleInput
+                title="Remark"
+                style={[css.ml2]}
+                value={[]}
+                placeholder="Input"
+                onChange={val => setRemark(val)}
+              />
+            </View>
           </View>
+
           <TouchableOpacity style={styles.btn}>
             <Txt style={styles.btnTxt}>Enroll</Txt>
           </TouchableOpacity>
@@ -128,15 +176,13 @@ const styles = StyleSheet.create({
   ValueField: {padding: normalize(10), width: '50%'},
   fieldTitle: {
     fontFamily: fonts.Regular,
-    fontSize: normalize(9),
     color: colors.primary,
-    paddingBottom: normalize(6),
+    paddingBottom: normalize(4),
   },
   buttonCtnr: {
-    // width: '45%',
-    borderBottomWidth: normalize(1),
-    borderColor: '#E5E5E5',
-    paddingBottom: normalize(8),
+    borderBottomWidth: 1,
+    borderColor: colors.borderColor,
+    paddingBottom: normalize(6),
   },
   icon: {
     height: normalize(8),
@@ -148,22 +194,22 @@ const styles = StyleSheet.create({
   subtxt: {
     fontFamily: fonts.Regular,
     color: colors.secondaryTextColor,
-    fontSize: normalize(9),
+    fontSize: 18,
     fontWeight: '500',
   },
   btn: {
-    width: '25%',
+    width: '24%',
     marginLeft: normalize(9),
     height: normalize(23),
     backgroundColor: colors.primary,
     borderRadius: normalize(4),
-    marginTop: normalize(12),
+    marginTop: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
   },
   btnTxt: {
     color: colors.white,
-    fontSize: normalize(9),
+    fontSize: 22,
     fontWeight: '500',
   },
 });

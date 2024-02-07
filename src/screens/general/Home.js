@@ -10,40 +10,53 @@ import QuickCounter from '../../components/common/QuickCounter';
 import { icons } from '../../themes/icons';
 import { colors } from '../../themes/colors';
 import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
-import useScreenWidth from '../../utils/useScreenWidth';
+import useScreenDimension from '../../utils/useScreenDimension';
+import useOrientation from '../../utils/useOrientation';
+import AssignmentChart from '../../components/common/AssignmentChart';
+import CalenderView from '../../components/common/CalenderView';
 
 
 const Home = (props) => {
   const [visible, setVisible] = useState(false);
   const [years, setYears] = useState("");
-  let screenWidthh =  useScreenWidth()
+  let screenWidthh = useScreenDimension()
+  let orientation = useOrientation()
+
+
 
   const data = [
     {
       label: '2024',
       value: '2024'
-  },
-  {
+    },
+    {
       label: '2025',
       value: '2025'
-  },
-  {
+    },
+    {
       label: '2026',
       value: '2026'
-  },
-  {
+    },
+    {
       label: '2027',
       value: '2027'
-  },
-  {
+    },
+    {
       label: '2028',
       value: '2028'
-  },
-];
+    },
+  ];
+
+  let paddingLast = { paddingRight: orientation == "PORTRAIT" ? 0 : 16 }
+  let paddingRight = { paddingRight: orientation == "PORTRAIT" ? 16 : 0 }
+
+  let counterCardWidth= {
+    width: orientation == "PORTRAIT" ? '50%' : '33.2%',
+  }
 
   return (
-    <SafeView>
-      <NavBar />
+    <SafeView sticky={[1]}>
+      <NavBar {...props} />
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
         <View style={[css.row, css.jcsb]}>
@@ -62,10 +75,10 @@ const Home = (props) => {
           />
         </View>
 
-        <View style={[styles.quickCounter, css.mt4,]}>
+        <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
           <View style={[css.row, css.jcsb, css.fw, css.mt4, css.f1]}>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, styles.counterPadding, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Total Assignments"
@@ -74,7 +87,7 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Pending Assignments"
@@ -83,7 +96,7 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Completed Assignments"
@@ -92,7 +105,7 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Total Patients"
@@ -101,7 +114,7 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, styles.counterPadding, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Active Patients"
@@ -110,7 +123,7 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[css.f1, styles.counterCardStyle, styles.counterPadding]}>
+            <View style={[styles.counterCardStyle, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Inactive Patients"
@@ -121,11 +134,16 @@ const Home = (props) => {
             </View>
           </View>
         </View>
-      
+
         <View style={[css.mt4]}>
           <PatientEnrolmentChart />
         </View>
-
+        <View style={[css.mt4]}>
+          <AssignmentChart />
+        </View>
+        <View style={[css.mt4]}>
+          <CalenderView />
+        </View>
       </View>
     </SafeView>
   );
@@ -140,16 +158,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: 'hidden',
   },
-  quickCounterStyle:{
-   
+  quickCounterStyle: {
+
   },
   counterPadding: {
     paddingRight: 16,
   },
-  menuStyle:{
+  menuStyle: {
     borderWidth: 1
   },
-  textStyle:{
+  textStyle: {
     color: colors.primaryTextColor
   },
 });

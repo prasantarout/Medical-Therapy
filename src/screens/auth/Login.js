@@ -35,7 +35,7 @@ const Login = (props) => {
   });
 
   const handleLogin = () => {
-    props.navigation.navigate('OTPScreen')
+    props.navigation.navigate('Home')
   };
 
   console.log("props-Login", props);
@@ -68,7 +68,7 @@ const Login = (props) => {
             />
 
             <Button
-              onClick={() => {
+              onPress={() => {
                 handleLogin();
               }}
               title="Login"

@@ -5,7 +5,7 @@ import css from '../../themes/space'
 const SafeView = (props) => {
     return (
         <SafeAreaView style={[css.f1, props.style]}>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[css.fg1]} >
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[css.fg1]} stickyHeaderIndices={props.sticky} >
             <View style={[styles.avoidStatusBar]}>
                 {props.children}
             </View>

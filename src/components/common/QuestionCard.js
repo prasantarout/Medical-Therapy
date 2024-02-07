@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
   question: {
     fontFamily: fonts.Regular,
     color: colors.primary,
-    fontSize: normalize(7),
+    fontSize: 18,
     fontWeight: '500',
   },
   answer: {
     fontFamily: fonts.Regular,
     color: colors.secondaryTextColor,
-    fontSize: normalize(7),
+    fontSize: 18,
     fontWeight: '500',
   },
   questionStyle: {

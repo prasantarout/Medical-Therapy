@@ -7,21 +7,21 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import TitleTxt from '../../components/common/TitleTxt';
-import css, {height, width} from '../../themes/space';
-import SearchInput from '../../components/inputs/SearchInput';
-import SmallBtn from '../../components/buttons/SmallBtn';
-import normalize from '../../utils/normalize';
-import {colors} from '../../themes/colors';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import {images} from '../../themes/images';
-import PatientCard from '../../components/common/PatientCard';
+import TitleTxt from '../../../components/common/TitleTxt';
+import css, {height, width} from '../../../themes/space';
+import SearchInput from '../../../components/inputs/SearchInput';
+import SmallBtn from '../../../components/buttons/SmallBtn';
+import normalize from '../../../utils/normalize';
+import {colors} from '../../../themes/colors';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import {images} from '../../../themes/images';
+import PatientCard from '../../../components/common/PatientCard';
 import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
-import {icons} from '../../themes/icons';
-import Txt from '../../components/micro/Txt';
-import {fonts} from '../../themes/fonts';
+import {icons} from '../../../themes/icons';
+import Txt from '../../../components/micro/Txt';
+import {fonts} from '../../../themes/fonts';
 
 const MyPatient = () => {
   const navigation = useNavigation();
@@ -136,7 +136,7 @@ const MyPatient = () => {
         time={item.time}
         image={item.profile}
         Button={true}
-        navigateTo={() => navigation.navigate('ServiceEnrolment')}
+        navigateTo={() => navigation.navigate('ServiceEnrollment')}
       />
     );
   };
@@ -145,7 +145,7 @@ const MyPatient = () => {
     <>
       <SafeView>
         <NavBar />
-        <View style={[css.px5, css.f1, css.bgColor, css.py10]}>
+        <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'My Patients'} />
           <View style={[css.row, css.aic, css.mt4]}>
             <SearchInput
@@ -208,7 +208,7 @@ const MyPatient = () => {
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(false),
-                        navigation.navigate('ServiceEnrolment');
+                        navigation.navigate('ServiceEnrollment');
                     }}
                     activeOpacity={0.8}
                     style={[styles.btn2]}>
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   btnTxt: {
-    fontSize: 19,
+    fontSize: 17,
     color: colors.primary,
     fontWeight: '500',
   },

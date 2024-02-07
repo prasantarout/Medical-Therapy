@@ -1,43 +1,54 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useSelector} from 'react-redux';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSelector } from 'react-redux';
 import Splash from '../screens/auth/Splash';
 import Signup from '../screens/auth/Signup';
 import Login from '../screens/auth/Login';
 import ForgotPassword from '../screens/auth/ForgotPassword';
 import OTPScreen from '../screens/auth/OTPScreen';
 import Home from '../screens/general/Home';
-import {NavigationContainer} from '@react-navigation/native';
-import MyPatient from '../screens/general/MyPatient';
-import EnrolmentQueue from '../screens/general/EnrolmentQueue';
-import Assignment from '../screens/general/Assignment';
-import ServiceEnrollment from '../screens/general/ServiceEnrollment';
-import AddPatient from '../screens/general/AddPatient';
-import HelpnSupport from '../screens/general/HelpnSupport';
+import { NavigationContainer } from '@react-navigation/native';
+import MyPatient from '../screens/general/Patient/MyPatient';
+import EnrolmentQueue from '../screens/general/Patient/EnrolmentQueue';
+import Assignment from '../screens/general/Patient/Assignment';
+import ServiceEnrollment from '../screens/general/Patient/ServiceEnrollment';
+import AddPatient from '../screens/general/Patient/AddPatient';
+import HelpnSupport from '../screens/general/HelpSupport/HelpnSupport';
+import BottomTab from './BottomTab';
+import Assignments from '../screens/general/Assignments/Assignments';
+import AssignmentDetails from '../screens/general/Assignments/AssignmentDetails';
+import EvaluationForm from '../screens/general/Assignments/EvaluationForm';
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
   const AuthReducer = useSelector(state => state.AuthReducer);
   const Screens =
-    // AuthReducer?.token == null  ?
-    // {
-    //   Signup: Signup,
-    //   Login: Login,
-    //   ForgotPassword: ForgotPassword,
-    //   OTPScreen: OTPScreen,
-    // }
-    // :
-    {
-      // Subscription:withIAPContext(Subscription),
-      MyPatient: MyPatient,
-      HelpnSupport: HelpnSupport,
-      EnrolmentQueue: EnrolmentQueue,
-      ServiceEnrolment: ServiceEnrollment,
-      AddPatient: AddPatient,
-      Assignment: Assignment,
-      Home: Home,
-    };
+  // AuthReducer?.token == null  ?
+  // {
+  //   Signup: Signup,
+  //   Login: Login,
+  //   ForgotPassword: ForgotPassword,
+  //   OTPScreen: OTPScreen,
+  // }
+  // :
+  {
+    // EvaluationForm:EvaluationForm,
+    BottomTab:BottomTab,
+    // 
+
+    // Signup: Signup,
+    // Login: Login,
+    // ForgotPassword: ForgotPassword,
+    // OTPScreen: OTPScreen,
+    // MyPatient: MyPatient,
+    // HelpnSupport: HelpnSupport,
+    // EnrolmentQueue: EnrolmentQueue,
+    // ServiceEnrolment: ServiceEnrollment,
+    // AddPatient: AddPatient,
+    // Assignment: Assignment,
+    // Home: Home,
+  };
 
   if (AuthReducer.isLoading) {
     return <Splash />;

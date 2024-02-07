@@ -28,7 +28,7 @@ const ForgotPassword = (props) => {
             rightIcon={icons.email}
             style={[css.mb3]}
           />
-          <Button title="Submit" onClick={handleForgotPass} />
+          <Button title="Submit" onPress={handleForgotPass} />
         </View>
 
       </AuthTemplate>

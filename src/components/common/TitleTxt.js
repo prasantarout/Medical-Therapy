@@ -5,16 +5,16 @@ import {fonts} from '../../themes/fonts';
 import Txt from '../micro/Txt';
 
 const TitleTxt = props => {
-  return <Txt style={styles.txt}>{props.title}</Txt>;
+  return <Txt style={[styles.txt, props.style]}>{props.title}</Txt>;
 };
 
 export default TitleTxt;
 
 const styles = StyleSheet.create({
   txt: {
-    fontSize: 40,
+    fontSize: 30,
     color: colors.primaryTextColor,
-    fontFamily: fonts.Regular,
+    fontFamily: fonts.SemiBold,
     fontWeight: '600',
     textTransform: 'capitalize'
   },

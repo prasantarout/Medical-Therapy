@@ -10,18 +10,19 @@ import {
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
-import SafeView from '../../components/common/SafeView';
-import NavBar from '../../components/common/NavBar';
-import css from '../../themes/space';
-import TitleTxt from '../../components/common/TitleTxt';
-import {colors} from '../../themes/colors';
-import normalize from '../../utils/normalize';
-import {fonts} from '../../themes/fonts';
-import QuestionCard from '../../components/common/QuestionCard';
-import Txt from '../../components/micro/Txt';
-import {icons} from '../../themes/icons';
+import SafeView from '../../../components/common/SafeView';
+import NavBar from '../../../components/common/NavBar';
+import css from '../../../themes/space';
+import TitleTxt from '../../../components/common/TitleTxt';
+import {colors} from '../../../themes/colors';
+import normalize from '../../../utils/normalize';
+import {fonts} from '../../../themes/fonts';
+import QuestionCard from '../../../components/common/QuestionCard';
+import Txt from '../../../components/micro/Txt';
+import {icons} from '../../../themes/icons';
 import Modal from 'react-native-modal';
-import {images} from '../../themes/images';
+import {images} from '../../../themes/images';
+import SimpleInput from '../../../components/inputs/SimpleInput';
 
 const HelpnSupport = () => {
   const [selected, setSelected] = useState('Accounts');
@@ -123,8 +124,7 @@ const HelpnSupport = () => {
       <ScrollView
         style={{paddingBottom: normalize(35)}}
         showsVerticalScrollIndicator={false}>
-        <View
-          style={[css.px5, css.f1, css.bgColor, {paddingTop: normalize(18)}]}>
+        <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'Help & Support'} />
           <FlatList
             horizontal
@@ -146,42 +146,53 @@ const HelpnSupport = () => {
           </TouchableOpacity>
           <TitleTxt title={'Need any help!'} />
           <View style={styles.container}>
-            <View style={[css.row, css.jcsb]}>
-              <InputField
-                title={'First Name'}
-                placeholder={'Jhon'}
-                Value={firstName}
-                onChange={val => setFirstName(val)}
-              />
-              <InputField
-                title={'Last Name'}
-                placeholder={'Doe'}
-                Value={lastName}
-                onChange={val => setLastName(val)}
-              />
+            <View style={[css.row, css.fw, css.aic]}>
+              <View style={[css.w50]}>
+                <SimpleInput
+                  title="First Name"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Enter First Name"
+                  onChange={val => setFirstName(val)}
+                />
+              </View>
+              <View style={[css.w50]}>
+                <SimpleInput
+                  title="Last Name"
+                  style={[css.ml2]}
+                  value={[]}
+                  placeholder="Enter Last Name"
+                  onChange={val => setLastName(val)}
+                />
+              </View>
+              <View style={[css.w50, css.mt10]}>
+                <SimpleInput
+                  title="Email"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Enter Email"
+                  onChange={val => setEmail(val)}
+                />
+              </View>
+              <View style={[css.w50, css.mt10]}>
+                <SimpleInput
+                  title="Phone Number"
+                  style={[css.ml2]}
+                  value={[]}
+                  placeholder="Enter Phone Number"
+                  onChange={val => setPhone(val)}
+                />
+              </View>
+              <View style={[css.w100]}>
+                <SimpleInput
+                  title="Message"
+                  style={[css.mr2]}
+                  value={[]}
+                  placeholder="Type here..."
+                  onChange={val => setMessage(val)}
+                />
+              </View>
             </View>
-            <View style={[css.row, css.jcsb]}>
-              <InputField
-                title={'Email'}
-                placeholder={'johndoe@gmail.com'}
-                Value={email}
-                onChange={val => setEmail(val)}
-              />
-              <InputField
-                title={'Phone Number'}
-                placeholder={'+1 123 321 4567'}
-                Value={phone}
-                onChange={val => setPhone(val)}
-              />
-            </View>
-
-            <InputField
-              title={'Message'}
-              placeholder={'Type here'}
-              Value={message}
-              style={{width: '100%'}}
-              onChange={val => setMessage(val)}
-            />
 
             <TouchableOpacity activeOpacity={0.6} style={styles.uploadImageCtn}>
               <View style={styles.uploadSubContainer}>
@@ -276,19 +287,18 @@ const styles = StyleSheet.create({
     borderColor: '#E6E6E6',
   },
   btn: {
-    width: '25%',
-    height: normalize(23),
+    width: '20%',
+    height: normalize(22),
     backgroundColor: colors.primary,
-    borderRadius: normalize(4),
-    marginTop: normalize(18),
+    borderRadius: 6,
+    marginTop: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: normalize(20),
-    marginLeft: normalize(10),
   },
   btnTxt: {
     color: colors.white,
-    fontSize: normalize(8),
+    fontSize: 19,
     fontWeight: '500',
   },
   container: {
@@ -322,13 +332,13 @@ const styles = StyleSheet.create({
   uploadImageCtn: {
     paddingVertical: normalize(12),
     paddingLeft: normalize(15),
-    width: '93%',
+    width: '100%',
+    alignSelf: 'center',
     borderWidth: normalize(1),
     borderStyle: 'dashed',
     borderRadius: normalize(5),
     alignItems: 'center',
     borderColor: '#C5C5C5',
-    marginLeft: normalize(10),
     marginTop: normalize(10),
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
@@ -359,13 +369,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: normalize(10),
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: normalize(6),
+    paddingVertical: normalize(5),
     marginRight: normalize(5),
     borderRadius: normalize(20),
   },
   categoryTxt: {
     fontWeight: '600',
-    fontSize: normalize(7),
+    fontSize: 17,
     fontFamily: fonts.Regular,
   },
   modal: {
@@ -378,8 +388,8 @@ const styles = StyleSheet.create({
   },
   closeBtnCtnr: {
     position: 'absolute',
-    top: -38,
-    right: -78,
+    top: -32,
+    right: -70,
   },
   closeBtn: {
     height: normalize(55),
@@ -387,7 +397,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   modalTitle: {
-    fontSize: normalize(12),
+    fontSize: 20,
     color: colors.primaryTextColor,
     fontWeight: '600',
   },
@@ -398,13 +408,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: fonts.SemiBold,
-    fontSize: normalize(15),
+    fontSize: 30,
     color: colors.primaryTextColor,
     marginTop: normalize(5),
   },
   subHeaderText: {
     fontFamily: fonts.Regular,
-    fontSize: normalize(10),
+    fontSize: 25,
     color: colors.secondaryTextColor,
   },
 });

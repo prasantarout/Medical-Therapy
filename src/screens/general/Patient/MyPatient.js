@@ -191,7 +191,7 @@ const MyPatient = () => {
             backdropOpacity={0.6}
             isVisible={modalVisible}
             deviceHeight={height}
-            style={[css.m0, css.center]}
+            style={[css.f1]}
             statusBarTranslucent={true}>
             <View style={[styles.modal]}>
               <TouchableOpacity
@@ -231,7 +231,7 @@ const MyPatient = () => {
                   <View style={styles.newCtn}>
                     <Txt
                       style={{
-                        fontSize: normalize(6),
+                        fontSize: 14,
                         color: colors.white,
                         fontWeight: '500',
                       }}>
@@ -353,14 +353,13 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: colors.bgColor,
     borderRadius: normalize(5),
-    // width: '87%',
-    // paddingVertical: normalize(14),
-    paddingHorizontal: normalize(12),
+    paddingVertical: 38,
+    paddingHorizontal: 25,
   },
   closeBtnCtnr: {
     position: 'absolute',
     top: -38,
-    right: -78,
+    right: -66,
   },
   closeBtn: {
     height: normalize(55),
@@ -368,38 +367,38 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   modalTitle: {
-    fontSize: normalize(12),
+    fontSize: 32,
     color: colors.primaryTextColor,
     fontWeight: '600',
   },
   profileImage: {
-    height: normalize(100),
-    width: normalize(89),
+    height: 230,
+    width: 230,
     resizeMode: 'cover',
   },
   btn1: {
-    height: normalize(22),
-    width: normalize(89),
+    width: 230,
+    height: 48,
     backgroundColor: colors.primary,
-    marginTop: normalize(6),
+    marginTop: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: normalize(2),
+    borderRadius: 5,
   },
   btn2: {
-    height: normalize(22),
-    width: normalize(89),
+    width: 230,
+    height: 48,
     backgroundColor: colors.white,
-    marginTop: normalize(4),
+    marginTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: normalize(2),
-    borderWidth: normalize(1),
+    borderRadius: 5,
+    borderWidth: 1,
     borderColor: '#E0E0E0',
   },
   modalbtnTxt: {
     fontFamily: fonts.Regular,
-    fontSize: normalize(7),
+    fontSize: 22,
     fontWeight: '500',
   },
   newCtn: {
@@ -418,13 +417,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
     fontWeight: '400',
     color: '#444444',
-    fontSize: normalize(7),
+    fontSize: 18,
   },
   value: {
     fontFamily: fonts.Regular,
     fontWeight: '400',
     color: colors.primary,
-    fontSize: normalize(7),
-    width: normalize(93),
+    fontSize: 17,
+    width: '65%',
   },
 });

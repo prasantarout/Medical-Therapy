@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     top: normalize(6),
   },
   btn: {
-    width: '32%',
+    width: '30%',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: normalize(6),

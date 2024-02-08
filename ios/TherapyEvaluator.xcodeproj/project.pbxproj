@@ -537,6 +537,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.webskitters.therapyEvalutor;
 				PRODUCT_NAME = TherapyEvaluator;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = therapy_evalutor_dev_08/02/2024;
@@ -555,7 +556,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = H23W3EERLK;
 				INFOPLIST_FILE = TherapyEvaluator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -567,8 +570,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.webskitters.therapyEvalutor;
 				PRODUCT_NAME = TherapyEvaluator;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = therapy_evalutor_dist_08/02/2024;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;

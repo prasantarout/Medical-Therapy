@@ -2,9 +2,14 @@ import { Dimensions, Platform, StatusBar, StyleSheet } from 'react-native';
 import normalize from '../utils/normalize';
 import { colors } from './colors';
 import { fonts } from './fonts';
+import useScreenDimension from '../utils/useScreenDimension';
 
 export const width = Dimensions.get('screen').width;
 export const height = Dimensions.get('screen').height;
+// export const widthh= ()=>{
+//   const wiidth = useScreenDimension();
+//   return wiidth;
+// }
 
 const wrapperWidth =
   width > 1300

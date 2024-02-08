@@ -24,7 +24,7 @@ const SearchInput = props => {
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
-          style={styles.input}
+          style={[styles.input, css.p0]}
         />
         <Image source={icons.searchLens} style={styles.icon} />
       </View>
@@ -40,42 +40,42 @@ export default SearchInput;
 const styles = StyleSheet.create({
   main: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    height: normalize(26),
+    height: 50,
     backgroundColor: colors.white,
-    paddingLeft: normalize(10),
-    paddingRight: normalize(9),
-    borderRadius: normalize(2),
-    paddingVertical: normalize(3),
-    borderWidth: normalize(1),
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 5,
+    paddingVertical: 5,
+    borderWidth: 2,
     borderColor: '#EFEFEF',
+    flex: 1
   },
   input: {
-    height: '100%',
-    width: '85%',
+    flex: 1,
     color: colors.primaryTextColor,
-    fontSize: normalize(9),
+    fontSize: 16,
   },
   icon: {
-    height: normalize(14),
-    width: normalize(14),
+    height: 20,
+    width: 20,
     resizeMode: 'contain',
   },
   iconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: normalize(1),
+    borderWidth: 1,
     borderColor: '#EFEFEF',
     backgroundColor: colors.white,
-    borderRadius: normalize(4),
-    paddingVertical: normalize(5),
-    paddingHorizontal: normalize(5),
+    borderRadius: 8,
     marginLeft: normalize(3),
+    padding:14,
+    height: 50,
+    width: 50,
   },
   filterIC: {
-    height: normalize(14),
-    width: normalize(14),
+    height: "100%",
+    width: "100%",
     resizeMode: 'contain',
   },
 });

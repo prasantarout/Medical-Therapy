@@ -6,26 +6,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import TitleTxt from '../../../components/common/TitleTxt';
-import css, {height, width} from '../../../themes/space';
+import css, { height } from '../../../themes/space';
 import SearchInput from '../../../components/inputs/SearchInput';
 import SmallBtn from '../../../components/buttons/SmallBtn';
 import normalize from '../../../utils/normalize';
-import {colors} from '../../../themes/colors';
+import { colors } from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
-import {images} from '../../../themes/images';
+import { images } from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
-import {icons} from '../../../themes/icons';
+import { icons } from '../../../themes/icons';
 import Txt from '../../../components/micro/Txt';
-import {fonts} from '../../../themes/fonts';
+import { fonts } from '../../../themes/fonts';
+import useScreenDimension from '../../../utils/useScreenDimension';
+import useOrientation from '../../../utils/useOrientation';
 
 const MyPatient = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+
+  const width = useScreenDimension()
+  const orientation = useOrientation()
+  console.log("width", width)
+  console.log("orientation", orientation)
 
   const patientData = [
     {
@@ -126,7 +133,9 @@ const MyPatient = () => {
     },
   ];
 
-  const PatientsRenderItem = ({item, index}) => {
+  const numColumns = orientation == 'PORTRAIT' ? 3 : 4
+
+  const PatientsRenderItem = ({ item, index }) => {
     return (
       <PatientCard
         onPress={() => setModalVisible(true)}
@@ -137,6 +146,9 @@ const MyPatient = () => {
         image={item.profile}
         Button={true}
         navigateTo={() => navigation.navigate('ServiceEnrollment')}
+        style={{
+          width: orientation == 'LANDSCAPE' ? width / 4 - 30 : width / 3 - 30
+        }}
       />
     );
   };
@@ -147,32 +159,37 @@ const MyPatient = () => {
         <NavBar />
         <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'My Patients'} />
-          <View style={[css.row, css.aic, css.mt4]}>
-            <SearchInput
-              style={{width: normalize(120)}}
-              placeholder={'Search here...'}
-            />
-            <SmallBtn
-              onPress={'EnrolmentQueue'}
-              title={'Enrollment queue'}
-              style={styles.Button}
-              btnStyle={styles.btnTxt}
-            />
-            <SmallBtn
-              onPress={'AddPatient'}
-              title={'Add new patient'}
-              style={styles.Button2}
-              btnStyle={styles.btnTxt2}
-            />
+          <View style={[css.rowBetween, css.aic, css.mt4]}>
+            <View style={[css.f1]}>
+              <SearchInput
+                style={[]}
+                placeholder={'Search here...'}
+              />
+            </View>
+            <View style={[css.row, css.aic,]} >
+              <SmallBtn
+                onPress={'EnrolmentQueue'}
+                title={'Enrollment queue'}
+                style={[styles.Button, styles.btn]}
+                btnStyle={styles.btnTxt}
+              />
+              <SmallBtn
+                onPress={'AddPatient'}
+                title={'Add new patient'}
+                style={[styles.Button2, styles.btn]}
+                btnStyle={styles.btnTxt2}
+              />
+            </View>
           </View>
           <FlatList
-            numColumns={3}
+            numColumns={numColumns}
+            key={numColumns}
             showsVerticalScrollIndicator={false}
             data={patientData}
             keyExtractor={item => item.id}
             renderItem={PatientsRenderItem}
-            style={{flex: 1, marginTop: normalize(10)}}
-            columnWrapperStyle={{justifyContent: 'space-between'}}
+            style={{ flex: 1, marginTop: normalize(10) }}
+            columnWrapperStyle={{ justifyContent: 'space-between' }}
           />
           <Modal
             onBackdropPress={() => setModalVisible(false)}
@@ -201,7 +218,7 @@ const MyPatient = () => {
                     }}
                     activeOpacity={0.7}
                     style={[styles.btn1]}>
-                    <Text style={[styles.modalbtnTxt, {color: colors.white}]}>
+                    <Text style={[styles.modalbtnTxt, { color: colors.white }]}>
                       All Assignments
                     </Text>
                   </TouchableOpacity>
@@ -212,7 +229,7 @@ const MyPatient = () => {
                     }}
                     activeOpacity={0.8}
                     style={[styles.btn2]}>
-                    <Text style={[styles.modalbtnTxt, {color: colors.primary}]}>
+                    <Text style={[styles.modalbtnTxt, { color: colors.primary }]}>
                       Service Enroll now
                     </Text>
                   </TouchableOpacity>
@@ -315,29 +332,29 @@ export default MyPatient;
 const styles = StyleSheet.create({
   Button: {
     backgroundColor: colors.white,
-    width: normalize(72),
-    marginLeft: normalize(4),
-    height: normalize(23),
-    borderRadius: normalize(4),
-    borderWidth: normalize(1),
+    borderWidth: 2,
     borderColor: colors.primary,
+    marginLeft: 16
+  },
+
+  Button2: {
+    backgroundColor: colors.primary,
+    marginLeft: normalize(4),
+  },
+  btn: {
+    height: 50,
+    borderRadius: 5,
+    paddingHorizontal: 16,
+    // width: 240
   },
   btnTxt: {
     fontSize: 17,
     color: colors.primary,
-    fontWeight: '500',
-  },
-  Button2: {
-    backgroundColor: colors.primary,
-    width: normalize(70),
-    marginLeft: normalize(4),
-    height: normalize(23),
-    borderRadius: normalize(4),
+
   },
   btnTxt2: {
     fontSize: 19,
     color: '#fff',
-    fontWeight: '500',
   },
   modal: {
     backgroundColor: colors.bgColor,

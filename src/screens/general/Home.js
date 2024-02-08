@@ -1,58 +1,57 @@
-import { Dimensions, StyleSheet, View, useWindowDimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import css, { width } from '../../themes/space';
+import {Dimensions, StyleSheet, View, useWindowDimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import css, {width} from '../../themes/space';
 import NavBar from '../../components/common/NavBar';
 import SafeView from '../../components/common/SafeView';
 import TitleTxt from '../../components/common/TitleTxt';
 import HeaderTitle from '../../components/common/HeaderTitle';
 import ScoreCard from '../../components/common/ScoreCard';
 import QuickCounter from '../../components/common/QuickCounter';
-import { icons } from '../../themes/icons';
-import { colors } from '../../themes/colors';
+import {icons} from '../../themes/icons';
+import {colors} from '../../themes/colors';
 import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
 import useScreenDimension from '../../utils/useScreenDimension';
 import useOrientation from '../../utils/useOrientation';
 import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
 
-
-const Home = (props) => {
+const Home = props => {
   const [visible, setVisible] = useState(false);
-  const [years, setYears] = useState("");
-  let screenWidthh = useScreenDimension()
-  let orientation = useOrientation()
+  const [years, setYears] = useState('');
+  let screenWidthh = useScreenDimension();
+  let orientation = useOrientation();
 
-
+  // console.log('hiiiiiiiiiiiiiiiiiiiii');
 
   const data = [
     {
       label: '2024',
-      value: '2024'
+      value: '2024',
     },
     {
       label: '2025',
-      value: '2025'
+      value: '2025',
     },
     {
       label: '2026',
-      value: '2026'
+      value: '2026',
     },
     {
       label: '2027',
-      value: '2027'
+      value: '2027',
     },
     {
       label: '2028',
-      value: '2028'
+      value: '2028',
     },
   ];
 
-  let paddingLast = { paddingRight: orientation == "PORTRAIT" ? 0 : 16 }
-  let paddingRight = { paddingRight: orientation == "PORTRAIT" ? 16 : 0 }
+  let paddingLast = {paddingRight: orientation == 'PORTRAIT' ? 0 : 16};
+  let paddingRight = {paddingRight: orientation == 'PORTRAIT' ? 16 : 0};
 
-  let counterCardWidth= {
-    width: orientation == "PORTRAIT" ? '50%' : '33.2%',
-  }
+  let counterCardWidth = {
+    width: orientation == 'PORTRAIT' ? '50%' : '33.2%',
+  };
 
   return (
     <SafeView sticky={[1]}>
@@ -78,7 +77,12 @@ const Home = (props) => {
         <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
           <View style={[css.row, css.jcsb, css.fw, css.mt4, css.f1]}>
-            <View style={[styles.counterCardStyle, styles.counterPadding, counterCardWidth]}>
+            <View
+              style={[
+                styles.counterCardStyle,
+                styles.counterPadding,
+                counterCardWidth,
+              ]}>
               <QuickCounter
                 value="200"
                 title="Total Assignments"
@@ -87,7 +91,8 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
+            <View
+              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Pending Assignments"
@@ -96,7 +101,8 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
+            <View
+              style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Completed Assignments"
@@ -105,7 +111,8 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
+            <View
+              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
                 value="200"
                 title="Total Patients"
@@ -114,7 +121,12 @@ const Home = (props) => {
                 style={[styles.quickCounterStyle]}
               />
             </View>
-            <View style={[styles.counterCardStyle, styles.counterPadding, counterCardWidth]}>
+            <View
+              style={[
+                styles.counterCardStyle,
+                styles.counterPadding,
+                counterCardWidth,
+              ]}>
               <QuickCounter
                 value="200"
                 title="Active Patients"
@@ -158,16 +170,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: 'hidden',
   },
-  quickCounterStyle: {
-
-  },
+  quickCounterStyle: {},
   counterPadding: {
     paddingRight: 16,
   },
   menuStyle: {
-    borderWidth: 1
+    borderWidth: 1,
   },
   textStyle: {
-    color: colors.primaryTextColor
+    color: colors.primaryTextColor,
   },
 });

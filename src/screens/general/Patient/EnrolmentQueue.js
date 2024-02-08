@@ -9,8 +9,13 @@ import {images} from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
 import css from '../../../themes/space';
 import normalize from '../../../utils/normalize';
+import useScreenDimension from '../../../utils/useScreenDimension';
+import useOrientation from '../../../utils/useOrientation';
 
 const EnrolmentQueue = () => {
+  const width = useScreenDimension();
+  const orientation = useOrientation();
+
   const patientData = [
     {
       id: 1,
@@ -119,9 +124,15 @@ const EnrolmentQueue = () => {
         time={item.time}
         image={item.profile}
         Button={false}
+        style={{
+          width: orientation == 'LANDSCAPE' ? width / 4 - 38 : width / 3 - 30,
+        }}
       />
     );
   };
+
+  const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
+
   return (
     <SafeView>
       <NavBar />
@@ -134,7 +145,8 @@ const EnrolmentQueue = () => {
           />
         </View>
         <FlatList
-          numColumns={3}
+          numColumns={numColumns}
+          key={numColumns}
           showsVerticalScrollIndicator={false}
           data={patientData}
           renderItem={PatientsRenderItem}

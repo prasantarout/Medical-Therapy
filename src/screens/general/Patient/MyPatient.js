@@ -6,22 +6,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import TitleTxt from '../../../components/common/TitleTxt';
-import css, { height } from '../../../themes/space';
+import css, {height} from '../../../themes/space';
 import SearchInput from '../../../components/inputs/SearchInput';
 import SmallBtn from '../../../components/buttons/SmallBtn';
 import normalize from '../../../utils/normalize';
-import { colors } from '../../../themes/colors';
+import {colors} from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
-import { images } from '../../../themes/images';
+import {images} from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
-import { icons } from '../../../themes/icons';
+import {icons} from '../../../themes/icons';
 import Txt from '../../../components/micro/Txt';
-import { fonts } from '../../../themes/fonts';
+import {fonts} from '../../../themes/fonts';
 import useScreenDimension from '../../../utils/useScreenDimension';
 import useOrientation from '../../../utils/useOrientation';
 
@@ -29,10 +29,8 @@ const MyPatient = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const width = useScreenDimension()
-  const orientation = useOrientation()
-  console.log("width", width)
-  console.log("orientation", orientation)
+  const width = useScreenDimension();
+  const orientation = useOrientation();
 
   const patientData = [
     {
@@ -133,9 +131,9 @@ const MyPatient = () => {
     },
   ];
 
-  const numColumns = orientation == 'PORTRAIT' ? 3 : 4
+  const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
 
-  const PatientsRenderItem = ({ item, index }) => {
+  const PatientsRenderItem = ({item, index}) => {
     return (
       <PatientCard
         onPress={() => setModalVisible(true)}
@@ -147,7 +145,7 @@ const MyPatient = () => {
         Button={true}
         navigateTo={() => navigation.navigate('ServiceEnrollment')}
         style={{
-          width: orientation == 'LANDSCAPE' ? width / 4 - 30 : width / 3 - 30
+          width: orientation == 'LANDSCAPE' ? width / 4 - 30 : width / 3 - 30,
         }}
       />
     );
@@ -161,12 +159,9 @@ const MyPatient = () => {
           <TitleTxt title={'My Patients'} />
           <View style={[css.rowBetween, css.aic, css.mt4]}>
             <View style={[css.f1]}>
-              <SearchInput
-                style={[]}
-                placeholder={'Search here...'}
-              />
+              <SearchInput style={[]} placeholder={'Search here...'} />
             </View>
-            <View style={[css.row, css.aic,]} >
+            <View style={[css.row, css.aic]}>
               <SmallBtn
                 onPress={'EnrolmentQueue'}
                 title={'Enrollment queue'}
@@ -188,17 +183,17 @@ const MyPatient = () => {
             data={patientData}
             keyExtractor={item => item.id}
             renderItem={PatientsRenderItem}
-            style={{ flex: 1, marginTop: normalize(10) }}
-            columnWrapperStyle={{ justifyContent: 'space-between' }}
+            style={{flex: 1, marginTop: normalize(10)}}
+            columnWrapperStyle={{justifyContent: 'space-between'}}
           />
           <Modal
             onBackdropPress={() => setModalVisible(false)}
             backdropOpacity={0.6}
             isVisible={modalVisible}
             deviceHeight={height}
-            style={[css.m0, css.center]}
+            style={[css.f1]}
             statusBarTranslucent={true}>
-            <View style={styles.modal}>
+            <View style={[styles.modal]}>
               <TouchableOpacity
                 style={[styles.closeBtnCtnr]}
                 activeOpacity={0.9}
@@ -218,7 +213,7 @@ const MyPatient = () => {
                     }}
                     activeOpacity={0.7}
                     style={[styles.btn1]}>
-                    <Text style={[styles.modalbtnTxt, { color: colors.white }]}>
+                    <Text style={[styles.modalbtnTxt, {color: colors.white}]}>
                       All Assignments
                     </Text>
                   </TouchableOpacity>
@@ -229,14 +224,14 @@ const MyPatient = () => {
                     }}
                     activeOpacity={0.8}
                     style={[styles.btn2]}>
-                    <Text style={[styles.modalbtnTxt, { color: colors.primary }]}>
+                    <Text style={[styles.modalbtnTxt, {color: colors.primary}]}>
                       Service Enroll now
                     </Text>
                   </TouchableOpacity>
                   <View style={styles.newCtn}>
                     <Txt
                       style={{
-                        fontSize: normalize(6),
+                        fontSize: 14,
                         color: colors.white,
                         fontWeight: '500',
                       }}>
@@ -334,7 +329,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderWidth: 2,
     borderColor: colors.primary,
-    marginLeft: 16
+    marginLeft: 16,
   },
 
   Button2: {
@@ -350,7 +345,6 @@ const styles = StyleSheet.create({
   btnTxt: {
     fontSize: 17,
     color: colors.primary,
-
   },
   btnTxt2: {
     fontSize: 19,
@@ -359,14 +353,13 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: colors.bgColor,
     borderRadius: normalize(5),
-    width: '87%',
-    paddingVertical: normalize(14),
-    paddingHorizontal: normalize(12),
+    paddingVertical: 38,
+    paddingHorizontal: 25,
   },
   closeBtnCtnr: {
     position: 'absolute',
     top: -38,
-    right: -78,
+    right: -66,
   },
   closeBtn: {
     height: normalize(55),
@@ -374,38 +367,38 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   modalTitle: {
-    fontSize: normalize(12),
+    fontSize: 32,
     color: colors.primaryTextColor,
     fontWeight: '600',
   },
   profileImage: {
-    height: normalize(100),
-    width: normalize(89),
+    height: 230,
+    width: 230,
     resizeMode: 'cover',
   },
   btn1: {
-    height: normalize(22),
-    width: normalize(89),
+    width: 230,
+    height: 48,
     backgroundColor: colors.primary,
-    marginTop: normalize(6),
+    marginTop: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: normalize(2),
+    borderRadius: 5,
   },
   btn2: {
-    height: normalize(22),
-    width: normalize(89),
+    width: 230,
+    height: 48,
     backgroundColor: colors.white,
-    marginTop: normalize(4),
+    marginTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: normalize(2),
-    borderWidth: normalize(1),
+    borderRadius: 5,
+    borderWidth: 1,
     borderColor: '#E0E0E0',
   },
   modalbtnTxt: {
     fontFamily: fonts.Regular,
-    fontSize: normalize(7),
+    fontSize: 22,
     fontWeight: '500',
   },
   newCtn: {
@@ -424,13 +417,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
     fontWeight: '400',
     color: '#444444',
-    fontSize: normalize(7),
+    fontSize: 18,
   },
   value: {
     fontFamily: fonts.Regular,
     fontWeight: '400',
     color: colors.primary,
-    fontSize: normalize(7),
-    width: normalize(93),
+    fontSize: 17,
+    width: '65%',
   },
 });

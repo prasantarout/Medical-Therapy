@@ -39,7 +39,6 @@ const EvaluationResult = (props) => {
     return (
         <>
             <SafeView>
-                <NavBar {...props} />
                 <View style={[css.px4]}>
                     <TitleTxt title="Evaluation Form" />
                     <View style={[css.card]} >

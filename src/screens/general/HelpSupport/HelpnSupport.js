@@ -120,7 +120,7 @@ const HelpnSupport = () => {
 
   return (
     <SafeView>
-      <NavBar />
+      
       <ScrollView
         style={{paddingBottom: normalize(35)}}
         showsVerticalScrollIndicator={false}>

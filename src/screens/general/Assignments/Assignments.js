@@ -87,7 +87,7 @@ const Assignments = (props) => {
 
     return (
         <SafeView>
-            <NavBar />
+            
             <View style={[css.px4, css.f1]}>
                 <Tabs tabs={tabs} initialTab={activeTab} onTabPress={handleTabPress} />
                 <TitleTxt style={[css.mt4]} title={activeTab == 0 ? "Upcoming Assignments" : "Completed Assignments"} />

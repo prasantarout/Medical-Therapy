@@ -47,7 +47,7 @@ const MyProfile = (props) => {
   return (
     <>
       <SafeView>
-        <NavBar />
+        
         <View style={[css.px4]}>
           <View style={[css.rowBetween]}>
             <TitleTxt title="My Profile" />

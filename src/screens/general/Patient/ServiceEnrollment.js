@@ -95,7 +95,7 @@ const ServiceEnrollment = () => {
   };
   return (
     <SafeView>
-      <NavBar />
+      
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Service Enrolment'} />
         <View style={styles.container}>

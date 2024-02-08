@@ -477,6 +477,7 @@ const css = StyleSheet.create({
   aifs: { alignContent: 'flex-start' },
   jcc: { justifyContent: 'center' },
   jcsb: { justifyContent: 'space-between' },
+  jcse: { justifyContent: 'space-evenly' },
   fdr: { flexDirection: 'row' },
 
   headerTxt: {

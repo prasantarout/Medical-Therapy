@@ -4,13 +4,23 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import css from '../../themes/space';
 import Txt from '../micro/Txt';
 import { fonts } from '../../themes/fonts';
+import { heightToDp as hp, widthToDp as wp } from '../../utils/responsive';
+import normalize from '../../utils/normalize';
+import useScreenDimension from '../../utils/useScreenDimension';
+
 
 const ScoreCard = (props) => {
+
+    const screenWidth = useScreenDimension()
+
     return (
-        <View style={[css.py8, css.bgWhite, styles.card, props.style, css.aic]}>
+        <View style={[css.py8, css.bgWhite, styles.card, props.style, css.aic,{
+            maxWidth: screenWidth / 2.5,
+            maxHeight: screenWidth / 2.5,
+        }]}>
             <CircularProgress
                 value={props?.value}
-                radius={120}
+                radius={screenWidth / 12}
                 duration={2000}
                 activeStrokeWidth={25}
                 inActiveStrokeWidth={20}
@@ -34,14 +44,10 @@ const ScoreCard = (props) => {
 export default ScoreCard
 
 const styles = StyleSheet.create({
-    innerCircle:{
-        backgroundColor: 'red',
-        width:'100%',
-        height:'100%'
-    },
     card:{
         borderRadius: 10,
-        flex: 1
+        flexGrow: 1,
+        // maxWidth: 100
     },
     titleStyle:{
         color: '#444444',

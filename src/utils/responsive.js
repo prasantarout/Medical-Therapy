@@ -1,8 +1,12 @@
 import {Dimensions, PixelRatio} from 'react-native';
+import useScreenDimension from './useScreenDimension';
 
 const {width, height} = Dimensions.get('window');
 
+
 const widthToDp = number => {
+  // let widtth = useScreenDimension()
+  // console.log(useScreenDimension())
   let givenWidth = typeof number === 'number' ? number : parseFloat(number);
   return PixelRatio.roundToNearestPixel((width * givenWidth) / 100);
 };

@@ -9,12 +9,17 @@ import Divider from '../micro/Divider';
 import Modal from 'react-native-modal';
 import TitleTxt from './TitleTxt';
 import Button from '../buttons/Button';
+import useScreenDimension from '../../utils/useScreenDimension';
+import { widthToDp } from '../../utils/responsive';
 
 let halfWidth = width / 2;
 
 const NavBar = props => {
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [logoutModal, setLogoutModal] = useState(false);
+
+    const screenWidth = useScreenDimension()
+    console.log("screenWidth",screenWidth)
 
     const handleLogout = () => {
         setIsShowMenu(false)
@@ -23,29 +28,42 @@ const NavBar = props => {
         }, 100)
     };
 
+    const iconRoundStyle = {
+        width: screenWidth/20,
+        height: screenWidth/20,
+        borderRadius: screenWidth,
+    }
+    const cloudRefreshStyle = {
+        width: screenWidth/23,
+        height: screenWidth/23,
+    }
+
     return (
         <>
-            <View style={[css.row, styles.navWrap, css.aic]}>
+            <View style={[css.rowBetween, styles.navWrap, css.aic]}>
                 <View style={[styles.logoArea]}>
                     <Image source={images.logo} style={[styles.imgResponsive]} />
                 </View>
-                <View style={[styles.rightSection, css.row, css.aic]}>
+                <View style={[styles.rightSection, css.row, css.aic, { width: screenWidth / 2.2, height: 50 }]}>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate("MyPatient")}>
                         <Image
-                            style={[styles.cloudRefreshStyle]}
+                            style={[styles.cloudRefreshStyle,cloudRefreshStyle]}
                             source={icons.cloudRefresh}
+                            resizeMode='contain'
                         />
                     </TouchableOpacity>
+
                     <TouchableOpacity activeOpacity={0.8}
                         onPress={() => props?.navigation?.navigate("Notification")}>
-                        <Image style={[styles.iconRoundStyle]} source={icons.bell} />
+                        <Image style={[styles.iconRoundStyle, iconRoundStyle]} source={icons.bell} />
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={[css.row, css.aic]}
                         onPress={() => setIsShowMenu(!isShowMenu)}>
                         <Image
-                            style={[styles.iconRoundStyle]}
+                            style={[styles.iconRoundStyle, iconRoundStyle]}
                             source={{
                                 uri: 'https://images.unsplash.com/photo-1532170579297-281918c8ae72?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8M3wyMTM1OTR8fGVufDB8fHx8fA%3D%3D',
                             }}
@@ -108,30 +126,29 @@ const styles = StyleSheet.create({
         paddingTop: 50,
     },
     logoArea: {
-        maxWidth: width / 2.5,
+        maxWidth: width / 3,
         alignItems: 'flex-start',
+        // backgroundColor:'red'
     },
     imgResponsive: {
-        width: normalize(110),
+        width: '100%',
+        minWidth:normalize(80),
         height: 80,
         resizeMode: 'contain',
     },
     rightSection: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
     cloudRefreshStyle: {
-        width: 50,
-        height: 50,
         resizeMode: 'contain',
-        marginLeft: normalize(10),
+        marginLeft: 16,
     },
     iconRoundStyle: {
-        width: 70,
-        height: 70,
-        marginLeft: normalize(10),
+        // width: widthToDp(5),
+        // height: widthToDp(5),
+        marginLeft: 16,
         borderRadius: 100,
     },
     backdrop: {

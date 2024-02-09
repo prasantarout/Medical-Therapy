@@ -40,8 +40,8 @@ const Login = (props) => {
     props.navigation.navigate('BottomTab')
   };
 
-  
-  
+
+
   const Checkbox = () => {
     return (
       <TouchableOpacity
@@ -57,7 +57,7 @@ const Login = (props) => {
     )
   }
   return (
-    <SafeAreaView style={[css.f1, css.f1, { backgroundColor: colors.bgColor }]}>
+    <SafeAreaView style={[css.f1,{ backgroundColor: colors.bgColor }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,9 +86,9 @@ const Login = (props) => {
             <View style={[css.mb3, css.rowBetween]}>
               <View style={[css.row, css.aic]} >
                 <Checkbox />
-                <Txt style={[css.ml1,css.fs18]} >Remember Me</Txt>
+                <Txt style={[css.ml1, css.fs18]} >Remember Me</Txt>
               </View>
-              <TouchableOpacity activeOpacity={0.8} >
+              <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('ForgotPassword')} >
                 <Txt style={[css.fs18]} >Forgot Password?</Txt>
               </TouchableOpacity>
             </View>

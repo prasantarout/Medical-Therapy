@@ -35,21 +35,12 @@ const StackNav = () => {
   // :
   {
     // EvaluationForm:EvaluationForm,
+    Signup: Signup,
+    Login: Login,
+    ForgotPassword: ForgotPassword,
+    OTPScreen: OTPScreen,
     BottomTab: BottomTab,
     Notification: Notification
-    // 
-
-    // Signup: Signup,
-    // Login: Login,
-    // ForgotPassword: ForgotPassword,
-    // OTPScreen: OTPScreen,
-    // MyPatient: MyPatient,
-    // HelpnSupport: HelpnSupport,
-    // EnrolmentQueue: EnrolmentQueue,
-    // ServiceEnrolment: ServiceEnrollment,
-    // AddPatient: AddPatient,
-    // Assignment: Assignment,
-    // Home: Home,
   };
 
   if (AuthReducer.isLoading) {

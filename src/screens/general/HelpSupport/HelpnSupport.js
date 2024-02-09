@@ -340,6 +340,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
+    minHeight: 150
   },
   uploadSubContainer: {
     height: 90,

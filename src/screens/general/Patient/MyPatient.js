@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -25,10 +26,13 @@ import {fonts} from '../../../themes/fonts';
 import useScreenDimension from '../../../utils/useScreenDimension';
 import useOrientation from '../../../utils/useOrientation';
 import {widthToDp as wp} from '../../../utils/responsive';
+import Button from '../../../components/buttons/Button';
+import Divider from '../../../components/micro/Divider';
 
 const MyPatient = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+
   const width = useScreenDimension();
   const orientation = useOrientation();
 
@@ -151,6 +155,15 @@ const MyPatient = () => {
     );
   };
 
+  const Modalinfo = ({title, value}) => {
+    return (
+      <View style={[css.row, css.aic]}>
+        <Txt style={styles.title}>{title}</Txt>
+        <Txt style={[styles.value]}>{value}</Txt>
+      </View>
+    );
+  };
+
   return (
     <>
       <SafeView>
@@ -187,129 +200,82 @@ const MyPatient = () => {
           />
           <Modal
             onBackdropPress={() => setModalVisible(false)}
-            backdropOpacity={0.6}
+            backdropOpacity={0}
             isVisible={modalVisible}
             deviceHeight={height}
-            style={[css.f1]}
+            deviceWidth={width}
+            style={[css.m0, css.p0]}
             statusBarTranslucent={true}>
-            <View style={[styles.modal]}>
-              <TouchableOpacity
-                style={[styles.closeBtnCtnr]}
-                activeOpacity={0.9}
-                onPress={() => setModalVisible(false)}>
-                <Image source={icons.closeBtn} style={[styles.closeBtn]} />
-              </TouchableOpacity>
-              <Txt style={[styles.modalTitle]}>Patient Details</Txt>
-              <View style={[css.row, css.mt4]}>
-                <View style={[css.jcc, css.aic]}>
-                  <Image
-                    source={images.patientZoomPic}
-                    style={styles.profileImage}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalVisible(false), navigation.navigate('Assignment');
-                    }}
-                    activeOpacity={0.7}
-                    style={[styles.btn1]}>
-                    <Text style={[styles.modalbtnTxt, {color: colors.white}]}>
-                      All Assignments
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalVisible(false),
-                        navigation.navigate('ServiceEnrollment');
-                    }}
-                    activeOpacity={0.8}
-                    style={[styles.btn2]}>
-                    <Text style={[styles.modalbtnTxt, {color: colors.primary}]}>
-                      Service Enroll now
-                    </Text>
-                  </TouchableOpacity>
-                  <View style={styles.newCtn}>
-                    <Txt
-                      style={{
-                        fontSize: 14,
-                        color: colors.white,
-                        fontWeight: '500',
-                      }}>
-                      New
-                    </Txt>
+            <View style={[css.f1, css.center, styles.backdrop]}>
+              <View
+                style={[styles.modalStyle, {maxWidth: width - normalize(50)}]}>
+                <TouchableOpacity
+                  style={[styles.closeBtnCtnr]}
+                  activeOpacity={0.9}
+                  onPress={() => setModalVisible(false)}>
+                  <Image source={icons.closeIcon} style={[styles.closeBtn]} />
+                </TouchableOpacity>
+                <Txt style={[styles.modalTitle, {fontSize: wp(2.6, width)}]}>
+                  Patient Details
+                </Txt>
+                <View style={[css.row, css.mt4]}>
+                  <View style={[css.jcc, css.aic]}>
+                    <ImageBackground
+                      source={images.patientZoomPic}
+                      style={[
+                        styles.profileImage,
+                        {
+                          width: width / 4,
+                          height: width / 4,
+                        },
+                      ]}>
+                      <View style={styles.newCtn}>
+                        <Txt style={[css.fs14, css.medium, css.textWhite]}>
+                          New
+                        </Txt>
+                      </View>
+                    </ImageBackground>
+
+                    <Button
+                      title="All Assignments"
+                      style={[css.mt2, css.w100]}
+                      onPress={() => {
+                        setModalVisible(false),
+                          navigation.navigate('Assignment');
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setModalVisible(false),
+                          navigation.navigate('ServiceEnrollment');
+                      }}
+                      activeOpacity={0.8}
+                      style={[styles.btn2]}>
+                      <Text
+                        style={[styles.modalbtnTxt, {color: colors.primary}]}>
+                        Service Enroll now
+                      </Text>
+                    </TouchableOpacity>
                   </View>
-                </View>
-                <View style={[css.f1, css.ml5, css.jcc]}>
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Name:</Txt>
-                    <Txt style={[styles.value, css.ml19]}>
-                      Jennifer Morrison
-                    </Txt>
-                  </View>
-                  <View
-                    style={{
-                      height: normalize(1),
-                      width: '100%',
-                      backgroundColor: '#E9EBE3',
-                      marginVertical: normalize(8),
-                    }}
-                  />
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Phone No.:</Txt>
-                    <Txt style={[styles.value, css.ml12]}>
-                      (041) 12345 14578
-                    </Txt>
-                  </View>
-                  <View
-                    style={{
-                      height: normalize(1),
-                      width: '100%',
-                      backgroundColor: '#E9EBE3',
-                      marginVertical: normalize(8),
-                    }}
-                  />
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Email Address:</Txt>
-                    <Txt style={[styles.value, css.ml4]}>
-                      morrijennifer@gmail.com
-                    </Txt>
-                  </View>
-                  <View
-                    style={{
-                      height: normalize(1),
-                      width: '100%',
-                      backgroundColor: '#E9EBE3',
-                      marginVertical: normalize(8),
-                    }}
-                  />
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Location:</Txt>
-                    <Txt style={[styles.value, css.ml14]}>
-                      32A, Lorem Ipsum, Lorem
-                    </Txt>
-                  </View>
-                  <View
-                    style={{
-                      height: normalize(1),
-                      width: '100%',
-                      backgroundColor: '#E9EBE3',
-                      marginVertical: normalize(8),
-                    }}
-                  />
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Date:</Txt>
-                    <Txt style={[styles.value, css.ml21]}>12 March 2023</Txt>
-                  </View>
-                  <View
-                    style={{
-                      height: normalize(1),
-                      width: '100%',
-                      backgroundColor: '#E9EBE3',
-                      marginVertical: normalize(8),
-                    }}
-                  />
-                  <View style={[css.row, css.aic]}>
-                    <Txt style={styles.title}>Time:</Txt>
-                    <Txt style={[styles.value, css.ml20]}>04:00 P.M.</Txt>
+
+                  <View style={[css.ml5, css.jcc]}>
+                    <Modalinfo title="Name:" value="Jennifer Morrison" />
+                    <Divider style={[css.my3]} />
+                    <Modalinfo title="Phone No.:" value="(041) 12345 14578" />
+                    <Divider style={[css.my3]} />
+                    <Modalinfo
+                      title="Email Address:"
+                      value="morrijennifer@gmail.com"
+                    />
+                    <Divider style={[css.my3]} />
+                    <Modalinfo
+                      title="Location:"
+                      value="32A, Lorem Ipsum, Lorem"
+                    />
+                    <Divider style={[css.my3]} />
+                    <Modalinfo title="Date:" value="12 March 2023" />
+                    <Divider style={[css.my3]} />
+                    <Modalinfo title="Time:" value="04:00 P.M" />
                   </View>
                 </View>
               </View>
@@ -349,56 +315,43 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: '#fff',
   },
-  modal: {
+  modalStyle: {
     backgroundColor: colors.bgColor,
-    borderRadius: normalize(5),
-    paddingVertical: 38,
-    paddingHorizontal: 25,
+    borderRadius: 10,
+    padding: 30,
   },
   closeBtnCtnr: {
     position: 'absolute',
-    top: -38,
-    right: -66,
+    top: -30,
+    right: -30,
   },
   closeBtn: {
-    height: normalize(55),
-    width: normalize(55),
+    height: 60,
+    width: 60,
     resizeMode: 'contain',
   },
   modalTitle: {
-    fontSize: 32,
     color: colors.primaryTextColor,
-    fontWeight: '600',
+    fontFamily: fonts.SemiBold,
   },
   profileImage: {
-    height: 230,
-    width: 230,
+    // maxWidth: 200,
     resizeMode: 'cover',
   },
-  btn1: {
-    width: 230,
-    height: 48,
-    backgroundColor: colors.primary,
-    marginTop: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-  },
   btn2: {
-    width: 230,
-    height: 48,
+    height: 55,
+    width: '100%',
     backgroundColor: colors.white,
     marginTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
+    borderRadius: normalize(2),
+    borderWidth: 1.5,
     borderColor: '#E0E0E0',
   },
   modalbtnTxt: {
-    fontFamily: fonts.Regular,
-    fontSize: 22,
-    fontWeight: '500',
+    fontFamily: fonts.Medium,
+    fontSize: 16,
   },
   newCtn: {
     paddingHorizontal: normalize(3),
@@ -414,15 +367,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.Regular,
-    fontWeight: '400',
     color: '#444444',
     fontSize: 18,
+    width: 160,
   },
   value: {
     fontFamily: fonts.Regular,
     fontWeight: '400',
     color: colors.primary,
-    fontSize: 17,
-    width: '65%',
+    fontSize: 18,
+    // width: normalize(93),
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
 });

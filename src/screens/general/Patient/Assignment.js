@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
@@ -6,11 +6,13 @@ import TitleTxt from '../../../components/common/TitleTxt';
 import SearchInput from '../../../components/inputs/SearchInput';
 import normalize from '../../../utils/normalize';
 import Txt from '../../../components/micro/Txt';
-import {fonts} from '../../../themes/fonts';
-import {colors} from '../../../themes/colors';
-import {icons} from '../../../themes/icons';
+import { fonts } from '../../../themes/fonts';
+import { colors } from '../../../themes/colors';
+import { icons } from '../../../themes/icons';
 import AssignmentCard from '../../../components/common/AssignmentCard';
 import SafeView from '../../../components/common/SafeView';
+import useScreenDimension from '../../../utils/useScreenDimension';
+import CalendarStrip from 'react-native-calendar-strip';
 
 const Assignment = () => {
   const assignmentData = [
@@ -76,29 +78,58 @@ const Assignment = () => {
     },
   ];
 
-  const assignmentRenderItem = ({item, index}) => {
+  const screenWidth = useScreenDimension()
+
+  const assignmentRenderItem = ({ item, index }) => {
     return (
       <AssignmentCard detail={item.desc} time={item.time} date={item.date} />
     );
   };
+
+  const customDatesStylesFunc = date => {
+    if (date.isoWeekday() === 5) {
+      return {
+        // dateNameStyle: { color: '#fff' },
+        // dateNumberStyle: { color: '#fff' },
+        // dateContainerStyle: { backgroundColor: '#3abef0' },
+      }
+    }
+  }
+
+
   return (
     <SafeView>
-      
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'All Assignments'} />
         <View style={[css.row, css.aic, css.mt4, css.jcsb]}>
           <View style={[css.row, css.aic]}>
-            <Txt style={[styles.dayTxt]}>Today</Txt>
-            <View style={[styles.dateContainer]}>
-              <Image source={icons.backArrow} style={[styles.arrow]} />
-              <Txt style={[styles.dateTxt]}>(15th sep, 2023)</Txt>
-              <Image source={icons.nextArrow} style={[styles.arrow]} />
+            <View style={[styles.calenderArea]}>
+              <CalendarStrip
+                customDatesStyles={customDatesStylesFunc}
+                scrollable={false}
+                calendarHeaderFormat='DD MMM, YYYY'
+                numDaysInWeek={1}
+                calendarAnimation={{ type: 'sequence', duration: 30 }}
+                style={[styles.calenderStrip]}
+                calendarColor='transparent'
+                calendarHeaderStyle={[styles.dateStyle]}
+                dateNumberStyle={{ color: 'black' }}
+                dateNameStyle={{ color: 'black' }}
+                calendarHeaderContainerStyle={[styles.calendarHeaderStyle]}
+                dayContainerStyle={[styles.dayContainerStyle]}
+                iconLeft={icons.leftArrow}
+                iconRight={icons.leftArrow}
+                iconStyle={[styles.iconStyle]}
+                iconLeftStyle={[styles.iconLeftStyle]}
+              />
             </View>
           </View>
-          <SearchInput
-            style={{width: normalize(120)}}
-            placeholder={'Search here...'}
-          />
+          <View style={[{ width: screenWidth / 2.2 }]}>
+            <SearchInput
+              style={[]}
+              placeholder={'Search here...'}
+            />
+          </View>
         </View>
         <View style={[css.f1]}>
           <FlatList
@@ -106,7 +137,7 @@ const Assignment = () => {
             data={assignmentData}
             keyExtractor={item => item.id}
             renderItem={assignmentRenderItem}
-            style={{flex: 1, marginTop: normalize(10)}}
+            style={{ flex: 1, marginTop: normalize(10) }}
           />
         </View>
       </View>
@@ -118,10 +149,9 @@ export default Assignment;
 
 const styles = StyleSheet.create({
   dayTxt: {
-    fontFamily: fonts.Regular,
-    fontSize: normalize(10),
+    fontFamily: fonts.Bold,
+    fontSize: 22,
     color: colors.primaryTextColor,
-    fontWeight: '600',
   },
   arrow: {
     height: normalize(8),
@@ -146,4 +176,37 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     paddingHorizontal: normalize(4),
   },
+  calenderArea: {
+    width: 200,
+  },
+  calendarHeaderStyle: {
+    position: 'absolute',
+    top: 38,
+    left: 40,
+    zIndex: 99
+  },
+  dayContainerStyle: {
+    backgroundColor: 'transparent',
+    width: 100,
+    zIndex: -1,
+    opacity: 0
+  },
+  dateStyle: {
+    fontFamily: fonts.Regular,
+    fontSize: 20,
+    color: '#444444'
+  },
+  iconStyle: {
+    width: 25,
+    height: 25,
+    resizeMode: 'contain'
+  },
+  cardRightIcon: {
+    resizeMode: 'contain',
+    height: 25,
+    width: 100
+  },
+  iconLeftStyle: {
+    transform: [{ rotate: '180deg' }]
+},
 });

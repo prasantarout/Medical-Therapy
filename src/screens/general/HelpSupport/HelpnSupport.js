@@ -101,7 +101,7 @@ const HelpnSupport = () => {
           {
             backgroundColor:
               selected == item.title ? colors.secondary : colors.white,
-            borderWidth: selected != item.title ? normalize(1) : null,
+            borderWidth: selected != item.title ? 1.5 : null,
             borderColor: selected != item.title ? colors.secondary : null,
           },
         ]}>
@@ -120,7 +120,6 @@ const HelpnSupport = () => {
 
   return (
     <SafeView>
-      
       <ScrollView
         style={{paddingBottom: normalize(35)}}
         showsVerticalScrollIndicator={false}>
@@ -130,7 +129,7 @@ const HelpnSupport = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => item.id}
-            style={{marginTop: normalize(11), marginBottom: normalize(8)}}
+            style={[css.my3]}
             data={categoryData}
             renderItem={categoryRenderItem}
           />
@@ -204,21 +203,19 @@ const HelpnSupport = () => {
               </View>
               <Txt
                 style={{
-                  fontFamily: fonts.Regular,
+                  fontFamily: fonts.Medium,
                   color: '#444444',
-                  fontWeight: '500',
-                  fontSize: normalize(8),
-                  marginLeft: normalize(8),
+                  fontSize: 20,
+                  marginLeft: 12,
                 }}>
                 Upload Image
               </Txt>
               <Txt
                 style={{
-                  fontFamily: fonts.Regular,
+                  fontFamily: fonts.Medium,
                   color: '#9A9A9A',
-                  fontWeight: '500',
-                  fontSize: normalize(7),
-                  marginLeft: normalize(5),
+                  fontSize: 19,
+                  marginLeft: 10,
                 }}>
                 Maximum Size 5MB (.docx, .doc)
               </Txt>
@@ -287,14 +284,15 @@ const styles = StyleSheet.create({
     borderColor: '#E6E6E6',
   },
   btn: {
-    width: '20%',
-    height: normalize(22),
+    alignSelf: 'flex-start',
+    height: 55,
     backgroundColor: colors.primary,
     borderRadius: 6,
     marginTop: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: normalize(20),
+    marginBottom: 20,
+    paddingHorizontal: 20,
   },
   btnTxt: {
     color: colors.white,
@@ -330,53 +328,52 @@ const styles = StyleSheet.create({
     paddingBottom: normalize(3),
   },
   uploadImageCtn: {
-    paddingVertical: normalize(12),
-    paddingLeft: normalize(15),
+    paddingVertical: 20,
+    paddingLeft: 35,
     width: '100%',
     alignSelf: 'center',
-    borderWidth: normalize(1),
+    borderWidth: 1,
     borderStyle: 'dashed',
-    borderRadius: normalize(5),
+    borderRadius: 8,
     alignItems: 'center',
     borderColor: '#C5C5C5',
-    marginTop: normalize(10),
+    marginTop: 30,
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
   },
   uploadSubContainer: {
-    height: normalize(45),
-    width: normalize(45),
-    borderRadius: normalize(50),
+    height: 90,
+    width: 90,
+    borderRadius: 50,
     backgroundColor: '#EAEBEC',
     alignItems: 'center',
   },
   uploadCtnr: {
-    height: normalize(65),
-    width: normalize(65),
+    height: 155,
+    width: 155,
     resizeMode: 'contain',
     position: 'absolute',
-    top: normalize(9),
+    top: 12,
   },
   uploadIcon: {
-    height: normalize(15),
-    width: normalize(15),
+    height: 35,
+    width: 35,
     resizeMode: 'contain',
     position: 'absolute',
-    left: normalize(25),
-    top: normalize(6),
+    left: 59,
+    top: 15,
   },
   categoryBtn: {
-    paddingHorizontal: normalize(10),
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: normalize(5),
+    paddingVertical: 16,
     marginRight: normalize(5),
     borderRadius: normalize(20),
   },
   categoryTxt: {
-    fontWeight: '600',
     fontSize: 17,
-    fontFamily: fonts.Regular,
+    fontFamily: fonts.SemiBold,
   },
   modal: {
     backgroundColor: colors.bgColor,

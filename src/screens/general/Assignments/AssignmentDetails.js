@@ -44,6 +44,7 @@ const AssignmentDetails = (props) => {
                         <View style={[css.row, css.aic, styles.iconTextContainer]} >
                             <Image source={icons.cardPhone} style={[styles.cardIconStyle]} />
                             <Txt style={[css.fs18, css.ml1]} >{item?.phone}</Txt>
+                            
                         </View>
                         <View style={[css.row, css.aic, styles.iconTextContainer]} >
                             <Image source={icons.cardMail} style={[styles.cardIconStyle]} />

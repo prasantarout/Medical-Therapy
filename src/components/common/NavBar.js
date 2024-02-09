@@ -121,7 +121,7 @@ const NavBar = (props) => {
                         </TouchableOpacity>
                         <View style={[css.center, css.py4]} >
                             <Image source={icons.off} style={[styles.logoStyle]} />
-                            <TitleTxt style={[css.mt3]} title="Do You Want To Logout" />
+                            <TitleTxt style={[css.mt3]} title="Do You Want To Logout?" />
                             <Txt style={[styles.textLighte]} >Lorem ipsum dolor sit amet, consectetur adipiscing elit sagittis.</Txt>
                         </View>
                         <View style={[css.row, css.jcc]} >

@@ -1,10 +1,11 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useRef, useState } from 'react';
 import css from '../../themes/space';
 import { colors } from '../../themes/colors';
 import AuthTemplate from '../../components/common/AuthTemplate';
 import Button from '../../components/buttons/Button';
 import AuthHeader from '../../components/common/AuthHeader';
+import Txt from '../../components/micro/Txt';
 
 const OTPScreen = (props) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -38,7 +39,7 @@ const OTPScreen = (props) => {
   return (
     <View style={[css.f1, css.py11, css.px16]}>
       <AuthHeader
-        headerText="Enter Varification Code"
+        headerText="Enter Verification Code"
         subHeaderText="Check Your Message: We've sent a verification code to your registered Email ID. Please enter the code below to verify your account. Thank you."
       />
       <View style={[css.row, css.jcc]}>
@@ -51,20 +52,23 @@ const OTPScreen = (props) => {
             keyboardType="numeric"
             maxLength={1}
             onFocus={() => handleFocus(index)}
-            style={[
-              styles.otpInput,
-              css.mr5,
-              css.mt3,
-              {
-                // borderColor: isFocused ? colors.secondary : "#d1d1d1",
-                borderColor: isFocused === index ? colors.secondary : "#d1d1d1",
-              },
-              isFocused === index && styles.focusedStyle,
+            style={[styles.otpInput, css.mr5,
+            {
+              marginLeft: index == 0 ? 0 : 40,
+              borderColor: isFocused === index ? colors.secondary : "#d1d1d1",
+            },
+            isFocused === index && styles.focusedStyle,
             ]}
           />
         ))}
       </View>
       <Button style={[css.mt3]} title="Verify" onPress={() => props.navigation.navigate('Login')} />
+      <View style={[css.row,css.aic,css.jcc, css.my6]}>
+            <Txt style={[css.fs20, {color:colors.ternaryTextColor}]}>Didn't Receive OTP?</Txt>
+            <TouchableOpacity activeOpacity={0.7}>
+              <Txt style={[css.regular, css.fs20, css.ml2,{color:colors.secondary, textDecorationLine: 'underline'}]}>RESEND</Txt>
+            </TouchableOpacity>
+      </View>
     </View>
 
     // </AuthTemplate>
@@ -93,7 +97,8 @@ const styles = StyleSheet.create({
     color: colors.primaryTextColor,
     borderWidth: 1,
     borderRadius: 6,
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginVertical: 40
   },
 
   focusedStyle: {

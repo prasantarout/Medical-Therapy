@@ -33,19 +33,19 @@ const StackNav = () => {
   //   OTPScreen: OTPScreen,
   // }
   // :
-  {
-    // EvaluationForm:EvaluationForm,
-    Signup: Signup,
+  {    
+    Splash: Splash,
     Login: Login,
+    Signup: Signup,
     ForgotPassword: ForgotPassword,
     OTPScreen: OTPScreen,
     BottomTab: BottomTab,
     Notification: Notification
   };
 
-  if (AuthReducer.isLoading) {
-    return <Splash />;
-  } else {
+  // if (AuthReducer.isLoading) {
+  //   return <Splash />;
+  // } else {
     return (
       <NavigationContainer>
         <Stack.Navigator
@@ -65,7 +65,7 @@ const StackNav = () => {
       </NavigationContainer>
     );
   }
-};
+// };
 
 export default StackNav;
 

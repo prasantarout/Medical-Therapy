@@ -208,7 +208,7 @@ const HelpnSupport = () => {
                   fontSize: 20,
                   marginLeft: 12,
                 }}>
-                Upload Image
+Attach File
               </Txt>
               <Txt
                 style={{

@@ -32,9 +32,9 @@ const BottomTab = (props) => {
 
         if (route.name === 'Home') {
           iconName = icons.navHome;
-        } else if (route.name === 'Assignment') {
+        } else if (route.name === 'Assignments') {
           iconName = icons.navAssignment;
-        } else if (route.name === 'Patient') {
+        } else if (route.name === 'My Patient') {
           iconName = icons.navPatient;
         } else if (route.name === 'Help & Support') {
           iconName = icons.navHelp;

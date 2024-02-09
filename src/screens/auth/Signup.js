@@ -85,7 +85,7 @@ const Signup = (props) => {
               }
             />
             <Input
-              title="Last"
+              title="Last Name"
               placeholder="Last Name"
               style={[css.mb3]}              
               value={signUpInfo.last_name}

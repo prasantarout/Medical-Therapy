@@ -5,8 +5,11 @@ import {getTokenRequest} from '../../redux/reducer/AuthReducer';
 import {images} from '../../themes/images';
 import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const Splash = () => {
+  const navigation = useNavigation()
+  setTimeout(()=>{navigation.navigate('Login')},1500)
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Image source={images.logo} style={styles.logo} />

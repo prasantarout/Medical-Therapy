@@ -176,7 +176,7 @@ const PatientEnrolmentChart = () => {
                             backgroundColor="#28328C"
                         />
                         <RenderTitles
-                            title="Total Patient"
+                            title="Repeated Patient"
                             backgroundColor="#3ABEF0"
                         />
                     </View>

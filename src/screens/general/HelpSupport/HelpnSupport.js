@@ -101,7 +101,7 @@ const HelpnSupport = () => {
           {
             backgroundColor:
               selected == item.title ? colors.secondary : colors.white,
-            borderWidth: selected != item.title ? normalize(1) : null,
+            borderWidth: selected != item.title ? 1.5 : null,
             borderColor: selected != item.title ? colors.secondary : null,
           },
         ]}>
@@ -130,7 +130,7 @@ const HelpnSupport = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => item.id}
-            style={{marginTop: normalize(11), marginBottom: normalize(8)}}
+            style={[css.my3]}
             data={categoryData}
             renderItem={categoryRenderItem}
           />
@@ -287,14 +287,15 @@ const styles = StyleSheet.create({
     borderColor: '#E6E6E6',
   },
   btn: {
-    width: '20%',
-    height: normalize(22),
+    alignSelf:'flex-start',
+    height: 55,
     backgroundColor: colors.primary,
     borderRadius: 6,
     marginTop: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: normalize(20),
+    marginBottom: 20,
+    paddingHorizontal: 20
   },
   btnTxt: {
     color: colors.white,
@@ -366,17 +367,16 @@ const styles = StyleSheet.create({
     top: normalize(6),
   },
   categoryBtn: {
-    paddingHorizontal: normalize(10),
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: normalize(5),
+    paddingVertical: 16,
     marginRight: normalize(5),
     borderRadius: normalize(20),
   },
   categoryTxt: {
-    fontWeight: '600',
     fontSize: 17,
-    fontFamily: fonts.Regular,
+    fontFamily: fonts.SemiBold,
   },
   modal: {
     backgroundColor: colors.bgColor,

@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   questionStyle: {
-    paddingBottom: normalize(9),
-    borderBottomWidth: normalize(1),
-    marginBottom: normalize(9),
+    paddingBottom: 20,
+    borderBottomWidth: 1.5,
+    marginBottom: 20,
     borderColor: '#E6E6E6',
   },
 });

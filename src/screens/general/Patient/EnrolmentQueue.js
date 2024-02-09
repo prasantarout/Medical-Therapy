@@ -135,7 +135,7 @@ const EnrolmentQueue = () => {
 
   return (
     <SafeView>
-      <NavBar />
+      
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Enrollment Queue'} />
         <View style={[css.row, css.aic, css.mt4]}>

@@ -41,6 +41,9 @@ const css = StyleSheet.create({
   textLighte: {
     color: colors.ternaryTextColor
   },
+  textWhite: {
+    color: colors.white
+  },
   border:{
     borderWidth: 1,
     borderColor: colors.borderColor

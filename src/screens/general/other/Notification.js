@@ -25,7 +25,7 @@ const Notification = (props) => {
     }
     return (
         <SafeView>
-            <NavBar />
+            
             <View style={[css.px5, css.f1]}>
                 <TitleTxt title={'Notification'} />
                 <Txt style={[css.fs16, css.semiBold]} >3rd Feb, 2024</Txt>

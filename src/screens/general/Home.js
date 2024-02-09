@@ -56,7 +56,6 @@ const Home = props => {
 
   return (
     <SafeView sticky={[1]}>
-      <NavBar {...props} />
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
         <View style={[css.row, css.jcse]}>

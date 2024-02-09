@@ -52,8 +52,6 @@ const HelpnSupport = () => {
     },
   ];
 
-  console.log('Hiiiiiiiiiii Senior');
-
   const supportData = [
     {
       id: 1,

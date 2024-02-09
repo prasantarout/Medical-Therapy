@@ -525,5 +525,17 @@ const css = StyleSheet.create({
     height: 50,
     resizeMode: 'contain',
   },
+  subTxt: {
+    fontFamily: fonts.Regular,
+    fontSize: 23,
+    color: colors.placeholder,
+  },
+  signInTxt: {
+    fontSize: 23,
+    fontFamily: fonts.Medium,
+    color: colors.secondary,
+    textDecorationLine: 'underline',
+    marginLeft: normalize(1),
+  },
 });
 export default css;

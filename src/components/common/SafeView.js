@@ -7,7 +7,7 @@ const SafeView = (props) => {
     return (
         <>
           <NavBar {...props} />
-            <SafeAreaView style={[css.f1, props.style]}>
+            <SafeAreaView style={[css.f1, props.style, { zIndex: -1 }]}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[css.fg1]} stickyHeaderIndices={props.sticky} >
                     <View style={[styles.avoidStatusBar]}>
                         {props.children}

@@ -35,7 +35,7 @@ const Login = (props) => {
   });
 
   const handleLogin = () => {
-    props.navigation.navigate('Home')
+    props.navigation.navigate('BottomTab')
   };
 
   console.log("props-Login", props);
@@ -73,11 +73,12 @@ const Login = (props) => {
               }}
               title="Login"
               isLoading={loading}
+              style={[css.mt3]}
             />
             <View style={[css.row, css.aic, css.mt3, css.jcc]}>
-              <Text style={[styles.subTxt]}>Don't Have An Account?</Text>
+              <Text style={[css.subTxt]}>Don't Have An Account?</Text>
               <TouchableOpacity activeOpacity={0.6} style={[styles.SignInTxt]} onPress={() => props.navigation.navigate("Signup")} >
-                <Text style={[styles.SignInTxt]}>Sign Up</Text>
+                <Text style={[css.signInTxt]}>Sign Up</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -11,14 +11,16 @@ import TitleTxt from './TitleTxt';
 import Button from '../buttons/Button';
 import useScreenDimension from '../../utils/useScreenDimension';
 import { widthToDp } from '../../utils/responsive';
+import { useNavigation } from '@react-navigation/native';
 
 let halfWidth = width / 2;
 
-const NavBar = props => {
+const NavBar = (props) => {
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [logoutModal, setLogoutModal] = useState(false);
 
     const screenWidth = useScreenDimension()
+    const navigation = useNavigation()
     console.log("screenWidth", screenWidth)
 
     const handleLogout = () => {
@@ -40,8 +42,8 @@ const NavBar = props => {
 
     return (
         <>
-            <View style={[css.bgWhite]} >
-                <SafeAreaView/>
+            <View style={[css.bgWhite, { zIndex: 4 }]} >
+                <SafeAreaView />
                 <View style={[css.rowBetween, styles.navWrap, css.aic]}>
                     <View style={[styles.logoArea, {
                         width: screenWidth / 4,
@@ -53,7 +55,6 @@ const NavBar = props => {
                     <View style={[styles.rightSection, css.row, css.aic, { width: screenWidth / 2.2, height: 50 }]}>
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            onPress={() => props.navigation.navigate("MyPatient")}
                             style={[css.row, css.aic]}
                         >
                             <Image
@@ -65,7 +66,7 @@ const NavBar = props => {
                         </TouchableOpacity>
 
                         <TouchableOpacity activeOpacity={0.8}
-                            onPress={() => props?.navigation?.navigate("Notification")}>
+                            onPress={() => navigation?.navigate("Notification")}>
                             <Image style={[styles.iconRoundStyle, iconRoundStyle]} source={icons.bell} />
                         </TouchableOpacity>
 
@@ -83,11 +84,21 @@ const NavBar = props => {
                     </View>
                     {isShowMenu ? (
                         <View style={[styles.menuStyle]}>
-                            <TouchableOpacity style={[css.row, css.center, css.f1]}>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                style={[css.row, css.center, css.f1]}
+                                // onPress={()=>navigation.navigate('MyProfile')}
+                                onPress={() => navigation?.navigate('My Profile', {
+                                    screen: 'MyProfile',
+                                    params: {
+                                        data: 'From NavBar',
+                                    },
+                                })}
+                            >
                                 <Image source={icons.user} style={[styles.menuIcon]} />
                             </TouchableOpacity>
                             <Divider />
-                            <TouchableOpacity style={[css.row, css.center, css.f1]} onPress={handleLogout} >
+                            <TouchableOpacity activeOpacity={0.8} style={[css.row, css.center, css.f1]} onPress={handleLogout} >
                                 <Image source={icons.logout} style={[styles.menuIcon]} />
                             </TouchableOpacity>
                         </View>
@@ -161,7 +172,7 @@ const styles = StyleSheet.create({
     backdrop: {
         backgroundColor: 'rgb(0, 0, 0,0.8)',
         // backgroundColor:'red',
-        zIndex: 50,
+        zIndex: 1,
     },
     menuStyle: {
         zIndex: 99,

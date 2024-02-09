@@ -65,10 +65,6 @@ const Signup = (props) => {
     setSignUpInfo({...signUpInfo, [key]: value});
   }
 
-
-
-
-
   return (
     <SafeAreaView style={[css.f1, css.f1, {backgroundColor: colors.bgColor}]}>
       <KeyboardAvoidingView
@@ -78,8 +74,7 @@ const Signup = (props) => {
             headerText="Sign Up"
             subHeaderText="Please fill up this form to login your account."
           />
-          <View style={[css.f1, css.py11, css.px16]}>
-          
+          <View style={[css.f1, css.py5, css.px16,]}>          
             <Input
               title="First Name"
               placeholder="First Name"
@@ -143,11 +138,12 @@ const Signup = (props) => {
               }}
               title={'Sign Up'}
               isLoading={loading}
+              style={[css.mt3]}
             />
             <View style={[css.row, css.aic, css.mt2, css.jcc]}>
-              <Text style={[styles.subTxt]}>Already Have An Account?</Text>
-              <TouchableOpacity activeOpacity={0.6} style={[styles.SignInTxt]} onPress={()=> props.navigation.navigate("Login")} >
-                <Text style={[styles.SignInTxt]}>Login</Text>
+              <Text style={[css.subTxt]}>Already Have An Account?</Text>
+              <TouchableOpacity activeOpacity={0.6} style={[css.signInTxt]} onPress={()=> props.navigation.navigate("Login")} >
+                <Text style={[css.signInTxt]}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -160,31 +156,5 @@ const Signup = (props) => {
 export default Signup;
 
 const styles = StyleSheet.create({
-  headerText: {
-    fontFamily: fonts.Medium,
-    fontSize: normalize(18),
-    color: colors.primaryTextColor,
-  },
-  subHeaderText: {
-    fontFamily: fonts.Regular,
-    fontSize: normalize(9),
-    color: colors.secondaryTextColor,
-  },
-  ClosedEye: {
-    height: normalize(20),
-    width: normalize(20),
-    resizeMode: 'contain',
-  },
-  subTxt: {
-    fontFamily: fonts.Regular,
-    fontSize: normalize(8),
-    color: colors.placeholder,
-  },
-  SignInTxt: {
-    fontSize: normalize(8),
-    fontFamily: fonts.Medium,
-    color: colors.secondary,
-    textDecorationLine: 'underline',
-    marginLeft: normalize(1),
-  },
+
 });

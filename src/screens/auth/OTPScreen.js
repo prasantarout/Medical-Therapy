@@ -4,6 +4,7 @@ import css from '../../themes/space';
 import { colors } from '../../themes/colors';
 import AuthTemplate from '../../components/common/AuthTemplate';
 import Button from '../../components/buttons/Button';
+import AuthHeader from '../../components/common/AuthHeader';
 
 const OTPScreen = (props) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -23,50 +24,50 @@ const OTPScreen = (props) => {
     }
   };
 
-  const handleVerifyOTP = () => {
-    props.navigation.navigate('Login')
-    const enteredOTP = otp.join('');
-    // console.log('Entered OTP:', enteredOTP);
+  // const handleVerifyOTP = () => {
+  //   props.navigation.navigate('Login')
+  //   const enteredOTP = otp.join('');
+  //   // console.log('Entered OTP:', enteredOTP);
+  // };
+  const handleFocus = (index) => {
+    setIsFocused(index)
+    console.log("index:", index);
   };
-const handleFocus = (index) => {
-  setIsFocused(index)
-  console.log("index:", index);
-};
 
   // Alert.alert('Verified')
   return (
-    <AuthTemplate
-      title="Enter Varification Code"
-      subtitle="Check Your Message: We've sent a verification code to your registered Email ID. Please enter the code below to verify your account. Thank you."
-    >
-      <View style={[css.f1]}>
-        <View style={[css.row, css.jcc]}>
-          {otp.map((digit, index) => (
-            <TextInput
-              key={index}
-              value={digit}
-              ref={(input) => (inputRefs.current[index] = input)}
-              onChangeText={(text) => handleChangeText(text, index)}
-              keyboardType="numeric"
-              maxLength={1}
-              onFocus={() =>handleFocus(index)}
-              // onBlur={() => handleFocus(false)}
-              style={[
-                styles.otpInput,
-                css.mr5,
-                {
-                  // borderColor: isFocused ? colors.secondary : "#d1d1d1",
-                  borderColor: isFocused === index ? colors.secondary : "#d1d1d1",
-                },
-                isFocused === index  && styles.focusedStyle,
-              ]}
-            />
-          ))}
-        </View>
-        <Button title="Verify" onPress={() => props.navigation.navigate('Login')} />
+    <View style={[css.f1, css.py11, css.px16]}>
+      <AuthHeader
+        headerText="Enter Varification Code"
+        subHeaderText="Check Your Message: We've sent a verification code to your registered Email ID. Please enter the code below to verify your account. Thank you."
+      />
+      <View style={[css.row, css.jcc]}>
+        {otp.map((digit, index) => (
+          <TextInput
+            key={index}
+            value={digit}
+            ref={(input) => (inputRefs.current[index] = input)}
+            onChangeText={(text) => handleChangeText(text, index)}
+            keyboardType="numeric"
+            maxLength={1}
+            onFocus={() => handleFocus(index)}
+            style={[
+              styles.otpInput,
+              css.mr5,
+              css.mt3,
+              {
+                // borderColor: isFocused ? colors.secondary : "#d1d1d1",
+                borderColor: isFocused === index ? colors.secondary : "#d1d1d1",
+              },
+              isFocused === index && styles.focusedStyle,
+            ]}
+          />
+        ))}
       </View>
+      <Button style={[css.mt3]} title="Verify" onPress={() => props.navigation.navigate('Login')} />
+    </View>
 
-    </AuthTemplate>
+    // </AuthTemplate>
 
   );
 };
@@ -86,13 +87,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   otpInput: {
-    height: normalize(30),
-    width: normalize(30),
+    height: 70,
+    width: 70,
     fontSize: normalize(9),
     color: colors.primaryTextColor,
     borderWidth: 1,
-    borderRadius:normalize(6),
-    paddingLeft: normalize(13)
+    borderRadius: 6,
+    paddingLeft: 20
   },
 
   focusedStyle: {

@@ -24,11 +24,11 @@ import Txt from '../../../components/micro/Txt';
 import {fonts} from '../../../themes/fonts';
 import useScreenDimension from '../../../utils/useScreenDimension';
 import useOrientation from '../../../utils/useOrientation';
+import {widthToDp as wp} from '../../../utils/responsive';
 
 const MyPatient = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-
   const width = useScreenDimension();
   const orientation = useOrientation();
 
@@ -154,7 +154,6 @@ const MyPatient = () => {
   return (
     <>
       <SafeView>
-        <NavBar />
         <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'My Patients'} />
           <View style={[css.rowBetween, css.aic, css.mt4]}>

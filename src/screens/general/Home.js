@@ -14,6 +14,7 @@ import useScreenDimension from '../../utils/useScreenDimension';
 import useOrientation from '../../utils/useOrientation';
 import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
+import { heightToDp as hp, widthToDp as wp } from '../../utils/responsive';
 
 const Home = props => {
   const [visible, setVisible] = useState(false);
@@ -55,10 +56,9 @@ const Home = props => {
 
   return (
     <SafeView sticky={[1]}>
-      <NavBar {...props} />
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
-        <View style={[css.row, css.jcsb]}>
+        <View style={[css.row, css.jcse]}>
           <ScoreCard
             title="Service Score"
             value={90}

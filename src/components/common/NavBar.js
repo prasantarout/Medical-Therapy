@@ -1,4 +1,4 @@
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import css, { width } from '../../themes/space';
 import Txt from '../micro/Txt';
@@ -9,12 +9,17 @@ import Divider from '../micro/Divider';
 import Modal from 'react-native-modal';
 import TitleTxt from './TitleTxt';
 import Button from '../buttons/Button';
+import useScreenDimension from '../../utils/useScreenDimension';
+import { widthToDp } from '../../utils/responsive';
 
 let halfWidth = width / 2;
 
 const NavBar = props => {
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [logoutModal, setLogoutModal] = useState(false);
+
+    const screenWidth = useScreenDimension()
+    console.log("screenWidth", screenWidth)
 
     const handleLogout = () => {
         setIsShowMenu(false)
@@ -23,48 +28,71 @@ const NavBar = props => {
         }, 100)
     };
 
+    const iconRoundStyle = {
+        width: screenWidth / 20,
+        height: screenWidth / 20,
+        borderRadius: screenWidth,
+    }
+    const cloudRefreshStyle = {
+        width: screenWidth / 23,
+        height: screenWidth / 23,
+    }
+
     return (
         <>
-            <View style={[css.row, styles.navWrap, css.aic]}>
-                <View style={[styles.logoArea]}>
-                    <Image source={images.logo} style={[styles.imgResponsive]} />
-                </View>
-                <View style={[styles.rightSection, css.row, css.aic]}>
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate("MyPatient")}>
-                        <Image
-                            style={[styles.cloudRefreshStyle]}
-                            source={icons.cloudRefresh}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.8}
-                        onPress={() => props?.navigation?.navigate("Notification")}>
-                        <Image style={[styles.iconRoundStyle]} source={icons.bell} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        style={[css.row, css.aic]}
-                        onPress={() => setIsShowMenu(!isShowMenu)}>
-                        <Image
-                            style={[styles.iconRoundStyle]}
-                            source={{
-                                uri: 'https://images.unsplash.com/photo-1532170579297-281918c8ae72?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8M3wyMTM1OTR8fGVufDB8fHx8fA%3D%3D',
-                            }}
-                        />
-                        <Txt style={[css.fs18, css.ml1, css.medium]}> Welcome, Manish</Txt>
-                        <Image source={icons.down} style={[styles.arrowStyle]} />
-                    </TouchableOpacity>
-                </View>
-                {isShowMenu ? (
-                    <View style={[styles.menuStyle]}>
-                        <TouchableOpacity style={[css.row, css.center, css.f1]}>
-                            <Image source={icons.user} style={[styles.menuIcon]} />
+            <View style={[css.bgWhite]} >
+                <SafeAreaView/>
+                <View style={[css.rowBetween, styles.navWrap, css.aic]}>
+                    <View style={[styles.logoArea, {
+                        width: screenWidth / 4,
+                        height: screenWidth / 18,
+                        // backgroundColor: 'red',
+                    }]}>
+                        <Image source={images.logo} style={[styles.imgResponsive]} />
+                    </View>
+                    <View style={[styles.rightSection, css.row, css.aic, { width: screenWidth / 2.2, height: 50 }]}>
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={() => props.navigation.navigate("MyPatient")}
+                            style={[css.row, css.aic]}
+                        >
+                            <Image
+                                style={[styles.cloudRefreshStyle, cloudRefreshStyle]}
+                                source={icons.cloudRefresh}
+                                resizeMode='contain'
+                            />
+                            <Txt style={[css.ml1, css.mt0, css.semiBold, css.fs17]} >Sync</Txt>
                         </TouchableOpacity>
-                        <Divider />
-                        <TouchableOpacity style={[css.row, css.center, css.f1]} onPress={handleLogout} >
-                            <Image source={icons.logout} style={[styles.menuIcon]} />
+
+                        <TouchableOpacity activeOpacity={0.8}
+                            onPress={() => props?.navigation?.navigate("Notification")}>
+                            <Image style={[styles.iconRoundStyle, iconRoundStyle]} source={icons.bell} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            style={[css.row, css.aic]}
+                            onPress={() => setIsShowMenu(!isShowMenu)}>
+                            <Image
+                                style={[styles.iconRoundStyle, iconRoundStyle]}
+                                source={{ uri: images.sampleUser }}
+                            />
+                            <Txt style={[css.fs18, css.ml1, css.semiBold]}> Welcome, Loise</Txt>
+                            <Image source={icons.down} style={[styles.arrowStyle]} />
                         </TouchableOpacity>
                     </View>
-                ) : null}
+                    {isShowMenu ? (
+                        <View style={[styles.menuStyle]}>
+                            <TouchableOpacity style={[css.row, css.center, css.f1]}>
+                                <Image source={icons.user} style={[styles.menuIcon]} />
+                            </TouchableOpacity>
+                            <Divider />
+                            <TouchableOpacity style={[css.row, css.center, css.f1]} onPress={handleLogout} >
+                                <Image source={icons.logout} style={[styles.menuIcon]} />
+                            </TouchableOpacity>
+                        </View>
+                    ) : null}
+                </View>
             </View>
             {isShowMenu ? (
                 <TouchableOpacity
@@ -100,38 +128,34 @@ export default NavBar;
 
 const styles = StyleSheet.create({
     navWrap: {
-        padding: 16,
-        // height: 100,
+        paddingBottom: 16,
+        paddingHorizontal: 16,
         backgroundColor: '#fff',
         zIndex: 99,
-        top: -50,
-        paddingTop: 50,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 16 : 16,
     },
     logoArea: {
-        maxWidth: width / 2.5,
         alignItems: 'flex-start',
     },
     imgResponsive: {
-        width: normalize(110),
-        height: 80,
+        width: '100%',
+        height: '100%',
+        minWidth: 100,
         resizeMode: 'contain',
     },
     rightSection: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
     cloudRefreshStyle: {
-        width: 50,
-        height: 50,
         resizeMode: 'contain',
-        marginLeft: normalize(10),
+        marginLeft: 16,
     },
     iconRoundStyle: {
-        width: 70,
-        height: 70,
-        marginLeft: normalize(10),
+        // width: widthToDp(5),
+        // height: widthToDp(5),
+        marginLeft: 16,
         borderRadius: 100,
     },
     backdrop: {

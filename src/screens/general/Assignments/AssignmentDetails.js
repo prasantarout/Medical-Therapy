@@ -20,7 +20,6 @@ const AssignmentDetails = (props) => {
 
     return (
         <SafeView>
-            <NavBar />
             <View style={[css.f1, css.px4]} >
                 <TitleTxt title={title} />
                 <View style={[css.mt10, css.card]} >

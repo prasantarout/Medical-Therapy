@@ -64,7 +64,7 @@ const AddPatient = () => {
 
   return (
     <SafeView>
-      <NavBar />
+      
       <View style={[css.px5, css.f1, css.py4]}>
         <ScrollView
           style={[{paddingBottom: normalize(35)}]}

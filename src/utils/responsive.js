@@ -1,6 +1,8 @@
 import {Dimensions, PixelRatio} from 'react-native';
+import useScreenDimension from './useScreenDimension';
 
 const {width, height} = Dimensions.get('window');
+
 
 const widthToDp = number => {
   let givenWidth = typeof number === 'number' ? number : parseFloat(number);

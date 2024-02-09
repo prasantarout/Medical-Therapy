@@ -46,6 +46,7 @@
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TherapyEvaluator-TherapyEvaluatorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TherapyEvaluator-TherapyEvaluatorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-TherapyEvaluator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TherapyEvaluator.debug.xcconfig"; path = "Target Support Files/Pods-TherapyEvaluator/Pods-TherapyEvaluator.debug.xcconfig"; sourceTree = "<group>"; };
 		4B585ECE6D3243CCAC5A2ED9 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		4B585ECE6D3243CCAC5A2ED9 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-TherapyEvaluator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TherapyEvaluator.release.xcconfig"; path = "Target Support Files/Pods-TherapyEvaluator/Pods-TherapyEvaluator.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-TherapyEvaluator-TherapyEvaluatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TherapyEvaluator-TherapyEvaluatorTests.debug.xcconfig"; path = "Target Support Files/Pods-TherapyEvaluator-TherapyEvaluatorTests/Pods-TherapyEvaluator-TherapyEvaluatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-TherapyEvaluator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TherapyEvaluator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -557,7 +558,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = H23W3EERLK;
 				INFOPLIST_FILE = TherapyEvaluator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -572,6 +575,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.webskitters.therapyEvalutor;
 				PRODUCT_NAME = TherapyEvaluator;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = therapy_evalutor_dist_08/02/2024;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

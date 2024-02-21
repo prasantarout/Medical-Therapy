@@ -11,6 +11,7 @@ import {
   contactUsForSupportSuccess,
   contactUsForSupportFailure,
 } from '../reducer/CmsReducer';
+import CustomToast from '../../utils/Toast';
 
 let getItem = state => state.AuthReducer;
 
@@ -83,7 +84,7 @@ export function* getHelpAndSupportSaga(action) {
   try {
     let response = yield call(
       getApi,
-      'help-support/{type_id}',
+      `help-support/${action?.payload?.type_id}`,
       // action.payload,
       header,
     );

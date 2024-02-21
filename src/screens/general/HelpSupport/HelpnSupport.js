@@ -9,7 +9,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
@@ -25,10 +25,12 @@ import {images} from '../../../themes/images';
 import SimpleInput from '../../../components/inputs/SimpleInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  contactUsForSupportReq,
   helpAndSupportReq,
   helpSupportTypeReq,
 } from '../../../redux/reducer/CmsReducer';
 import CustomToast from '../../../utils/Toast';
+import DocumentPicker from 'react-native-document-picker';
 
 let status = '';
 const HelpnSupport = () => {
@@ -41,12 +43,14 @@ const HelpnSupport = () => {
   const [helpSupportType, setHelpSupportType] = useState();
   const [helpSupportData, setHelpSupportData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [document, setDocument] = useState();
+  const [documentName, setDocumentName] = useState('');
   const CmsReducer = useSelector(state => state.CmsReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(helpSupportTypeReq());
-    getHelpSupportFunc();
+    // getHelpSupportFunc();
   }, []);
 
   if (status === '' || CmsReducer.status !== status) {
@@ -69,6 +73,22 @@ const HelpnSupport = () => {
         setHelpSupportData(CmsReducer?.helpAndSupportResponse?.data);
         break;
       case 'CMS/helpAndSupportFailure':
+        status = CmsReducer.status;
+        break;
+      case 'CMS/contactUsForSupportReq':
+        status = CmsReducer.status;
+        break;
+      case 'CMS/contactUsForSupportSuccess':
+        setIsModalVisible(true);
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPhone('');
+        setMessage('');
+        setDocument('');
+        status = CmsReducer.status;
+        break;
+      case 'CMS/contactUsForSupportFailure':
         status = CmsReducer.status;
         break;
     }
@@ -115,7 +135,7 @@ const HelpnSupport = () => {
   ];
 
   const supportRenderItem = ({item, index}) => {
-    return <QuestionCard title={item.title} value={item.value} />;
+    return <QuestionCard title={item?.question} value={item?.answer} />;
   };
 
   const getHelpSupportFunc = () => {
@@ -170,10 +190,23 @@ const HelpnSupport = () => {
         email: email,
         phone: phone,
         message: message,
+        attachment: document,
       };
-      dispatch(helpAndSupportReq(obj));
+      dispatch(contactUsForSupportReq(obj));
     }
   };
+
+  const handleDocumentUpload = useCallback(async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: 'fullScreen',
+      });
+      setDocument(response[0].uri);
+      setDocumentName(response[0]?.name);
+    } catch (err) {
+      console.warn(err);
+    }
+  }, []);
 
   return (
     <SafeView>
@@ -213,7 +246,7 @@ const HelpnSupport = () => {
                   style={[css.mr2]}
                   value={[]}
                   placeholder="Enter First Name"
-                  onChange={val => setFirstName(val)}
+                  onChangeText={val => setFirstName(val)}
                 />
               </View>
               <View style={[css.w50]}>
@@ -222,7 +255,7 @@ const HelpnSupport = () => {
                   style={[css.ml2]}
                   value={[]}
                   placeholder="Enter Last Name"
-                  onChange={val => setLastName(val)}
+                  onChangeText={val => setLastName(val)}
                 />
               </View>
               <View style={[css.w50, css.mt10]}>
@@ -231,7 +264,7 @@ const HelpnSupport = () => {
                   style={[css.mr2]}
                   value={[]}
                   placeholder="Enter Email"
-                  onChange={val => setEmail(val)}
+                  onChangeText={val => setEmail(val)}
                 />
               </View>
               <View style={[css.w50, css.mt10]}>
@@ -240,7 +273,7 @@ const HelpnSupport = () => {
                   style={[css.ml2]}
                   value={[]}
                   placeholder="Enter Phone Number"
-                  onChange={val => setPhone(val)}
+                  onChangeText={val => setPhone(val)}
                 />
               </View>
               <View style={[css.w100]}>
@@ -249,12 +282,17 @@ const HelpnSupport = () => {
                   style={[css.mr2]}
                   value={[]}
                   placeholder="Type here..."
-                  onChange={val => setMessage(val)}
+                  onChangeText={val => setMessage(val)}
                 />
               </View>
             </View>
 
-            <TouchableOpacity activeOpacity={0.6} style={styles.uploadImageCtn}>
+            <TouchableOpacity
+              onPress={() => {
+                handleDocumentUpload();
+              }}
+              activeOpacity={0.6}
+              style={styles.uploadImageCtn}>
               <View style={styles.uploadSubContainer}>
                 <ImageBackground
                   source={icons.uploadBg}
@@ -284,7 +322,7 @@ const HelpnSupport = () => {
 
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => setIsModalVisible(true)}
+              onPress={() => handleSubmit()}
               style={styles.btn}>
               <Text style={styles.btnTxt}>Submit</Text>
             </TouchableOpacity>

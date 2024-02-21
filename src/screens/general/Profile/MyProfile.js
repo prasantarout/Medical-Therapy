@@ -1,5 +1,5 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import SafeView from '../../../components/common/SafeView';
 import css, { } from '../../../themes/space';
 import TitleTxt from '../../../components/common/TitleTxt';
@@ -16,7 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ProfileRequest, editProfileRequest } from '../../../redux/reducer/AuthReducer';
 import GeneralInfoCard from '../../../components/inputs/GeneralInfoCard';
 import ImagePicker from "react-native-image-crop-picker";
-
+import { fonts } from '../../../themes/fonts';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { useIsFocused } from '@react-navigation/native';
 
 let profileStatus = ""
 
@@ -29,10 +31,14 @@ const MyProfile = (props) => {
   const [isSecureConfirmPass, setIsSecureConfirmPass] = useState(true);
   const [isEditable, setIsEditable] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [profileImage, setProfileImage] = useState("");
+  const [profileImageToSend, setProfileImageToSend] = useState();
   const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [changeImageModal, setChangeImageModal] = useState(true);
+  const [changeImageModal, setChangeImageModal] = useState(false);
   const [assignedSupervisor, setAssignedSupervisor] = useState("");
   const [passwords, setPasswords] = useState({
     old_pass: '',
@@ -41,15 +47,36 @@ const MyProfile = (props) => {
 
   const AuthReducer = useSelector(state => state?.AuthReducer)
   const dispatch = useDispatch()
-
+  const focused = useIsFocused()
   useEffect(() => {
     dispatch(ProfileRequest())
-  }, [])
+    const checkPermission = async () => {
+      try {
+        const permission =
+          Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
+        const permissionStorage =
+          Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+
+        const status = await request(permission);
+        request(status).then((result) => {
+          console.log("result", result)
+        });
+        if (status === 'granted') {
+          console.log('Permission granted');
+        } else {
+          console.log('Permission denied');
+        }
+      } catch (error) {
+        console.error('Error checking permission:', error);
+      }
+    };
+
+    checkPermission();
+  }, [focused]);
 
   const handleInputChange = (key, value) => {
     setPasswords({ ...passwords, [key]: value });
   };
-
 
   const handleChangePassword = () => {
     setChangePassModal(true);
@@ -62,12 +89,30 @@ const MyProfile = (props) => {
         break;
       case "Auth/ProfileSuccess":
         profileStatus = AuthReducer.status;
-        console.log("initiated-success", AuthReducer.ProfileResponse?.data)
+        console.log("ProfileInfo", AuthReducer.ProfileResponse?.data)
         setName(AuthReducer.ProfileResponse?.data?.full_name)
+        setFirstName(AuthReducer.ProfileResponse?.data?.first_name)
+        setLastName(AuthReducer.ProfileResponse?.data?.last_name)
         setEmail(AuthReducer.ProfileResponse?.data?.email)
+        setPhone(AuthReducer.ProfileResponse?.data?.phone)
+        setProfileImage(AuthReducer.ProfileResponse?.data?.profile_photo_url)
         break;
       case "Auth/ProfileFailure":
         profileStatus = AuthReducer.status;
+        break;
+      // Edit Profile
+      case "Auth/editProfileRequest":
+        profileStatus = AuthReducer.status;
+        console.log("editProfileRequest")
+        break;
+      case "Auth/editProfileSuccess":
+        profileStatus = AuthReducer.status;
+        console.log("editProfileSuccess", AuthReducer.editProfileResponse)
+        dispatch(ProfileRequest())
+        break;
+      case "Auth/editProfileFailure":
+        profileStatus = AuthReducer.status;
+        console.log("editProfileFailure")
         break;
     }
   }
@@ -75,50 +120,49 @@ const MyProfile = (props) => {
   const handleEditMenu = () => {
     setIsEditable(!isEditable)
     if (isEditable) {
-      // dispatch(editProfileRequest())
+      let obj = new FormData();
+      obj.append("first_name", 'aaaa');
+      obj.append("last_name", name);
+      obj.append("email", email);
+      obj.append("phone", phone);
+      // obj.append("profile_image", profileImageToSend);
+      console.log("djgfdasgf", obj)
+      dispatch(editProfileRequest(obj))
     }
   };
 
-
   const fromCamera = async () => {
+
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       mediaType: "photo",
     })
       .then((response) => {
-        let imageObj = {};
-        imageObj.name = response.filename
-          ? response.filename
-          : response.path.replace(/^.*[\\\/]/, "");
-        imageObj.type = response.mime;
-        imageObj.uri = response.path;
-        console.log(imageObj.uri);
-
+        setChangeImageModal(false)
+        setProfileImage(response.path)
+        console.log("response", response)
+        const imageData = JSON.stringify(response);
+        setProfileImageToSend(imageData);
+        console.log("Profile image data:", imageData);
       })
       .catch((err) => console.log(err));
   };
 
-  function fromGalary(type) {
+  const fromGallery = async () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
       mediaType: "photo",
     })
       .then((response) => {
-        let imageObj = {};
-        imageObj.name = response.filename
-          ? response.filename
-          : response.path.replace(/^.*[\\\/]/, "");
-        imageObj.type = response.mime;
-        imageObj.uri = response.path;
-        console.log(imageObj);
-
+        setChangeImageModal(false)
+        setProfileImage(response.path)
+        const imageData = JSON.stringify(response);
+        setProfileImageToSend(imageData);
       })
       .catch((err) => console.log(err));
   }
-
-
 
   return (
     <>
@@ -150,10 +194,10 @@ const MyProfile = (props) => {
           </View>
           <View style={[css.card, css.mt3, css.row]}>
             <View style={[styles.imageArea]}>
-              {isEditable ? <TouchableOpacity style={[styles.editIconWrap]} >
+              {isEditable ? <TouchableOpacity style={[styles.editIconWrap]} onPress={() => setChangeImageModal(true)} >
                 <Image style={[styles.editIcon]} source={icons.editSquare} />
               </TouchableOpacity> : null}
-              <Image style={[styles.profileImage]} source={{ uri: images.sampleUser }} />
+              <Image style={[styles.profileImage]} source={{ uri: profileImage }} />
             </View>
             <View style={[css.center, css.px7]}>
               <View style={[]}>
@@ -180,34 +224,55 @@ const MyProfile = (props) => {
             </View>
             <Divider style={[css.my3]} />
             <View style={[css.rowBetween, css.fw]}>
-              <GeneralInfoCard
-                title="Name:"
-                value={name}
+              {isEditable ? <GeneralInfoCard
+                title="First Name:"
+                value={firstName}
                 editable={isEditable}
-                onChangeText={text => setName('name', text)}
+                onChangeText={text => setFirstName(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
-              />
+              /> :
+                <GeneralInfoCard
+                  title="Name:"
+                  value={name}
+                  editable={isEditable}
+                  onChangeText={text => setName(text)}
+                  containerStyle={[styles.generalInfoCard, css.w30]}
+                />}
+              {isEditable ? <GeneralInfoCard
+                title="Last Name:"
+                value={lastName}
+                editable={isEditable}
+                onChangeText={text => setLastName(text)}
+                containerStyle={[styles.generalInfoCard, css.w30]}
+              /> : null}
               <GeneralInfoCard
                 title="Email ID:"
                 value={email}
                 editable={isEditable}
-                onChangeText={text => setEmail('email', text)}
+                onChangeText={text => setEmail(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
               />
               <GeneralInfoCard
                 title="Phone Number:"
                 value={phone}
                 editable={isEditable}
-                onChangeText={text => setPhone('phone', text)}
+                onChangeText={text => setPhone(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
               />
               <GeneralInfoCard
                 title="Assigned Supervisor:"
                 value={assignedSupervisor}
                 editable={isEditable}
-                onChangeText={text => setAssignedSupervisor('assignedSupervisor', text)}
+                onChangeText={text => setAssignedSupervisor(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
               />
+              {isEditable ? <GeneralInfoCard
+                title="Assigned Supervisor:"
+                value={assignedSupervisor}
+                editable={isEditable}
+                onChangeText={text => setAssignedSupervisor('assignedSupervisor', text)}
+                containerStyle={[styles.generalInfoCard, css.w30, css.op0]}
+              /> : null}
 
             </View>
           </View>
@@ -267,11 +332,25 @@ const MyProfile = (props) => {
           </View>
         </View>
       </Modal>
-      <Modal style={[css.m0]} isVisible={changeImageModal}>
+      <Modal
+        animationIn="slideInUp"
+        animationOut='slideOutDown'
+        animationOutTiming={600}
+        backdropOpacity={0.1}
+        style={[css.m0]}
+        isVisible={changeImageModal}
+      >
         <View style={[css.bottomSheet]} >
-          <TouchableOpacity style={[css.row, css.aic]} >
+          <TouchableOpacity style={[styles.closeBtn]} activeOpacity={0.7} onPress={() => setChangeImageModal(false)} >
+            <Image source={icons.cross} style={[styles.closeBtnIconStyle]} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={fromCamera} activeOpacity={0.8} style={[css.row, css.aic, styles.bottomSheetBtn]} >
             <Image source={icons.camera} style={[styles.bottomSheetIcon]} />
             <Txt style={[styles.bottomSheetText]} >Camera</Txt>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={fromGallery} activeOpacity={0.8} style={[css.row, css.aic, styles.bottomSheetBtn, css.mt5]} >
+            <Image source={icons.gallery} style={[styles.bottomSheetIcon]} />
+            <Txt style={[styles.bottomSheetText]} >Gallery</Txt>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -296,10 +375,26 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
-  bottomSheetIcon:{
+  bottomSheetBtn: {
+    backgroundColor: colors.primary,
+    minWidth: 200,
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    padding: 10,
+  },
+  bottomSheetIcon: {
     width: 30,
     height: 30,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    tintColor: '#fff',
+    marginRight: 16
+  },
+  bottomSheetText: {
+    fontSize: 20,
+    fontFamily: fonts.SemiBold,
+    color: "#fff",
   },
   profileImage: {
     width: "100%",
@@ -355,6 +450,33 @@ const styles = StyleSheet.create({
   },
   generalInfoCard: {
     marginBottom: 50
-  }
+  },
+  closeBtn: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#fff',
+    position: "absolute",
+    top: 16,
+    right: 16,
+    zIndex: 100,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.00,
+
+    elevation: 1,
+  },
+  closeBtnIconStyle: {
+    width: "100%",
+    height: "100%",
+    resizeMode: 'contain'
+  },
 
 });

@@ -32,6 +32,7 @@
     "react-native-material-menu": "^2.0.0",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
+    "react-native-permissions": "^4.1.2",
     "react-native-pure-chart": "^0.0.24",
     "react-native-reanimated": "^3.6.0",
     "react-native-safe-area-context": "^4.8.2",

@@ -401,6 +401,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNPermissions (4.1.2):
+    - React-Core
   - RNReanimated (3.6.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -481,6 +483,7 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -585,6 +588,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -647,6 +652,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
   RNGestureHandler: fe2be3be5598dc74329b211c58c9f2d231461769
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
+  RNPermissions: 78a462c8c33dd102f5fb634b04978d052f4f20b4
   RNReanimated: 738543ef6ec0024ea0bc9f4ab3ac99af6f068448
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
@@ -656,6 +662,6 @@ SPEC CHECKSUMS:
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: aa13138fdd15434a6aa8768f1c4145f33c61f0e5
+PODFILE CHECKSUM: e340646119f0a0fbf8902b69f6c0bf78e4b424c7
 
 COCOAPODS: 1.15.0

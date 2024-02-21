@@ -22,11 +22,14 @@ import CustomToast from '../../utils/Toast';
 import { useDispatch } from 'react-redux';
 import { signUpReq } from '../../redux/reducer/AuthReducer';
 
+let signupStatus = ""
+
 const Signup = (props) => {
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("Manish@123");
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
+  const [isLoading, setIsLoading] = useState(false)
   const [signUpInfo, setSignUpInfo] = useState({
     first_name: 'Manish',
     last_name: 'Sharma',
@@ -65,6 +68,28 @@ const Signup = (props) => {
 
   const handleInputChange = (key, value) => {
     setSignUpInfo({...signUpInfo, [key]: value});
+  }
+
+  if (signupStatus === "" || AuthReducer.status !== signupStatus) {
+    switch (AuthReducer.status) {
+      case "Auth/signUpReq":
+        signupStatus = AuthReducer.status;
+        console.log("initiated", AuthReducer.status)
+        setIsLoading(true)
+        break;
+      case "Auth/signUpSucces":
+        signupStatus = AuthReducer.status;
+        console.log("initiated-success", AuthReducer.status)
+        setIsModalVisible(true)
+        setIsLoading(false)
+        break;
+      case "Auth/signUpFailure":
+        signupStatus = AuthReducer.status;
+        console.log("initiated-fail", AuthReducer.status)
+        setIsLoading(false)
+        break;
+
+    }
   }
 
   return (
@@ -149,7 +174,7 @@ const Signup = (props) => {
                 handleSignup();
               }}
               title={'Sign Up'}
-              isLoading={loading}
+              isLoading={isLoading}
               style={[css.mt3]}
             />
             <View style={[css.row, css.aic, css.mt2, css.jcc]}>

@@ -40,13 +40,14 @@ export async function postApi(url, payload, header) {
     headers: {
       accept: header.accept,
       'Content-Type': header.contenttype,
-      'x-access-token': `${header.token}`,
+      // 'x-access-token': `${header.token}`,
       // authorization: `${header.accesstoken}`,
-      // Authorization: `Bearer ${header.accesstoken}`,
+      Authorization: `Bearer ${header.accesstoken}`,
     },
   });
   return response;
 }
+
 
 export async function putApi(url, payload, header) {
   // console.log(payload,"dasdasd");

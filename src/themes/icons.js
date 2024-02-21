@@ -56,4 +56,5 @@ export const icons = {
   done: require('../assets/icons/done.png'),
   gallery: require('../assets/icons/gallery.png'),
   camera: require('../assets/icons/camera.png'),
+  cross: require('../assets/icons/cross.png'),
 };

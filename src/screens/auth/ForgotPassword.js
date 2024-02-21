@@ -15,7 +15,7 @@ let forgotPasswordStatus = ""
 const ForgotPassword = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [email, setEmail] = useState("manish007@yopmail.com")
+  const [email, setEmail] = useState("")
 
   const dispatch = useDispatch()
   const AuthReducer = useSelector(state => state?.AuthReducer)

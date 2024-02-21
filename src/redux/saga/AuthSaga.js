@@ -153,7 +153,7 @@ export function* forgotPasswordSaga(action) {
     }
   } catch (error) {
     yield put(forgotPasswordFailure(error?.response));
-    CustomToast("forgotPasswordFailure-CatchPart",error?.response?.data?.message);
+    CustomToast(error?.response?.data?.message);
   }
 }
 
@@ -197,25 +197,33 @@ export function* Profilesaga(action) {
 /////////////////////// Edit Profile Saga ///////////////////////
 export function* editProfilesaga(action) {
   let items = yield select(getItem);
-
   let header = {
-    accept: 'application/json',
+    Accept: 'application/json',
     contenttype: 'multipart/form-data',
-    accessToken: items?.token,
+    Authorization: `Bearer ${items?.token}`,
   };
+  console.log("editProfilesaga-heeaaddeerr", header);
   try {
-    let response = yield call(postApi, 'edit-profile', header);
-    console.log('response---->', response);
+    console.log("editProfilesaga-try");
+    let response = yield call(
+      postApi, 
+      `edit-profile`, 
+      action.payload, 
+      header
+      );
+    console.log('editProfilesaga-response', response);
     if (response?.status == 200) {
       yield put(editProfileSuccess(response?.data));
       // CustomToast(response?.data?.message);
     } else {
       yield put(editProfileFailure(response?.data));
+      console.log('editProfileFailure', response?.data);
     }
   } catch (error) {
     // CustomToast(error?.response);
     yield put(editProfileFailure(error?.response));
-    CustomToast(error?.response?.data?.message);
+    console.log('editProfileFailure-Catch', error?.response);
+    // CustomToast(error?.response?.data?.message);
   }
 }
 

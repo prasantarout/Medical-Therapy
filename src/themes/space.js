@@ -73,7 +73,9 @@ const css = StyleSheet.create({
     width: width,
     margin: 0,
     borderTopRightRadius: 20,
-    borderTopLeftRadius: 20
+    borderTopLeftRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textPrimary: {
     color: colors.primaryTextColor
@@ -81,7 +83,7 @@ const css = StyleSheet.create({
   capitalization: {
     textTransform: 'capitalize'
   },
-
+  op0: { opacity: 0 },
   f1: { flex: 1 },
   fg1: { flexGrow: 1 },
   tac: { textAlign: 'center' },

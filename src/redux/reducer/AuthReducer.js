@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   status: {},
@@ -11,6 +11,8 @@ const initialState = {
   verifyOtpResponse: {},
   logoutResponse: {},
   ProfileResponse: {},
+  forgotPasswordResponse: {},
+  editProfileResponse: {},
 };
 
 const AuthSlice = createSlice({
@@ -55,6 +57,19 @@ const AuthSlice = createSlice({
       }
     },
 
+    //////////////////// signIn /////////////////////
+    signInRequest(state, action) {
+      state.status = action.type;
+    },
+    signInSuccess(state, action) {
+      state.signInResponse = action?.payload;
+      state.status = action.type;
+    },
+    signInFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
     //////////////////// otp verify ///////////////
     verifyOtpRequest(state, action) {
       state.status = action.type;
@@ -68,18 +83,7 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
 
-    //////////////////// signIn /////////////////////
-    signInRequest(state, action) {
-      state.status = action.type;
-    },
-    signInSuccess(state, action) {
-      state.signInResponse = action?.payload;
-      state.status = action.type;
-    },
-    signInFailure(state, action) {
-      state.error = action.error;
-      state.status = action.type;
-    },
+
 
     //////////////////// logout /////////////////////
     logoutRequest(state, action) {
@@ -94,6 +98,20 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
 
+    // 
+    //////////////////// forgotPassword /////////////////////
+    forgotPasswordRequest(state, action) {
+      state.status = action.type;
+    },
+    forgotPasswordSuccess(state, action) {
+      state.forgotPasswordResponse = action?.payload;
+      state.status = action.type;
+    },
+    forgotPasswordFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
     //////////////////// Profile /////////////////////
     ProfileRequest(state, action) {
       state.status = action.type;
@@ -103,6 +121,20 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
     ProfileFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+
+    //////////////////// Edit Profile /////////////////////
+    editProfileRequest(state, action) {
+      state.status = action.type;
+    },
+    editProfileSuccess(state, action) {
+      state.editProfileResponse = action?.payload;
+      state.status = action.type;
+    },
+    editProfileFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -135,6 +167,14 @@ export const {
   ProfileRequest,
   ProfileSuccess,
   ProfileFailure,
+
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
+
+  editProfileRequest,
+  editProfileSuccess,
+  editProfileFailure,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

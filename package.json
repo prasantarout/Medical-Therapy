@@ -27,6 +27,7 @@
     "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "^2.14.1",
     "react-native-gifted-charts": "^1.4.5",
+    "react-native-image-crop-picker": "^0.40.3",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-material-menu": "^2.0.0",
     "react-native-modal": "^13.0.1",

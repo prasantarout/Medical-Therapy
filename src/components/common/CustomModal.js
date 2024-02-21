@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     },
     closeButtonStyle: {
         overflow: 'hidden',
-        width: 120,
-        height: 120,
+        width: 80,
+        height: 80,
         borderRadius: normalize(100),
         position: 'absolute',
         top: -20,

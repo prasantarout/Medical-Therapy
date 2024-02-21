@@ -8,13 +8,50 @@ import { icons } from '../../themes/icons';
 import CustomModal from '../../components/common/CustomModal';
 import AuthHeader from '../../components/common/AuthHeader';
 import { colors } from '../../themes/colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotPasswordRequest } from '../../redux/reducer/AuthReducer';
 
-
+let forgotPasswordStatus = ""
 const ForgotPassword = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("manish007@yopmail.com")
+
+  const dispatch = useDispatch()
+  const AuthReducer = useSelector(state => state?.AuthReducer)
 
   const handleForgotPass = () => {
-    setIsModalVisible(true)
+    dispatch(forgotPasswordRequest({ email: email }))
+    // 
+  }
+  // forgotPasswordRequest
+  if (forgotPasswordStatus === "" || AuthReducer.status !== forgotPasswordStatus) {
+    switch (AuthReducer.status) {
+      case "Auth/forgotPasswordRequest":
+        forgotPasswordStatus = AuthReducer.status;
+        console.log("initiated", AuthReducer.status)
+        setIsLoading(true)
+        break;
+      case "Auth/forgotPasswordSuccess":
+        forgotPasswordStatus = AuthReducer.status;
+        console.log("initiated-success", AuthReducer.status)
+        setIsModalVisible(true)
+        setIsLoading(false)
+        break;
+      case "Auth/forgotPasswordFailure":
+        forgotPasswordStatus = AuthReducer.status;
+        console.log("initiated-fail", AuthReducer.status)
+        setIsLoading(false)
+        break;
+
+    }
+  }
+
+  const closeModalRequest = () => {
+    setIsModalVisible(false)
+    setTimeout(() => {
+      props.navigation.navigate('OTPScreen', email)
+    }, 400)
   }
 
   return (
@@ -33,20 +70,29 @@ const ForgotPassword = (props) => {
                 placeholder="abc@gmail.com"
                 rightIcon={icons.email}
                 style={[css.mb3]}
+                value={email}
+                autoCapitalize='none'
+                onChangeText={(val) => setEmail(val)}
               />
-              <Button style={[css.mt3]} title="Submit" onPress={handleForgotPass} />
+              <Button
+                isLoading={isLoading}
+                style={[css.mt3]}
+                title="Submit"
+                onPress={handleForgotPass}
+              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
       {/* </AuthTemplate> */}
-      <CustomModal isVisible={isModalVisible} style={[styles.modalWrap]}
-        onCloseRequest={() => setIsModalVisible(false)}
+      <CustomModal
+        isVisible={isModalVisible}
+        style={[styles.modalWrap]}
+        onCloseRequest={closeModalRequest}
         icon={icons.emailLink}
         title="We Have Sent A Link To Your Email"
         subtitle="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
       >
-
       </CustomModal>
     </>
   );

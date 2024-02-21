@@ -11,8 +11,8 @@ export async function getApi(url, header) {
     headers: {
       accept: header?.Accept,
       'Content-type': header?.contenttype,
-      'x-access-token': `${header?.token}`,
-      // authorization: `Bearer ${header.accesstoken}`,
+      // 'x-access-token': `${header?.token}`,
+      Authorization: `Bearer ${header.accessToken}`,
     },
   });
 }

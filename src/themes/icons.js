@@ -33,6 +33,7 @@ export const icons = {
   calender: require('../assets/icons/calender.png'),
   clock2: require('../assets/icons/clock2.png'),
   location2: require('../assets/icons/location2.png'),
+  mobile: require('../assets/icons/mobile.png'),
   navHome: require('../assets/icons/navHome.png'),
   navAssignment: require('../assets/icons/navAssignment.png'),
   navPatient: require('../assets/icons/navPatient.png'),
@@ -51,4 +52,8 @@ export const icons = {
   modalTop: require('../assets/icons/modalTop.png'),
   modalBottom: require('../assets/icons/modalBottom.png'),
   edit: require('../assets/icons/edit.png'),
+  editSquare: require('../assets/icons/editSquare.png'),
+  done: require('../assets/icons/done.png'),
+  gallery: require('../assets/icons/gallery.png'),
+  camera: require('../assets/icons/camera.png'),
 };

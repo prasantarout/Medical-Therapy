@@ -44,7 +44,7 @@ const css = StyleSheet.create({
   textWhite: {
     color: colors.white
   },
-  border:{
+  border: {
     borderWidth: 1,
     borderColor: colors.borderColor
   },
@@ -63,9 +63,23 @@ const css = StyleSheet.create({
   semiBold: {
     fontFamily: fonts.SemiBold
   },
-
+  bottomSheet: {
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 350,
+    width: width,
+    margin: 0,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20
+  },
   textPrimary: {
     color: colors.primaryTextColor
+  },
+  capitalization: {
+    textTransform: 'capitalize'
   },
 
   f1: { flex: 1 },
@@ -513,14 +527,14 @@ const css = StyleSheet.create({
   bgColor: {
     backgroundColor: colors.bgColor,
   },
-  closeIconWrapStyle:{
+  closeIconWrapStyle: {
     width: 50,
     height: 50,
     position: 'absolute',
     top: -25,
     right: -25,
   },
-  closeIconStyle:{
+  closeIconStyle: {
     width: 50,
     height: 50,
     resizeMode: 'contain',

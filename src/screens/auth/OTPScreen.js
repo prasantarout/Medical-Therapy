@@ -6,12 +6,17 @@ import AuthTemplate from '../../components/common/AuthTemplate';
 import Button from '../../components/buttons/Button';
 import AuthHeader from '../../components/common/AuthHeader';
 import Txt from '../../components/micro/Txt';
+import { useDispatch, useSelector } from 'react-redux';
+import { verifyOtpRequest } from '../../redux/reducer/AuthReducer';
 
 const OTPScreen = (props) => {
   const [otp, setOtp] = useState(['', '', '', '']);
   const [isFocused, setIsFocused] = useState()
 
+  // console.log("prooops: ", props?.route?.params)
   const inputRefs = useRef(otp.map(() => React.createRef()));
+  const AuthReducer = useSelector(state => state?.AuthReducer)
+  const dispatch = useDispatch()
 
   const handleChangeText = (text, index) => {
     const updatedOtp = [...otp];
@@ -25,15 +30,23 @@ const OTPScreen = (props) => {
     }
   };
 
-  // const handleVerifyOTP = () => {
-  //   props.navigation.navigate('Login')
-  //   const enteredOTP = otp.join('');
-  //   // console.log('Entered OTP:', enteredOTP);
-  // };
+
   const handleFocus = (index) => {
     setIsFocused(index)
     console.log("index:", index);
   };
+
+  // verifyOtpRequest,
+  // verifyOtpSuccess,
+  // verifyOtpFailure,
+  console.log("asasas", otp.join(''))
+
+  const handleOTPVerification = () => {
+    dispatch(verifyOtpRequest({
+      email: props?.route?.params,
+      otp: otp.join('')
+    }))
+  }
 
   // Alert.alert('Verified')
   return (
@@ -62,12 +75,12 @@ const OTPScreen = (props) => {
           />
         ))}
       </View>
-      <Button style={[css.mt3]} title="Verify" onPress={() => props.navigation.navigate('Login')} />
-      <View style={[css.row,css.aic,css.jcc, css.my6]}>
-            <Txt style={[css.fs20, {color:colors.ternaryTextColor}]}>Didn't Receive OTP?</Txt>
-            <TouchableOpacity activeOpacity={0.7}>
-              <Txt style={[css.regular, css.fs20, css.ml2,{color:colors.secondary, textDecorationLine: 'underline'}]}>RESEND</Txt>
-            </TouchableOpacity>
+      <Button style={[css.mt3]} title="Verify" onPress={handleOTPVerification} />
+      <View style={[css.row, css.aic, css.jcc, css.my6]}>
+        <Txt style={[css.fs20, { color: colors.ternaryTextColor }]}>Didn't Receive OTP?</Txt>
+        <TouchableOpacity activeOpacity={0.7}>
+          <Txt style={[css.regular, css.fs20, css.ml2, { color: colors.secondary, textDecorationLine: 'underline' }]}>RESEND</Txt>
+        </TouchableOpacity>
       </View>
     </View>
 

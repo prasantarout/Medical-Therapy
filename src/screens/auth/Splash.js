@@ -1,15 +1,13 @@
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {getTokenRequest} from '../../redux/reducer/AuthReducer';
-import {images} from '../../themes/images';
+import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getTokenRequest } from '../../redux/reducer/AuthReducer';
+import { images } from '../../themes/images';
 import normalize from '../../utils/normalize';
-import {colors} from '../../themes/colors';
-import { useNavigation } from '@react-navigation/native';
+import { colors } from '../../themes/colors';
 
-const Splash = () => {
-  const navigation = useNavigation()
-  setTimeout(()=>{navigation.navigate('Login')},1500)
+const Splash = (props) => {
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Image source={images.logo} style={styles.logo} />

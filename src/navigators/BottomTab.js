@@ -25,7 +25,7 @@ const BottomTab = (props) => {
       tabBarLabelPosition: "below-icon",
       tabBarLabelStyle: { marginBottom: 6, fontFamily: fonts.Medium },
       tabBarInactiveTintColor: colors.white,
-      tabBarStyle: { backgroundColor: colors.primary, height: 65 },
+      tabBarStyle: { backgroundColor: colors.primary, height: 80 },
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         let iconColor = focused ? colors.secondary : colors.white
@@ -46,8 +46,8 @@ const BottomTab = (props) => {
       },
     })} >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Assignment" component={AssignmentTab} />
-      <Tab.Screen name="Patient" component={PatientTab} />
+      <Tab.Screen name="Assignments" component={AssignmentTab} />
+      <Tab.Screen name="My Patient" component={PatientTab} />
       <Tab.Screen name="Help & Support" component={HelpnSupport} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>

@@ -12,6 +12,8 @@ import Button from '../buttons/Button';
 import useScreenDimension from '../../utils/useScreenDimension';
 import { widthToDp } from '../../utils/responsive';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { logoutRequest } from '../../redux/reducer/AuthReducer';
 
 let halfWidth = width / 2;
 
@@ -21,9 +23,9 @@ const NavBar = (props) => {
 
     const screenWidth = useScreenDimension()
     const navigation = useNavigation()
-    console.log("screenWidth", screenWidth)
+    const dispatch = useDispatch()
 
-    const handleLogout = () => {
+    const handleLogoutModal = () => {
         setIsShowMenu(false)
         setTimeout(() => {
             setLogoutModal(true)
@@ -38,6 +40,16 @@ const NavBar = (props) => {
     const cloudRefreshStyle = {
         width: screenWidth / 23,
         height: screenWidth / 23,
+    }
+
+    let modalSize = screenWidth < 1000 ? screenWidth / 1.5 : screenWidth / 2.4
+
+    const handleLogout = () => {
+        setLogoutModal(false)
+        setTimeout(() => {
+            dispatch(logoutRequest())
+        }, 500)
+        // logoutRequest
     }
 
     return (
@@ -98,7 +110,7 @@ const NavBar = (props) => {
                                 <Image source={icons.user} style={[styles.menuIcon]} />
                             </TouchableOpacity>
                             <Divider />
-                            <TouchableOpacity activeOpacity={0.8} style={[css.row, css.center, css.f1]} onPress={handleLogout} >
+                            <TouchableOpacity activeOpacity={0.8} style={[css.row, css.center, css.f1]} onPress={handleLogoutModal} >
                                 <Image source={icons.logout} style={[styles.menuIcon]} />
                             </TouchableOpacity>
                         </View>
@@ -115,7 +127,14 @@ const NavBar = (props) => {
 
             <Modal isVisible={logoutModal}>
                 <View style={[css.f1, css.center]}>
-                    <ImageBackground resizeMode='stretch' source={images.modalBg} style={[css.p3, styles.modalPanel]} >
+                    <ImageBackground
+                        resizeMode='stretch'
+                        source={images.modalBg}
+                        style={[css.p3, styles.modalPanel,
+                        {
+                            width: modalSize
+                        }
+                        ]} >
                         <TouchableOpacity onPress={() => setLogoutModal(false)} style={[css.closeIconWrapStyle]} >
                             <Image source={icons.closeIcon} style={[css.closeIconStyle]} />
                         </TouchableOpacity>
@@ -125,7 +144,7 @@ const NavBar = (props) => {
                             <Txt style={[styles.textLighte]} >Lorem ipsum dolor sit amet, consectetur adipiscing elit sagittis.</Txt>
                         </View>
                         <View style={[css.row, css.jcc]} >
-                            <Button style={[styles.btn]} title="Yes" />
+                            <Button onPress={handleLogout} style={[styles.btn]} title="Yes" />
                             <Button onPress={() => setLogoutModal(false)} style={[styles.btn, styles.btnlight, css.ml2]} title="Cancel" />
                         </View>
                     </ImageBackground>
@@ -204,8 +223,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     modalPanel: {
-        minWidth: width / 2.5,
-        minHeight: width / 4
+
     },
     logoStyle: {
         width: 120,

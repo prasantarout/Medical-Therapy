@@ -25,13 +25,13 @@ import { signUpReq } from '../../redux/reducer/AuthReducer';
 const Signup = (props) => {
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("Manish@123");
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
   const [signUpInfo, setSignUpInfo] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
+    first_name: 'Manish',
+    last_name: 'Sharma',
+    email: 'manish007@yopmail.com',
+    password: 'Manish@123',
   });
 
   const dispatch = useDispatch()
@@ -41,24 +41,26 @@ const Signup = (props) => {
   const isValidPass = isValidPassword(signUpInfo.password);
   
   const handleSignup = () => {
-    props.navigation.navigate("OTPScreen")
-    // if (signUpInfo?.first_name == '') {
-    //   CustomToast('Please enter your first name');
-    // } else if (signUpInfo?.last_name == '') {
-    //   CustomToast('Please enter your last name');
-    // } else if (signUpInfo?.email == '') {
-    //   CustomToast('Please enter email');
-    // }else if (signUpInfo?.password == '') {
-    //   CustomToast('Please enter password');
-    // }else if (signUpInfo?.password != confirmPassword){
-    //   CustomToast("Password dosen't match");
-    // }else if (!validEmail) {
-    //   CustomToast('Please enter valid email');
-    // }else if (!isValidPass) {
-    //   CustomToast('The password should contain at least one number, one capital letter, and one special character');
-    // }else{
-    //   dispatch(signUpReq(signUpInfo))
+    // props.navigation.navigate("OTPScreen")
+    if (signUpInfo?.first_name == '') {
+      CustomToast('Please enter your first name');
+    } else if (signUpInfo?.last_name == '') {
+      CustomToast('Please enter your last name');
+    } else if (signUpInfo?.email == '') {
+      CustomToast('Please enter email');
+    }else if (signUpInfo?.password == '') {
+      CustomToast('Please enter password');
+    }else if (signUpInfo?.password != confirmPassword){
+      CustomToast("Password dosen't match");
+    }else if (!validEmail) {
+      CustomToast('Please enter valid email');
+    }
+    // else if (!isValidPass) {
+    //   CustomToast('The passwords should contain at least one number, one capital letter, and one special character');
     // }
+    else{
+      dispatch(signUpReq(signUpInfo))
+    }
   };
 
   const handleInputChange = (key, value) => {
@@ -101,11 +103,21 @@ const Signup = (props) => {
               value={signUpInfo.email}
               autoCapitalize='none'
               onChangeText={text =>
-                handleInputChange('email', text)
+                handleInputChange('email', text.trim())
               }
             />
-
-         
+            <Input
+              title="Phone"
+              placeholder="Enter Phone Number"
+              rightIcon={icons.mobile}
+              style={[css.mb3]}
+              autoCapitalize='none'
+              keyboardType='phone-pad'
+              // value={signUpInfo.email}
+              // onChangeText={text =>
+              //   handleInputChange('email', text.trim())
+              // }
+            />         
             <Input
               title="Enter Password"
               placeholder="**************"

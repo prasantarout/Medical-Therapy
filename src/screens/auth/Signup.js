@@ -17,17 +17,21 @@ import normalize from '../../utils/normalize';
 import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
-import { isValidEmail, isValidPassword, isValidPhoneNumber } from '../../utils/Validation';
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhoneNumber,
+} from '../../utils/Validation';
 import CustomToast from '../../utils/Toast';
 import { useDispatch } from 'react-redux';
 import { signUpReq } from '../../redux/reducer/AuthReducer';
 
 let signupStatus = ""
 
-const Signup = (props) => {
+const Signup = props => {
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState("Manish@123");
+  const [confirmPassword, setConfirmPassword] = useState('Manish@123');
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
   const [isLoading, setIsLoading] = useState(false)
   const [signUpInfo, setSignUpInfo] = useState({
@@ -37,12 +41,12 @@ const Signup = (props) => {
     password: 'Manish@123',
   });
 
-  const dispatch = useDispatch()
-  // 
+  const dispatch = useDispatch();
+  //
   const validEmail = isValidEmail(signUpInfo.email);
   const validPhoneNumber = isValidPhoneNumber(signUpInfo.phone);
   const isValidPass = isValidPassword(signUpInfo.password);
-  
+
   const handleSignup = () => {
     // props.navigation.navigate("OTPScreen")
     if (signUpInfo?.first_name == '') {
@@ -51,18 +55,18 @@ const Signup = (props) => {
       CustomToast('Please enter your last name');
     } else if (signUpInfo?.email == '') {
       CustomToast('Please enter email');
-    }else if (signUpInfo?.password == '') {
+    } else if (signUpInfo?.password == '') {
       CustomToast('Please enter password');
-    }else if (signUpInfo?.password != confirmPassword){
+    } else if (signUpInfo?.password != confirmPassword) {
       CustomToast("Password dosen't match");
-    }else if (!validEmail) {
+    } else if (!validEmail) {
       CustomToast('Please enter valid email');
     }
     // else if (!isValidPass) {
     //   CustomToast('The passwords should contain at least one number, one capital letter, and one special character');
     // }
-    else{
-      dispatch(signUpReq(signUpInfo))
+    else {
+      dispatch(signUpReq(signUpInfo));
     }
   };
 
@@ -97,28 +101,24 @@ const Signup = (props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <AuthHeader 
+          <AuthHeader
             headerText="Sign Up"
             subHeaderText="Please fill up this form to login your account."
           />
-          <View style={[css.f1, css.py5, css.px16,]}>          
+          <View style={[css.f1, css.py5, css.px16]}>
             <Input
               title="First Name"
               placeholder="First Name"
               style={[css.mb3]}
               value={signUpInfo.first_name}
-              onChangeText={text =>
-                handleInputChange('first_name', text)
-              }
+              onChangeText={text => handleInputChange('first_name', text)}
             />
             <Input
               title="Last Name"
               placeholder="Last Name"
-              style={[css.mb3]}              
+              style={[css.mb3]}
               value={signUpInfo.last_name}
-              onChangeText={text =>
-                handleInputChange('last_name', text)
-              }
+              onChangeText={text => handleInputChange('last_name', text)}
             />
             <Input
               title="Email"
@@ -126,48 +126,44 @@ const Signup = (props) => {
               rightIcon={icons.email}
               style={[css.mb3]}
               value={signUpInfo.email}
-              autoCapitalize='none'
-              onChangeText={text =>
-                handleInputChange('email', text.trim())
-              }
+              autoCapitalize="none"
+              onChangeText={text => handleInputChange('email', text.trim())}
             />
             <Input
               title="Phone"
               placeholder="Enter Phone Number"
               rightIcon={icons.mobile}
               style={[css.mb3]}
-              autoCapitalize='none'
-              keyboardType='phone-pad'
+              autoCapitalize="none"
+              keyboardType="phone-pad"
               // value={signUpInfo.email}
               // onChangeText={text =>
               //   handleInputChange('email', text.trim())
               // }
-            />         
+            />
             <Input
               title="Enter Password"
               placeholder="**************"
-              rightIcon={isSecurePass ? icons.eyeClose: icons.eyeOpen}
+              rightIcon={isSecurePass ? icons.eyeClose : icons.eyeOpen}
               style={[css.mb3]}
               secureTextEntry={isSecurePass}
               onPressIcon={() => setIsSecurePass(!isSecurePass)}
               secure={true}
               value={signUpInfo.password}
-              onChangeText={text =>
-                handleInputChange('password', text)
-              }
-            />          
-         
+              onChangeText={text => handleInputChange('password', text)}
+            />
+
             <Input
               title="Confirm Password"
               placeholder="**************"
-              rightIcon={isSecureConfrmPass ? icons.eyeClose: icons.eyeOpen}
+              rightIcon={isSecureConfrmPass ? icons.eyeClose : icons.eyeOpen}
               style={[css.mb3]}
               secureTextEntry={isSecureConfrmPass}
               onPressIcon={() => setIsSecureConfrmPass(!isSecureConfrmPass)}
               secure={true}
-              onChangeText={(text) => setConfirmPassword(text)}
+              onChangeText={text => setConfirmPassword(text)}
               value={confirmPassword}
-            />          
+            />
 
             <Button
               onPress={() => {
@@ -179,7 +175,10 @@ const Signup = (props) => {
             />
             <View style={[css.row, css.aic, css.mt2, css.jcc]}>
               <Text style={[css.subTxt]}>Already Have An Account?</Text>
-              <TouchableOpacity activeOpacity={0.6} style={[css.signInTxt]} onPress={()=> props.navigation.navigate("Login")} >
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={[css.signInTxt]}
+                onPress={() => props.navigation.navigate('Login')}>
                 <Text style={[css.signInTxt]}>Login</Text>
               </TouchableOpacity>
             </View>
@@ -192,6 +191,4 @@ const Signup = (props) => {
 
 export default Signup;
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});

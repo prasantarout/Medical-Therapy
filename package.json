@@ -24,6 +24,7 @@
     "react-native": "0.71.8",
     "react-native-calendar-strip": "^2.2.6",
     "react-native-circular-progress-indicator": "^4.4.2",
+    "react-native-document-picker": "^9.1.1",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "^2.14.1",
     "react-native-gifted-charts": "^1.4.5",

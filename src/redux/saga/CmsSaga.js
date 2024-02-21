@@ -1,9 +1,15 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { getApi, postApi, putApi } from '../../utils/ApiRequest';
+import {call, put, select, takeLatest} from 'redux-saga/effects';
+import {getApi, postApi, putApi} from '../../utils/ApiRequest';
 
 import {
   getCategorySuccess,
-  getCategoryFailure
+  getCategoryFailure,
+  helpAndSupportSuccess,
+  helpAndSupportFailure,
+  helpSupportTypeSuccess,
+  helpSupportTypeFailure,
+  contactUsForSupportSuccess,
+  contactUsForSupportFailure,
 } from '../reducer/CmsReducer';
 
 let getItem = state => state.AuthReducer;
@@ -22,7 +28,7 @@ export function* getCategorySaga(action) {
       // action.payload,
       header,
     );
-    console.log("response: ", response)
+    console.log('response: ', response);
     if (response?.data?.status == 200) {
       yield put(getCategorySuccess(response?.data));
     } else {
@@ -31,16 +37,107 @@ export function* getCategorySaga(action) {
     }
   } catch (error) {
     yield put(getCategoryFailure(error?.response));
-    console.log("error: ", error)
+    console.log('error: ', error);
   }
 }
 
+// Help And Support Type
+export function* getHelpAndSupportTypeSaga(action) {
+  let item = yield select(getItem);
+  console.log(item);
+  let header = {
+    Accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: item?.token,
+  };
+
+  try {
+    let response = yield call(
+      getApi,
+      'help-support-types',
+      // action.payload,
+      header,
+    );
+    console.log(response);
+    if (response?.data?.status == 200) {
+      yield put(helpSupportTypeSuccess(response?.data));
+    } else {
+      yield put(helpSupportTypeFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(helpSupportTypeFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
+// Help And Support
+export function* getHelpAndSupportSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    Accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: item?.token,
+  };
+
+  try {
+    let response = yield call(
+      getApi,
+      'help-support/{type_id}',
+      // action.payload,
+      header,
+    );
+    if (response?.data?.status == 200) {
+      yield put(helpAndSupportSuccess(response?.data));
+    } else {
+      yield put(helpAndSupportFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(helpAndSupportFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
+// Contact US for Support
+
+export function* ContactUsForSupportSaga(action) {
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: items?.token,
+  };
+
+  try {
+    let response = yield call(postApi, 'contact-us', action.payload, header);
+
+    if (response?.status == '200') {
+      yield put(contactUsForSupportSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(contactUsForSupportFailure(response?.data));
+      CustomToast(response?.data?.message);
+    }
+  } catch (error) {
+    console.log('Catch', error);
+    yield put(contactUsForSupportFailure(error?.response));
+  }
+}
 
 const watchFunction = [
   (function* () {
     yield takeLatest('CMS/getCategoryReq', getCategorySaga);
   })(),
-
+  (function* () {
+    yield takeLatest('CMS/helpSupportTypeReq', getHelpAndSupportTypeSaga);
+  })(),
+  (function* () {
+    yield takeLatest('CMS/helpAndSupportReq', getHelpAndSupportSaga);
+  })(),
+  (function* () {
+    yield takeLatest('CMS/contactUsForSupportReq', ContactUsForSupportSaga);
+  })(),
 ];
 
 export default watchFunction;

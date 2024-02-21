@@ -9,7 +9,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
@@ -23,15 +23,56 @@ import {icons} from '../../../themes/icons';
 import Modal from 'react-native-modal';
 import {images} from '../../../themes/images';
 import SimpleInput from '../../../components/inputs/SimpleInput';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  helpAndSupportReq,
+  helpSupportTypeReq,
+} from '../../../redux/reducer/CmsReducer';
+import CustomToast from '../../../utils/Toast';
 
+let status = '';
 const HelpnSupport = () => {
-  const [selected, setSelected] = useState('Accounts');
+  const [selected, setSelected] = useState(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
+  const [helpSupportType, setHelpSupportType] = useState();
+  const [helpSupportData, setHelpSupportData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const CmsReducer = useSelector(state => state.CmsReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(helpSupportTypeReq());
+    getHelpSupportFunc();
+  }, []);
+
+  if (status === '' || CmsReducer.status !== status) {
+    switch (CmsReducer.status) {
+      case 'CMS/helpSupportTypeReq':
+        status = CmsReducer.status;
+        break;
+      case 'CMS/helpSupportTypeSuccess':
+        status = CmsReducer.status;
+        setHelpSupportType(CmsReducer?.helpSupportTypeResponse?.data);
+        break;
+      case 'CMS/helpSupportTypeFailure':
+        status = CmsReducer.status;
+        break;
+      case 'CMS/helpAndSupportReq':
+        status = CmsReducer.status;
+        break;
+      case 'CMS/helpAndSupportSuccess':
+        status = CmsReducer.status;
+        setHelpSupportData(CmsReducer?.helpAndSupportResponse?.data);
+        break;
+      case 'CMS/helpAndSupportFailure':
+        status = CmsReducer.status;
+        break;
+    }
+  }
 
   const categoryData = [
     {
@@ -73,49 +114,65 @@ const HelpnSupport = () => {
     },
   ];
 
-  const InputField = props => {
-    return (
-      <View style={[styles.InputField, props.style]}>
-        <Txt style={styles.fieldTitle}>{props.title}</Txt>
-        <TextInput
-          placeholder={props.placeholder}
-          value={props.Value}
-          onChange={props.onChange}
-          style={styles.input}
-        />
-      </View>
-    );
-  };
-
   const supportRenderItem = ({item, index}) => {
     return <QuestionCard title={item.title} value={item.value} />;
+  };
+
+  const getHelpSupportFunc = () => {
+    let obj = {
+      type_id: selected,
+    };
+    dispatch(helpAndSupportReq(obj));
   };
 
   const categoryRenderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        onPress={() => setSelected(item.title)}
+        onPress={() => {
+          setSelected(item.id), getHelpSupportFunc();
+        }}
         activeOpacity={0.6}
         style={[
           styles.categoryBtn,
           {
             backgroundColor:
-              selected == item.title ? colors.secondary : colors.white,
-            borderWidth: selected != item.title ? 1.5 : null,
-            borderColor: selected != item.title ? colors.secondary : null,
+              selected == item.id ? colors.secondary : colors.white,
+            borderWidth: selected != item.id ? 1.5 : null,
+            borderColor: selected != item.id ? colors.secondary : null,
           },
         ]}>
         <Txt
           style={[
             styles.categoryTxt,
             {
-              color: selected == item?.title ? colors.white : colors.secondary,
+              color: selected == item?.id ? colors.white : colors.secondary,
             },
           ]}>
           {item.title}
         </Txt>
       </TouchableOpacity>
     );
+  };
+
+  const handleSubmit = () => {
+    if (firstName == '') {
+      CustomToast('Please enter your First Name');
+    } else if (lastName == '') {
+      CustomToast('Please enter your Last Name');
+    } else if (email == '') {
+      CustomToast('Please enter your Email');
+    } else if (phone == '') {
+      CustomToast('Please enter your Phone Number');
+    } else {
+      let obj = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone,
+        message: message,
+      };
+      dispatch(helpAndSupportReq(obj));
+    }
   };
 
   return (
@@ -130,19 +187,23 @@ const HelpnSupport = () => {
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => item.id}
             style={[css.my3]}
-            data={categoryData}
+            data={helpSupportType}
             renderItem={categoryRenderItem}
           />
-          <View style={styles.questionCtnr}>
-            <FlatList
-              data={supportData}
-              renderItem={supportRenderItem}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-          <TouchableOpacity style={styles.btn}>
-            <Txt style={styles.btnTxt}>Load more</Txt>
-          </TouchableOpacity>
+          {helpSupportData?.length > 0 && (
+            <>
+              <View style={styles.questionCtnr}>
+                <FlatList
+                  data={helpSupportData}
+                  renderItem={supportRenderItem}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+              <TouchableOpacity style={styles.btn}>
+                <Txt style={styles.btnTxt}>Load more</Txt>
+              </TouchableOpacity>
+            </>
+          )}
           <TitleTxt title={'Need any help!'} />
           <View style={styles.container}>
             <View style={[css.row, css.fw, css.aic]}>
@@ -208,7 +269,7 @@ const HelpnSupport = () => {
                   fontSize: 20,
                   marginLeft: 12,
                 }}>
-Attach File
+                Attach File
               </Txt>
               <Txt
                 style={{
@@ -340,7 +401,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
-    minHeight: 150
+    minHeight: 150,
   },
   uploadSubContainer: {
     height: 90,

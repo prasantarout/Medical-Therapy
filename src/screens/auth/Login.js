@@ -8,41 +8,46 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import css from '../../themes/space';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
-import { colors } from '../../themes/colors';
-import { fonts } from '../../themes/fonts';
+import {colors} from '../../themes/colors';
+import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
-import { icons } from '../../themes/icons';
+import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
 import Txt from '../../components/micro/Txt';
-import { isValidEmail, isValidPassword, isValidPhoneNumber } from '../../utils/Validation';
-import { useDispatch, useSelector } from 'react-redux';
-import { signInRequest } from '../../redux/reducer/AuthReducer';
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhoneNumber,
+} from '../../utils/Validation';
+import {useDispatch, useSelector} from 'react-redux';
+import {signInRequest} from '../../redux/reducer/AuthReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomToast from '../../utils/Toast';
 
-let loginStatus = ""
+let loginStatus = '';
 
-const Login = (props) => {
+const Login = props => {
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
-  const [isRememberMe, setIsRememberMe] = useState(false)
+  const [isRememberMe, setIsRememberMe] = useState(false);
   const [signInInfo, setsignInInfo] = useState({
     email: '',
     password: '',
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const validEmail = isValidEmail(signInInfo.email);
   const validPhoneNumber = isValidPhoneNumber(signInInfo.phone);
-  const AuthReducer = useSelector(state => state.AuthReducer)
+  const AuthReducer = useSelector(state => state.AuthReducer);
 
   useEffect(() => {
-    getRememberMeStatus()
-  }, [])
+    getRememberMeStatus();
+  }, []);
 
   const getRememberMeStatus = async () => {
     try {
@@ -50,7 +55,7 @@ const Login = (props) => {
       const email_value = await AsyncStorage.getItem('email');
       const password_value = await AsyncStorage.getItem('password');
 
-      console.log("AsyncStorage", email_value, password_value, value)
+      console.log('AsyncStorage', email_value, password_value, value);
 
       if (value === 'true') {
         setIsRememberMe(value == 'true' ? true : false);
@@ -59,21 +64,21 @@ const Login = (props) => {
           password: password_value,
         });
       } else {
-        console.log("rememberMe not found");
+        console.log('rememberMe not found');
       }
     } catch (e) {
-      console.error("error", e);
+      console.error('error', e);
     }
   };
 
   const handleLogin = () => {
-    if (signInInfo?.email == "") {
+    if (signInInfo?.email == '') {
       CustomToast('Please enter email');
-    } else if (signInInfo?.password == "") {
+    } else if (signInInfo?.password == '') {
       CustomToast('Please enter password');
     } else {
-      rememberMeState()
-      dispatch(signInRequest(signInInfo))
+      rememberMeState();
+      dispatch(signInRequest(signInInfo));
     }
   };
 
@@ -89,7 +94,7 @@ const Login = (props) => {
         await AsyncStorage.removeItem('password');
       }
     } catch (e) {
-      console.error("setRememberMeStatus-error", e);
+      console.error('setRememberMeStatus-error', e);
     }
   };
 
@@ -97,41 +102,44 @@ const Login = (props) => {
     return (
       <TouchableOpacity
         onPress={() => setIsRememberMe(!isRememberMe)}
-        style={[styles.checkboxStyle, {
-          backgroundColor: isRememberMe ? colors.secondary : 'transparent'
-        }]}
-      >
-        {isRememberMe ?
-          <Image style={[styles.checkIconStyle]} source={icons.check} /> : null
-        }
+        style={[
+          styles.checkboxStyle,
+          {
+            backgroundColor: isRememberMe ? colors.secondary : 'transparent',
+          },
+        ]}>
+        {isRememberMe ? (
+          <Image style={[styles.checkIconStyle]} source={icons.check} />
+        ) : null}
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
-  if (loginStatus === "" || AuthReducer.status !== loginStatus) {
+  if (loginStatus === '' || AuthReducer.status !== loginStatus) {
     switch (AuthReducer.status) {
-      case "Auth/signInRequest":
+      case 'Auth/signInRequest':
         loginStatus = AuthReducer.status;
-        setLoading(true)
+        setLoading(true);
         //  Code...
         break;
-      case "Auth/signInSuccess":
+      case 'Auth/signInSuccess':
         loginStatus = AuthReducer.status;
-        setTimeout(() => { setLoading(false) }, 200)
+        setTimeout(() => {
+          setLoading(false);
+        }, 200);
         break;
-      case "Auth/signInFailure":
+      case 'Auth/signInFailure':
         loginStatus = AuthReducer.status;
-        setLoading(false)
+        setLoading(false);
         break;
-
     }
   }
 
   const handleInputChange = (key, value) => {
-    setsignInInfo({ ...signInInfo, [key]: value });
-  }
+    setsignInInfo({...signInInfo, [key]: value});
+  };
   return (
-    <SafeAreaView style={[css.f1, { backgroundColor: colors.bgColor }]}>
+    <SafeAreaView style={[css.f1, {backgroundColor: colors.bgColor}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -140,17 +148,14 @@ const Login = (props) => {
             subHeaderText="Please fill up this form to login your account."
           />
           <View style={[css.f1, css.py11, css.px16]}>
-
             <Input
               title="Email"
               placeholder="abc@gmail.com"
               rightIcon={icons.email}
               style={[css.mb3]}
               value={signInInfo?.email}
-              autoCapitalize='none'
-              onChangeText={text =>
-                handleInputChange('email', text)
-              }
+              autoCapitalize="none"
+              onChangeText={text => handleInputChange('email', text)}
             />
 
             <Input
@@ -162,17 +167,17 @@ const Login = (props) => {
               onPressIcon={() => setIsSecurePass(!isSecurePass)}
               secure={true}
               value={signInInfo?.password}
-              onChangeText={text =>
-                handleInputChange('password', text)
-              }
+              onChangeText={text => handleInputChange('password', text)}
             />
             <View style={[css.mb3, css.rowBetween]}>
-              <View style={[css.row, css.aic]} >
+              <View style={[css.row, css.aic]}>
                 <Checkbox />
-                <Txt style={[css.ml1, css.fs18]} >Remember Me</Txt>
+                <Txt style={[css.ml1, css.fs18]}>Remember Me</Txt>
               </View>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('ForgotPassword')} >
-                <Txt style={[css.fs18]} >Forgot Password?</Txt>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => props.navigation.navigate('ForgotPassword')}>
+                <Txt style={[css.fs18]}>Forgot Password?</Txt>
               </TouchableOpacity>
             </View>
 
@@ -188,9 +193,8 @@ const Login = (props) => {
               <Text style={[css.subTxt]}>Don't Have An Account?</Text>
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => props.navigation.navigate("Signup")}
-                style={[styles.SignInTxt]}
-              >
+                onPress={() => props.navigation.navigate('Signup')}
+                style={[styles.SignInTxt]}>
                 <Text style={[css.signInTxt]}>Sign Up</Text>
               </TouchableOpacity>
             </View>
@@ -237,12 +241,12 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderWidth: 1,
     borderColor: colors.borderColor,
-    padding: 6
+    padding: 6,
     // backgroundColor: colors.secondary,
   },
   checkIconStyle: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
 });

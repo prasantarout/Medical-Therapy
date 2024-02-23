@@ -1,20 +1,21 @@
-import {Dimensions, StyleSheet, View, useWindowDimensions} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import css, {width} from '../../themes/space';
+import { Dimensions, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import css, { width } from '../../themes/space';
 import NavBar from '../../components/common/NavBar';
 import SafeView from '../../components/common/SafeView';
 import TitleTxt from '../../components/common/TitleTxt';
 import HeaderTitle from '../../components/common/HeaderTitle';
 import ScoreCard from '../../components/common/ScoreCard';
 import QuickCounter from '../../components/common/QuickCounter';
-import {icons} from '../../themes/icons';
-import {colors} from '../../themes/colors';
+import { icons } from '../../themes/icons';
+import { colors } from '../../themes/colors';
 import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
 import useScreenDimension from '../../utils/useScreenDimension';
 import useOrientation from '../../utils/useOrientation';
 import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
 import { heightToDp as hp, widthToDp as wp } from '../../utils/responsive';
+import { images } from '../../themes/images';
 
 const Home = props => {
   const [visible, setVisible] = useState(false);
@@ -47,8 +48,8 @@ const Home = props => {
     },
   ];
 
-  let paddingLast = {paddingRight: orientation == 'PORTRAIT' ? 0 : 16};
-  let paddingRight = {paddingRight: orientation == 'PORTRAIT' ? 16 : 0};
+  let paddingLast = { paddingRight: orientation == 'PORTRAIT' ? 0 : 16 };
+  let paddingRight = { paddingRight: orientation == 'PORTRAIT' ? 16 : 0 };
 
   let counterCardWidth = {
     width: orientation == 'PORTRAIT' ? '50%' : '33.2%',
@@ -59,7 +60,7 @@ const Home = props => {
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
         <View style={[css.row, css.jcse]}>
-          <ScoreCard
+          {/* <ScoreCard
             title="Service Score"
             value={90}
             activeStrokeColor="#623792"
@@ -71,7 +72,13 @@ const Home = props => {
             value={70}
             activeStrokeColor="#623792"
             activeStrokeSecondaryColor={'#343286'}
-          />
+          /> */}
+          <View style={[styles.scoreCard]}>
+            <Image source={images.serviceScore} style={[styles.scoreCard]} />
+          </View>
+          <View style={[styles.scoreCard]}>
+            <Image source={images.evaluationScore} style={[styles.scoreCard]} />
+          </View>
         </View>
 
         <View style={[styles.quickCounter, css.mt4]}>
@@ -180,4 +187,11 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.primaryTextColor,
   },
+  scoreCard: {
+    width: width / 3,
+    height: width / 3,
+    resizeMode: 'contain',
+    backgroundColor: '#fff',
+    // borderRadius: 10
+  }
 });

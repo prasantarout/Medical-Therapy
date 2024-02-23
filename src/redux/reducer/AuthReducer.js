@@ -35,7 +35,7 @@ const AuthSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
-
+    // my-patients
     //signUpReq
     signUpReq(state, action) {
       state.status = action.type;

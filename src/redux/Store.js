@@ -4,6 +4,8 @@ import {logger} from 'redux-logger';
 import RootSaga from './saga/RootSaga';
 import CmsReducer from './reducer/CmsReducer';
 import AuthReducer from './reducer/AuthReducer';
+import PatientReducer from './reducer/PatientReducer';
+// import AssignmentsReducer from './reducer/AssignmentsReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
@@ -18,6 +20,8 @@ import {
 const rootReducer = combineReducers({
   AuthReducer: AuthReducer,
   CmsReducer: CmsReducer,
+  PatientReducer: PatientReducer,
+  // AssignmentsReducer: AssignmentsReducer,
 });
 
 let SagaMiddleware = createSagaMiddleware();

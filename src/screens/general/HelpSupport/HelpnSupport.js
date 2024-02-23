@@ -209,7 +209,7 @@ const HelpnSupport = () => {
   }, []);
 
   return (
-    <SafeView>
+    <SafeView {...props}>
       <ScrollView
         style={{paddingBottom: normalize(35)}}
         showsVerticalScrollIndicator={false}>

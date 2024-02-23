@@ -1,5 +1,5 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import css from '../../../themes/space'
 import Tabs from '../../../components/common/Tabs'
 import TitleTxt from '../../../components/common/TitleTxt'
@@ -9,10 +9,14 @@ import { icons } from '../../../themes/icons'
 import useOrientation from '../../../utils/useOrientation'
 import { upcomingAssignmentList } from '../../../utils/dumpAPI'
 import Txt from '../../../components/micro/Txt'
-import Button from '../../../components/buttons/Button'
 import { colors } from '../../../themes/colors'
-import NavBar from '../../../components/common/NavBar'
 import SafeView from '../../../components/common/SafeView'
+import { useDispatch, useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native'
+import { getUpcomingAssignmentsReq } from '../../../redux/reducer/CmsReducer'
+
+
+let upComingAssignmentStatus = ""
 
 const Assignments = (props) => {
 
@@ -21,6 +25,14 @@ const Assignments = (props) => {
     const tabs = ['Upcoming Assignments', 'Completed Assignments'];
     // const initialTab = 0;
     const [numCols, setColumnNo] = useState(orientation == 'PORTRAIT' ? 1 : 2);
+    const isFocused = useIsFocused()
+    const dispatch = useDispatch()
+    const CmsReducer = useSelector(state => state.CmsReducer)
+    
+    useEffect(() => {
+        dispatch(getUpcomingAssignmentsReq())
+        console.log("getUpcomingAssignmentsReq - useeffect")
+    }, [isFocused])
 
     const handleTabPress = (index) => {
         setActiveTab(index)
@@ -85,9 +97,27 @@ const Assignments = (props) => {
         )
     }
 
+
+    if (upComingAssignmentStatus === '' || CmsReducer.status !== upComingAssignmentStatus) {
+        switch (CmsReducer.status) {
+            case 'CMS/getUpcomingAssignmentsReq':
+                upComingAssignmentStatus = CmsReducer.status;
+                console.log("getUpcomingAssignmentsReq", CmsReducer.status)
+                break;
+            case 'CMS/getUpcomingAssignmentsSuccess':
+                upComingAssignmentStatus = CmsReducer.status;
+                console.log("getUpcomingAssignmentsSuccess", CmsReducer.status)
+                break;
+            case 'CMS/getUpcomingAssignmentsFailure':
+                upComingAssignmentStatus = CmsReducer.status;
+                console.log("getUpcomingAssignmentsFailure", CmsReducer.status)
+                break;
+        }
+    }
+
     return (
-        <SafeView>
-            
+        <SafeView {...props}>
+
             <View style={[css.px4, css.f1]}>
                 <Tabs tabs={tabs} initialTab={activeTab} onTabPress={handleTabPress} />
                 <TitleTxt style={[css.mt4]} title={activeTab == 0 ? "Upcoming Assignments" : "Completed Assignments"} />

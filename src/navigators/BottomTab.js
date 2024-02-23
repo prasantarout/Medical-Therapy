@@ -30,14 +30,12 @@ const BottomTab = (props) => {
         let iconName;
         let iconColor = focused ? colors.secondary : colors.white
 
-        if (route.name === 'Home') {
+        if (route.name === 'Dashboard') {
           iconName = icons.navHome;
-        } else if (route.name === 'Assignments') {
+        } else if (route.name === 'Patients Session') {
           iconName = icons.navAssignment;
-        } else if (route.name === 'My Patient') {
+        } else if (route.name === 'Patients Queue') {
           iconName = icons.navPatient;
-        } else if (route.name === 'Help & Support') {
-          iconName = icons.navHelp;
         } else if (route.name === 'My Profile') {
           iconName = icons.navProfile;
         }
@@ -45,10 +43,9 @@ const BottomTab = (props) => {
           style={[{ tintColor: iconColor }, styles.tabIcon]} />;
       },
     })} >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Assignments" component={AssignmentTab} />
-      <Tab.Screen name="My Patient" component={PatientTab} />
-      <Tab.Screen name="Help & Support" component={HelpnSupport} />
+      <Tab.Screen name="Dashboard" component={Home} />
+      <Tab.Screen name="Patients Session" component={AssignmentTab} />
+      <Tab.Screen name="Patients Queue" component={PatientTab} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>
   )

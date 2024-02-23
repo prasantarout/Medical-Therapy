@@ -60,6 +60,7 @@ export function* signUpSaga(action) {
   } catch (error) {
     console.log('Catch', error);
     yield put(signUpFailure(error?.response));
+    CustomToast(error?.response?.message)
   }
 }
 
@@ -194,15 +195,15 @@ export function* Profilesaga(action) {
   }
 }
 
+
 /////////////////////// Edit Profile Saga ///////////////////////
 export function* editProfilesaga(action) {
   let items = yield select(getItem);
   let header = {
-    Accept: 'application/json',
+    Accept: 'multipart/form-data',
     contenttype: 'multipart/form-data',
     Authorization: `Bearer ${items?.token}`,
   };
-  console.log("editProfilesaga-heeaaddeerr", header);
   try {
     console.log("editProfilesaga-try");
     let response = yield call(

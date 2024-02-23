@@ -38,7 +38,7 @@ const EvaluationResult = (props) => {
 
     return (
         <>
-            <SafeView>
+            <SafeView {...props}>
                 <View style={[css.px4]}>
                     <TitleTxt title="Evaluation Form" />
                     <View style={[css.card]} >

@@ -6,19 +6,20 @@ import { colors } from '../../themes/colors'
 
 const GeneralInfoCard = (props) => {
 
-    const { title, value, editable, onChangeText, containerStyle } = props
+    const { title, value, editable, onChangeText, containerStyle, autoCapitalize } = props
 
     return (
         <View style={[containerStyle]}>
             <Txt style={[css.textLighte, css.semiBold, css.fs17]} >{title}</Txt>
             <TextInput
-                style={[css.textLighte,css.fs16,{
+                style={[css.textLighte, css.fs16, {
                     borderBottomWidth: editable ? 1 : 0,
                     borderBottomColor: colors.borderColor
                 }]}
                 editable={editable}
                 value={value}
                 onChangeText={onChangeText}
+                autoCapitalize={autoCapitalize}
             />
         </View>
     )

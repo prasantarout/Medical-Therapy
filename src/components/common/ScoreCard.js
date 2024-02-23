@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import CircularProgress from 'react-native-circular-progress-indicator';
+// import CircularProgress from 'react-native-circular-progress-indicator';
 import css from '../../themes/space';
 import Txt from '../micro/Txt';
 import { fonts } from '../../themes/fonts';
@@ -18,7 +18,7 @@ const ScoreCard = (props) => {
             maxWidth: screenWidth / 2.5,
             maxHeight: screenWidth / 2.5,
         }]}>
-            <CircularProgress
+            {/* <CircularProgress
                 value={props?.value}
                 radius={screenWidth / 12}
                 duration={2000}
@@ -32,7 +32,7 @@ const ScoreCard = (props) => {
                 rotation={-150}
                 circleBackgroundColor="#fff"
             >
-            </CircularProgress>
+            </CircularProgress> */}
             <View style={[css.aic, css.mt3]}>
                 <Txt style={[css.fs18, styles.titleStyle]}>{props.title}</Txt>
             </View>

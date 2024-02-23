@@ -10,6 +10,8 @@ import {
   helpSupportTypeFailure,
   contactUsForSupportSuccess,
   contactUsForSupportFailure,
+  getUpcomingAssignmentsSuccess,
+  getUpcomingAssignmentsFailure,
 } from '../reducer/CmsReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -126,6 +128,32 @@ export function* ContactUsForSupportSaga(action) {
   }
 }
 
+// Get Upcoming Assignments Saga
+export function* getUpcomingAssignmentsSaga(action) {
+  console.log("getUpcomingAssignmentsSaga started")
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${items?.token}`,
+  };
+  
+  try {
+    let response = yield call(postApi, 'upcoming-assignments', header);
+    console.log("getUpcomingAssignmentsSaga response", response);
+    if (response?.status == '200') {
+      yield put(getUpcomingAssignmentsSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(getUpcomingAssignmentsFailure(response?.data));
+      CustomToast(response?.data?.message);
+    }
+  } catch (error) {
+    console.log('Catch', error);
+    yield put(getUpcomingAssignmentsFailure(error?.response));
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('CMS/getCategoryReq', getCategorySaga);
@@ -139,6 +167,11 @@ const watchFunction = [
   (function* () {
     yield takeLatest('CMS/contactUsForSupportReq', ContactUsForSupportSaga);
   })(),
+  (function* () {
+    yield takeLatest('CMS/getUpcomingAssignmentsReq', getUpcomingAssignmentsSaga);
+  })(),
 ];
+
+ 
 
 export default watchFunction;

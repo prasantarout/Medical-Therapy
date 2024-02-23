@@ -134,7 +134,7 @@ const EnrolmentQueue = () => {
   const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
 
   return (
-    <SafeView>
+    <SafeView {...props}>
       
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Enrollment Queue'} />

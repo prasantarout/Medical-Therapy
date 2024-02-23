@@ -63,7 +63,7 @@ const AddPatient = () => {
   ];
 
   return (
-    <SafeView>
+    <SafeView {...props}>
       
       <View style={[css.px5, css.f1, css.py4]}>
         <ScrollView

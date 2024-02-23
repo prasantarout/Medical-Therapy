@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import css from '../../themes/space';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
-import {colors} from '../../themes/colors';
-import {fonts} from '../../themes/fonts';
+import { colors } from '../../themes/colors';
+import { fonts } from '../../themes/fonts';
 import normalize from '../../utils/normalize';
-import {icons} from '../../themes/icons';
+import { icons } from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
 import {
@@ -23,7 +23,7 @@ import {
   isValidPhoneNumber,
 } from '../../utils/Validation';
 import CustomToast from '../../utils/Toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signUpReq } from '../../redux/reducer/AuthReducer';
 
 let signupStatus = ""
@@ -31,14 +31,15 @@ let signupStatus = ""
 const Signup = props => {
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState('Manish@123');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
   const [isLoading, setIsLoading] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const [signUpInfo, setSignUpInfo] = useState({
-    first_name: 'Manish',
-    last_name: 'Sharma',
-    email: 'manish007@yopmail.com',
-    password: 'Manish@123',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
   });
 
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const Signup = props => {
   const validEmail = isValidEmail(signUpInfo.email);
   const validPhoneNumber = isValidPhoneNumber(signUpInfo.phone);
   const isValidPass = isValidPassword(signUpInfo.password);
+  const AuthReducer = useSelector(state => state.AuthReducer);
 
   const handleSignup = () => {
     // props.navigation.navigate("OTPScreen")
@@ -71,7 +73,7 @@ const Signup = props => {
   };
 
   const handleInputChange = (key, value) => {
-    setSignUpInfo({...signUpInfo, [key]: value});
+    setSignUpInfo({ ...signUpInfo, [key]: value });
   }
 
   if (signupStatus === "" || AuthReducer.status !== signupStatus) {
@@ -84,7 +86,10 @@ const Signup = props => {
       case "Auth/signUpSucces":
         signupStatus = AuthReducer.status;
         console.log("initiated-success", AuthReducer.status)
-        setIsModalVisible(true)
+        setTimeout(() => {
+          props?.navigation.navigate("Login")
+        },900)
+        // setIsModalVisible(true)
         setIsLoading(false)
         break;
       case "Auth/signUpFailure":
@@ -97,7 +102,7 @@ const Signup = props => {
   }
 
   return (
-    <SafeAreaView style={[css.f1, css.f1, {backgroundColor: colors.bgColor}]}>
+    <SafeAreaView style={[css.f1, css.f1, { backgroundColor: colors.bgColor }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -136,10 +141,10 @@ const Signup = props => {
               style={[css.mb3]}
               autoCapitalize="none"
               keyboardType="phone-pad"
-              // value={signUpInfo.email}
-              // onChangeText={text =>
-              //   handleInputChange('email', text.trim())
-              // }
+            // value={signUpInfo.email}
+            // onChangeText={text =>
+            //   handleInputChange('email', text.trim())
+            // }
             />
             <Input
               title="Enter Password"

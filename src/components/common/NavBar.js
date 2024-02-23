@@ -1,5 +1,5 @@
 import { Image, ImageBackground, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import css, { width } from '../../themes/space';
 import Txt from '../micro/Txt';
 import { images } from '../../themes/images';
@@ -11,11 +11,12 @@ import TitleTxt from './TitleTxt';
 import Button from '../buttons/Button';
 import useScreenDimension from '../../utils/useScreenDimension';
 import { widthToDp } from '../../utils/responsive';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { logoutRequest } from '../../redux/reducer/AuthReducer';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProfileRequest, logoutRequest } from '../../redux/reducer/AuthReducer';
 
 let halfWidth = width / 2;
+let profileStatus = ""
 
 const NavBar = (props) => {
     const [isShowMenu, setIsShowMenu] = useState(false);
@@ -23,7 +24,15 @@ const NavBar = (props) => {
 
     const screenWidth = useScreenDimension()
     const navigation = useNavigation()
+    const AuthReducer = useSelector(state => state?.AuthReducer)
     const dispatch = useDispatch()
+    const focused = useIsFocused()
+
+    console.log("NavProps", props)
+
+    useEffect(() => {
+        dispatch(ProfileRequest())
+    }, [])
 
     const handleLogoutModal = () => {
         setIsShowMenu(false)
@@ -52,18 +61,41 @@ const NavBar = (props) => {
         // logoutRequest
     }
 
+    if (profileStatus === "" || AuthReducer.status !== profileStatus) {
+        switch (AuthReducer.status) {
+            case "Auth/ProfileRequest":
+                profileStatus = AuthReducer.status;
+                break;
+            case "Auth/ProfileSuccess":
+                profileStatus = AuthReducer.status;
+                console.log("ProfileInfo", AuthReducer.ProfileResponse?.data)
+                break;
+            case "Auth/ProfileFailure":
+                profileStatus = AuthReducer.status;
+                break;
+        }
+    }
+
     return (
         <>
             <View style={[css.bgWhite, { zIndex: 4 }]} >
                 <SafeAreaView />
                 <View style={[css.rowBetween, styles.navWrap, css.aic]}>
-                    <View style={[styles.logoArea, {
-                        width: screenWidth / 4,
-                        height: screenWidth / 18,
-                        // backgroundColor: 'red',
-                    }]}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate("BottomTab", {
+                            screen: 'Dashboard',
+                            params: {
+                                data: 'Dashboard',
+                            },
+                        })}
+                        style={[styles.logoArea, {
+                            width: screenWidth / 4,
+                            height: screenWidth / 18,
+                        }]}
+                    >
                         <Image source={images.logo} style={[styles.imgResponsive]} />
-                    </View>
+                    </TouchableOpacity>
                     <View style={[styles.rightSection, css.row, css.aic, { width: screenWidth / 2.2, height: 50 }]}>
                         <TouchableOpacity
                             activeOpacity={0.8}
@@ -88,9 +120,9 @@ const NavBar = (props) => {
                             onPress={() => setIsShowMenu(!isShowMenu)}>
                             <Image
                                 style={[styles.iconRoundStyle, iconRoundStyle]}
-                                source={{ uri: images.sampleUser }}
+                                source={{ uri: AuthReducer.ProfileResponse?.data?.profile_photo_url }}
                             />
-                            <Txt style={[css.fs18, css.ml1, css.semiBold]}> Welcome, Loise</Txt>
+                            <Txt style={[css.fs18, css.ml1, css.semiBold, css.capitalization]}> {`Welcome, ${AuthReducer.ProfileResponse?.data?.first_name}`}</Txt>
                             <Image source={icons.down} style={[styles.arrowStyle]} />
                         </TouchableOpacity>
                     </View>
@@ -116,14 +148,15 @@ const NavBar = (props) => {
                         </View>
                     ) : null}
                 </View>
-            </View>
-            {isShowMenu ? (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => setIsShowMenu(false)}
-                    style={[StyleSheet.absoluteFill, styles.backdrop]}
-                />
-            ) : null}
+            </View >
+            {
+                isShowMenu ? (
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => setIsShowMenu(false)}
+                        style={[StyleSheet.absoluteFill, styles.backdrop]}
+                    />
+                ) : null}
 
             <Modal isVisible={logoutModal}>
                 <View style={[css.f1, css.center]}>
@@ -199,8 +232,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 200,
         height: 150,
-        right: 54,
-        top: 120,
+        right: normalize(8),
+        top: normalize(26),
         borderRadius: 10,
         shadowColor: 'rgb(0,0,0,0.2)',
         shadowOffset: {

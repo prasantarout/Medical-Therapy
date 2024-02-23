@@ -19,6 +19,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import { fonts } from '../../../themes/fonts';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { useIsFocused } from '@react-navigation/native';
+import CustomToast from '../../../utils/Toast';
 
 let profileStatus = ""
 
@@ -49,6 +50,7 @@ const MyProfile = (props) => {
   const dispatch = useDispatch()
   const focused = useIsFocused()
   useEffect(() => {
+    setIsEditable(false)
     dispatch(ProfileRequest())
     const checkPermission = async () => {
       try {
@@ -109,6 +111,7 @@ const MyProfile = (props) => {
         profileStatus = AuthReducer.status;
         console.log("editProfileSuccess", AuthReducer.editProfileResponse)
         dispatch(ProfileRequest())
+        CustomToast("Profile Updated Successfully")
         break;
       case "Auth/editProfileFailure":
         profileStatus = AuthReducer.status;
@@ -121,18 +124,21 @@ const MyProfile = (props) => {
     setIsEditable(!isEditable)
     if (isEditable) {
       let obj = new FormData();
-      obj.append("first_name", 'aaaa');
-      obj.append("last_name", name);
+      obj.append("first_name", firstName);
+      obj.append("last_name", lastName);
       obj.append("email", email);
       obj.append("phone", phone);
-      // obj.append("profile_image", profileImageToSend);
-      console.log("djgfdasgf", obj)
+      {
+        profileImageToSend ?
+          obj.append("profile_image", profileImageToSend) : null
+      }
+      console.log("djgfdasgf", obj, profileImageToSend)
       dispatch(editProfileRequest(obj))
     }
   };
 
-  const fromCamera = async () => {
 
+  const fromCamera = async () => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
@@ -140,11 +146,14 @@ const MyProfile = (props) => {
     })
       .then((response) => {
         setChangeImageModal(false)
-        setProfileImage(response.path)
-        console.log("response", response)
-        const imageData = JSON.stringify(response);
-        setProfileImageToSend(imageData);
-        console.log("Profile image data:", imageData);
+        let imageObj = {};
+        imageObj.name = response.filename
+          ? response.filename
+          : response.path.replace(/^.*[\\\/]/, '');
+        imageObj.type = response.mime;
+        imageObj.uri = response.path;
+        setProfileImage(imageObj.uri)
+        setProfileImageToSend(imageObj);
       })
       .catch((err) => console.log(err));
   };
@@ -157,16 +166,22 @@ const MyProfile = (props) => {
     })
       .then((response) => {
         setChangeImageModal(false)
-        setProfileImage(response.path)
-        const imageData = JSON.stringify(response);
-        setProfileImageToSend(imageData);
+        let imageObj = {};
+        imageObj.name = response.filename
+          ? response.filename
+          : response.path.replace(/^.*[\\\/]/, '');
+        imageObj.type = response.mime;
+        imageObj.uri = response.path;
+        setProfileImage(imageObj.uri)
+        setProfileImageToSend(imageObj);
+        console.log("imageObj", imageObj)
       })
       .catch((err) => console.log(err));
   }
 
   return (
     <>
-      <SafeView>
+      <SafeView {...props}>
         <View style={[css.px4]}>
           <View style={[css.rowBetween]}>
             <TitleTxt title="My Profile" />
@@ -227,6 +242,7 @@ const MyProfile = (props) => {
               {isEditable ? <GeneralInfoCard
                 title="First Name:"
                 value={firstName}
+                autoCapitalize='words'
                 editable={isEditable}
                 onChangeText={text => setFirstName(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
@@ -235,6 +251,7 @@ const MyProfile = (props) => {
                   title="Name:"
                   value={name}
                   editable={isEditable}
+                  autoCapitalize='words'
                   onChangeText={text => setName(text)}
                   containerStyle={[styles.generalInfoCard, css.w30]}
                 />}
@@ -242,6 +259,7 @@ const MyProfile = (props) => {
                 title="Last Name:"
                 value={lastName}
                 editable={isEditable}
+                autoCapitalize='words'
                 onChangeText={text => setLastName(text)}
                 containerStyle={[styles.generalInfoCard, css.w30]}
               /> : null}

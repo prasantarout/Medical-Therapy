@@ -98,7 +98,7 @@ const Assignment = () => {
 
 
   return (
-    <SafeView>
+    <SafeView {...props}>
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'All Assignments'} />
         <View style={[css.row, css.aic, css.mt4, css.jcsb]}>

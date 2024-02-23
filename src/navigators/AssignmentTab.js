@@ -9,8 +9,8 @@ import EvaluationResult from '../screens/general/Assignments/EvaluationResult';
 const Stack = createStackNavigator();
 export default function AssignmentTab() {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Assignments" component={Assignments} />
+    <Stack.Navigator initialRouteName="Assignments" screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Assignment" component={Assignments} />
       <Stack.Screen name="AssignmentDetails" component={AssignmentDetails} />
       <Stack.Screen name="EvaluationForm" component={EvaluationForm} />
       <Stack.Screen name="EvaluationResult" component={EvaluationResult} />

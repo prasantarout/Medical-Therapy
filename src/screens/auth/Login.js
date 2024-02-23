@@ -36,8 +36,8 @@ const Login = props => {
   const [isSecurePass, setIsSecurePass] = useState(true);
   const [isRememberMe, setIsRememberMe] = useState(false);
   const [signInInfo, setsignInInfo] = useState({
-    email: '',
-    password: '',
+    email: 'william@yopmail.com',
+    password: 'Password@123',
   });
 
   const dispatch = useDispatch();

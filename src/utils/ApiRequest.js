@@ -9,7 +9,7 @@ export async function getApi(url, header) {
 
   return await axios.get(`${constants.BASE_URL}/${url}`, {
     headers: {
-      accept: header?.Accept,
+      Accept: header?.accept,
       'Content-type': header?.contenttype,
       // 'x-access-token': `${header?.token}`,
       Authorization: `Bearer ${header.accessToken}`,
@@ -38,11 +38,11 @@ export async function postApi(url, payload, header) {
   // console.log('---->Header', header);
   let response = await axios.post(`${constants.BASE_URL}/${url}`, payload, {
     headers: {
-      accept: header.accept,
-      'Content-Type': header.contenttype,
+      Accept: header?.accept,
+      'Content-Type': header?.contenttype,
       // 'x-access-token': `${header.token}`,
       // authorization: `${header.accesstoken}`,
-      Authorization: `Bearer ${header.accesstoken}`,
+      Authorization: `Bearer ${header?.Authorization}`,
     },
   });
   return response;

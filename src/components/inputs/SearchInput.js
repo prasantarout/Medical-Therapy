@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
@@ -14,6 +14,7 @@ const SearchInput = props => {
     style,
     onPressIcon,
     autoCapitalize,
+    onPressFilter
   } = props;
 
   return (
@@ -28,9 +29,9 @@ const SearchInput = props => {
         />
         <Image source={icons.searchLens} style={styles.icon} />
       </View>
-      <View style={styles.iconContainer}>
+      <TouchableOpacity onPress={onPressFilter} style={styles.iconContainer}>
         <Image source={icons.filter} style={styles.filterIC} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

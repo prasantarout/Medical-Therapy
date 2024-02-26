@@ -21,7 +21,6 @@ import Input from '../../components/inputs/Input';
 import Txt from '../../components/micro/Txt';
 import {
   isValidEmail,
-  isValidPassword,
   isValidPhoneNumber,
 } from '../../utils/Validation';
 import {useDispatch, useSelector} from 'react-redux';
@@ -36,8 +35,8 @@ const Login = props => {
   const [isSecurePass, setIsSecurePass] = useState(true);
   const [isRememberMe, setIsRememberMe] = useState(false);
   const [signInInfo, setsignInInfo] = useState({
-    email: 'william@yopmail.com',
-    password: 'Password@123',
+    email: '',
+    password: '',
   });
 
   const dispatch = useDispatch();

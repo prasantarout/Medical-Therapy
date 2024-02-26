@@ -18,7 +18,7 @@ import { getUpcomingAssignmentsReq } from '../../../redux/reducer/CmsReducer'
 
 let upComingAssignmentStatus = ""
 
-const Assignments = (props) => {
+const PatientSession = (props) => {
 
     const orientation = useOrientation()
     const [activeTab, setActiveTab] = useState(0)
@@ -119,8 +119,8 @@ const Assignments = (props) => {
         <SafeView {...props}>
 
             <View style={[css.px4, css.f1]}>
-                <Tabs tabs={tabs} initialTab={activeTab} onTabPress={handleTabPress} />
-                <TitleTxt style={[css.mt4]} title={activeTab == 0 ? "Upcoming Assignments" : "Completed Assignments"} />
+                {/* <Tabs tabs={tabs} initialTab={activeTab} onTabPress={handleTabPress} /> */}
+                <TitleTxt style={[css.mt4]} title="Patient Session" />
                 <View style={[styles.assignmentList, css.f1]}>
                     <View style={[styles.calenderArea]}>
                         <CalendarStrip
@@ -156,7 +156,7 @@ const Assignments = (props) => {
     )
 }
 
-export default Assignments
+export default PatientSession
 
 const styles = StyleSheet.create({
     calenderArea: {

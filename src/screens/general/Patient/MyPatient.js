@@ -37,7 +37,7 @@ const MyPatient = (props) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [patientInfo, setPatientInfo] = useState();
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const [searchData, setSearchData] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");

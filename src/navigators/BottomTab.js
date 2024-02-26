@@ -4,13 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/general/Home';
 import MyPatient from '../screens/general/Patient/MyPatient';
 import { icons } from '../themes/icons';
-import Assignments from '../screens/general/Assignments/Assignments';
+import Assignments from '../screens/general/Assignments/PatientSession';
 import HelpnSupport from '../screens/general/HelpSupport/HelpnSupport';
 import MyProfile from '../screens/general/Profile/MyProfile';
 import { colors } from '../themes/colors';
 import normalize from '../utils/normalize';
 import { fonts } from '../themes/fonts';
-import AssignmentTab from './AssignmentTab';
+import PatientSessionTab from './PatientSessionTab';
 import PatientTab from './PatientTab';
 
 const BottomTab = (props) => {
@@ -44,7 +44,7 @@ const BottomTab = (props) => {
       },
     })} >
       <Tab.Screen name="Dashboard" component={Home} />
-      <Tab.Screen name="Patients Session" component={AssignmentTab} />
+      <Tab.Screen name="Patients Session" component={PatientSessionTab} />
       <Tab.Screen name="Patients Queue" component={PatientTab} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>

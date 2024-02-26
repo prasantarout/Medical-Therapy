@@ -12,8 +12,6 @@ import css from '../../themes/space';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
 import { colors } from '../../themes/colors';
-import { fonts } from '../../themes/fonts';
-import normalize from '../../utils/normalize';
 import { icons } from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';

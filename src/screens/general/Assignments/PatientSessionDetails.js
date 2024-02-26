@@ -10,7 +10,7 @@ import { colors } from '../../../themes/colors'
 import Divider from '../../../components/micro/Divider'
 import Button from '../../../components/buttons/Button'
 
-const AssignmentDetails = (props) => {
+const PatientSessionDetails = (props) => {
 
     const [item, setItem] = useState(props?.route?.params?.item)
     console.log("params", props?.route?.params?.type)
@@ -89,7 +89,7 @@ const AssignmentDetails = (props) => {
 }
 
 
-export default AssignmentDetails
+export default PatientSessionDetails
 
 const styles = StyleSheet.create({
     cardRightIcon: {

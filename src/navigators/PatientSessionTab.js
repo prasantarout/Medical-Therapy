@@ -1,17 +1,16 @@
 import React from 'react';
-
 import {createStackNavigator} from '@react-navigation/stack';
-import Assignments from '../screens/general/Assignments/Assignments';
-import AssignmentDetails from '../screens/general/Assignments/AssignmentDetails';
+import PatientSession from '../screens/general/Assignments/PatientSession';
+import PatientSessionDetails from '../screens/general/Assignments/PatientSessionDetails';
 import EvaluationForm from '../screens/general/Assignments/EvaluationForm';
 import EvaluationResult from '../screens/general/Assignments/EvaluationResult';
 
 const Stack = createStackNavigator();
-export default function AssignmentTab() {
+export default function PatientSessionTab() {
   return (
-    <Stack.Navigator initialRouteName="Assignments" screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Assignment" component={Assignments} />
-      <Stack.Screen name="AssignmentDetails" component={AssignmentDetails} />
+    <Stack.Navigator initialRouteName="PatientSession" screenOptions={{headerShown: false}}>
+      <Stack.Screen name="PatientSession" component={PatientSession} />
+      <Stack.Screen name="PatientSessionDetails" component={PatientSessionDetails} />
       <Stack.Screen name="EvaluationForm" component={EvaluationForm} />
       <Stack.Screen name="EvaluationResult" component={EvaluationResult} />
     </Stack.Navigator>

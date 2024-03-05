@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
-import css, { height, width } from '../../themes/space';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useState} from 'react';
+import css, {height, width} from '../../themes/space';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
-import { colors } from '../../themes/colors';
-import { icons } from '../../themes/icons';
+import {colors} from '../../themes/colors';
+import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
 import {
@@ -22,30 +22,28 @@ import {
   isValidPhoneNumber,
 } from '../../utils/Validation';
 import CustomToast from '../../utils/Toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { signUpReq } from '../../redux/reducer/AuthReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {signUpReq} from '../../redux/reducer/AuthReducer';
 import Modal from 'react-native-modal';
 import useScreenDimension from '../../utils/useScreenDimension';
 import Txt from '../../components/micro/Txt';
 import EvaluationForm from '../general/Assignments/EvaluationForm';
-import { fonts } from '../../themes/fonts';
+import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 import LottieView from 'lottie-react-native';
 
-let signupStatus = ""
+let signupStatus = '';
 
 const Signup = props => {
-
   const dispatch = useDispatch();
-  const { screenWidth, screenHeight } = useScreenDimension();
+  const {screenWidth, screenHeight} = useScreenDimension();
   const AuthReducer = useSelector(state => state.AuthReducer);
-
   const [loading, setLoading] = useState(false);
   const [isSecurePass, setIsSecurePass] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
-  const [isLoading, setIsLoading] = useState(false)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [signUpInfo, setSignUpInfo] = useState({
     first_name: '',
     last_name: '',
@@ -58,7 +56,6 @@ const Signup = props => {
   const isValidPass = isValidPassword(signUpInfo.password);
 
   const handleSignup = () => {
-
     if (signUpInfo?.first_name == '') {
       CustomToast('Please enter your first name');
     } else if (signUpInfo?.last_name == '') {
@@ -72,41 +69,41 @@ const Signup = props => {
     } else if (!validEmail) {
       CustomToast('Please enter valid email');
     } else if (!isValidPass) {
-      CustomToast('The passwords should contain at least one number, one capital letter, and one special character');
-    }
-    else {
+      CustomToast(
+        'The passwords should contain at least one number, one capital letter, and one special character',
+      );
+    } else {
       // setIsModalVisible(true)
       dispatch(signUpReq(signUpInfo));
     }
   };
 
   const handleInputChange = (key, value) => {
-    setSignUpInfo({ ...signUpInfo, [key]: value });
-  }
+    setSignUpInfo({...signUpInfo, [key]: value});
+  };
 
-  if (signupStatus === "" || AuthReducer.status !== signupStatus) {
+  if (signupStatus === '' || AuthReducer.status !== signupStatus) {
     switch (AuthReducer.status) {
-      case "Auth/signUpReq":
+      case 'Auth/signUpReq':
         signupStatus = AuthReducer.status;
-        console.log("initiated", AuthReducer.status)
-        setIsLoading(true)
+        console.log('initiated', AuthReducer.status);
+        setIsLoading(true);
         break;
-      case "Auth/signUpSucces":
+      case 'Auth/signUpSucces':
         signupStatus = AuthReducer.status;
-        console.log("initiated-success", AuthReducer.status)
+        console.log('initiated-success', AuthReducer.status);
         setTimeout(() => {
-          props?.navigation.navigate("Login")
-        }, 2600)
+          props?.navigation.navigate('Login');
+        }, 2600);
 
-        setIsModalVisible(true)
-        setIsLoading(false)
+        setIsModalVisible(true);
+        setIsLoading(false);
         break;
-      case "Auth/signUpFailure":
+      case 'Auth/signUpFailure':
         signupStatus = AuthReducer.status;
-        console.log("initiated-fail", AuthReducer.status)
-        setIsLoading(false)
+        console.log('initiated-fail', AuthReducer.status);
+        setIsLoading(false);
         break;
-
     }
   }
   const onModalHide = () => {
@@ -118,7 +115,7 @@ const Signup = props => {
   return (
     <>
       <StatusBar hidden={isModalVisible} />
-      <SafeAreaView style={[css.f1, { backgroundColor: colors.bgColor }]}>
+      <SafeAreaView style={[css.f1, {backgroundColor: colors.bgColor}]}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -157,10 +154,10 @@ const Signup = props => {
                 style={[css.mb3]}
                 autoCapitalize="none"
                 keyboardType="phone-pad"
-              // value={signUpInfo.email}
-              // onChangeText={text =>
-              //   handleInputChange('email', text.trim())
-              // }
+                // value={signUpInfo.email}
+                // onChangeText={text =>
+                //   handleInputChange('email', text.trim())
+                // }
               />
               <Input
                 title="Enter Password"
@@ -213,9 +210,12 @@ const Signup = props => {
         deviceHeight={screenHeight}
         deviceWidth={screenWidth}
         onModalHide={() => onModalHide}
-        onModalShow={() => setTimeout(() => { setIsModalVisible(false) }, 2000)}
-        onBackdropPress={() => setIsModalVisible(false)}
-      >
+        onModalShow={() =>
+          setTimeout(() => {
+            setIsModalVisible(false);
+          }, 2000)
+        }
+        onBackdropPress={() => setIsModalVisible(false)}>
         <>
           <View style={[styles.lottieViewWrap]}>
             <LottieView
@@ -225,10 +225,10 @@ const Signup = props => {
               loop={false}
             />
           </View>
-          <View style={[css.p4, css.br10, css.center, styles.modalPanel]} >
-            <Txt style={[styles.welcomeTextStyle]} >Welcome</Txt>
-            <Txt style={[styles.welcomeTextStyle]} >To</Txt>
-            <Txt style={[styles.welcomeTextStyle]} >Therapy Evaluator</Txt>
+          <View style={[css.p4, css.br10, css.center, styles.modalPanel]}>
+            <Txt style={[styles.welcomeTextStyle]}>Welcome</Txt>
+            <Txt style={[styles.welcomeTextStyle]}>To</Txt>
+            <Txt style={[styles.welcomeTextStyle]}>Therapy Evaluator</Txt>
           </View>
         </>
       </Modal>
@@ -242,21 +242,21 @@ const styles = StyleSheet.create({
   modalPanel: {
     width: normalize(150),
     height: normalize(100),
-    backgroundColor: 'rgba(255, 255, 255, 1)'
+    backgroundColor: 'rgba(255, 255, 255, 1)',
   },
   welcomeTextStyle: {
     fontFamily: fonts.SemiBold,
     fontSize: 30,
     textAlign: 'center',
-    color: colors.black
+    color: colors.black,
   },
   lottieView: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   lottieViewWrap: {
     position: 'absolute',
     width: width,
-    height: height
-  }
+    height: height,
+  },
 });

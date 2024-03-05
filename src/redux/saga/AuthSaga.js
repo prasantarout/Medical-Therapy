@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {call, put, select, takeLatest} from 'redux-saga/effects';
 import {
   getTokenSuccess,
   getTokenFailure,
@@ -18,7 +18,7 @@ import {
   editProfileFailure,
 } from '../reducer/AuthReducer';
 
-import { getApi, postApi } from '../../utils/ApiRequest';
+import {getApi, postApi} from '../../utils/ApiRequest';
 import constants from '../../utils/constants';
 import CustomToast from '../../utils/Toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,19 +48,17 @@ export function* signUpSaga(action) {
   };
   try {
     let response = yield call(postApi, 'register', action.payload, header);
-    console.log(response, 'signupResponse');
+
     if (response?.status == '201') {
       yield put(signUpSucces(response?.data));
-      console.log("response?.data", response?.data)
       CustomToast(response?.data?.message);
     } else {
       yield put(signUpFailure(response?.data));
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
     yield put(signUpFailure(error?.response));
-    CustomToast(error?.response?.message)
+    CustomToast(error?.response?.message);
   }
 }
 
@@ -72,15 +70,9 @@ export function* verifyOtpsaga(action) {
     contenttype: 'application/json',
     accessToken: items?.token,
   };
-  console.log("verifyOtpsaga", header)
+
   try {
-    let response = yield call(
-      postApi,
-      'verify-otp',
-      action.payload,
-      header,
-    );
-    console.log(response, 'verify-otp-Response');
+    let response = yield call(postApi, 'verify-otp', action.payload, header);
     if (response?.status == '200') {
       yield put(verifyOtpSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -105,7 +97,6 @@ export function* signInSaga(action) {
   };
   try {
     let response = yield call(postApi, 'login', action.payload, header);
-    console.log('response---->', response?.data?.token);
     if (response?.status == 200) {
       yield put(signInSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -134,12 +125,14 @@ export function* forgotPasswordSaga(action) {
     // accessToken: items?.token,
   };
   try {
-    let response = yield call(postApi, 'forgot-password', action.payload, header);
-
-    console.log('response-forgotPasswordSaga', response?.status);
+    let response = yield call(
+      postApi,
+      'forgot-password',
+      action.payload,
+      header,
+    );
 
     if (response?.status == 200) {
-      console.log("forgotPasswordFailure-ifPart")
       yield put(forgotPasswordSuccess(response?.data));
       CustomToast(response?.data?.message);
       yield put(getTokenSuccess(response?.data?.token));
@@ -150,7 +143,6 @@ export function* forgotPasswordSaga(action) {
       );
     } else {
       yield put(forgotPasswordFailure(response?.data));
-      console.log("forgotPasswordFailure-elsePart")
     }
   } catch (error) {
     yield put(forgotPasswordFailure(error?.response));
@@ -181,7 +173,6 @@ export function* Profilesaga(action) {
   };
   try {
     let response = yield call(getApi, 'my-profile', header);
-    console.log('response---->', response);
     if (response?.status == 200) {
       yield put(ProfileSuccess(response?.data));
       // CustomToast(response?.data?.message);
@@ -195,7 +186,6 @@ export function* Profilesaga(action) {
   }
 }
 
-
 /////////////////////// Edit Profile Saga ///////////////////////
 export function* editProfilesaga(action) {
   let items = yield select(getItem);
@@ -205,25 +195,17 @@ export function* editProfilesaga(action) {
     Authorization: `Bearer ${items?.token}`,
   };
   try {
-    console.log("editProfilesaga-try");
-    let response = yield call(
-      postApi, 
-      `edit-profile`, 
-      action.payload, 
-      header
-      );
-    console.log('editProfilesaga-response', response);
+    let response = yield call(postApi, `edit-profile`, action.payload, header);
+
     if (response?.status == 200) {
       yield put(editProfileSuccess(response?.data));
       // CustomToast(response?.data?.message);
     } else {
       yield put(editProfileFailure(response?.data));
-      console.log('editProfileFailure', response?.data);
     }
   } catch (error) {
     // CustomToast(error?.response);
     yield put(editProfileFailure(error?.response));
-    console.log('editProfileFailure-Catch', error?.response);
     // CustomToast(error?.response?.data?.message);
   }
 }

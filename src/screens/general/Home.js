@@ -1,49 +1,53 @@
-import { Dimensions, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
-import css, { width } from '../../themes/space';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import css, {width} from '../../themes/space';
 import NavBar from '../../components/common/NavBar';
 import SafeView from '../../components/common/SafeView';
 import TitleTxt from '../../components/common/TitleTxt';
 import HeaderTitle from '../../components/common/HeaderTitle';
 import ScoreCard from '../../components/common/ScoreCard';
 import QuickCounter from '../../components/common/QuickCounter';
-import { icons } from '../../themes/icons';
-import { colors } from '../../themes/colors';
+import {icons} from '../../themes/icons';
+import {colors} from '../../themes/colors';
 import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
 import useScreenDimension from '../../utils/useScreenDimension';
 import useOrientation from '../../utils/useOrientation';
 import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
-import { images } from '../../themes/images';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDashboardReq } from '../../redux/reducer/DashboardReducer';
-import { useIsFocused } from '@react-navigation/native';
+import {images} from '../../themes/images';
+import {useDispatch, useSelector} from 'react-redux';
+import {getDashboardReq} from '../../redux/reducer/DashboardReducer';
+import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 
-let dashboardStatus = ""
+let dashboardStatus = '';
 
 const Home = props => {
+  const {screenWidthh, screenHeight} = useScreenDimension();
 
-  const { screenWidthh, screenHeight } = useScreenDimension();
-  
   let orientation = useOrientation();
-  const dispatch = useDispatch()
-  const isFocused = useIsFocused()
-  const DashboardReducer = useSelector(state => state.DashboardReducer)
-
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [visible, setVisible] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [years, setYears] = useState('2024');
   const [dashboardData, setDashboardData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
-  const [sessionsDateData, setSessionsDateData] = useState("");
+  const [sessionsDateData, setSessionsDateData] = useState('');
 
   useEffect(() => {
     let obj = {
       date: date,
       enrolment_year: years,
     };
-    dispatch(getDashboardReq(obj))
+    dispatch(getDashboardReq(obj));
   }, [isFocused]);
 
   const data = [
@@ -68,45 +72,42 @@ const Home = props => {
       value: '2028',
     },
   ];
-  // getDashboardReq
-  let paddingLast = { paddingRight: orientation == 'PORTRAIT' ? 0 : 16 };
-  let paddingRight = { paddingRight: orientation == 'PORTRAIT' ? 16 : 0 };
+
+  let paddingLast = {paddingRight: orientation == 'PORTRAIT' ? 0 : 16};
+  let paddingRight = {paddingRight: orientation == 'PORTRAIT' ? 16 : 0};
 
   let counterCardWidth = {
     width: orientation == 'PORTRAIT' ? '50%' : '33.2%',
   };
 
-  if (dashboardStatus === "" || DashboardReducer.status !== dashboardStatus) {
+  if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
     switch (DashboardReducer.status) {
-      case "Dashboard/getDashboardReq":
+      case 'Dashboard/getDashboardReq':
         dashboardStatus = DashboardReducer.status;
         break;
-      case "Dashboard/getDashboardSuccess":
+      case 'Dashboard/getDashboardSuccess':
         dashboardStatus = DashboardReducer.status;
         // console.log("CalenderView-Dashboard:", DashboardReducer?.getDashboardResponse?.data)
-        setDashboardData(DashboardReducer?.getDashboardResponse?.data)
-        setSessionsData(DashboardReducer?.getDashboardResponse?.data?.sessions)
+        setDashboardData(DashboardReducer?.getDashboardResponse?.data);
+        setSessionsData(DashboardReducer?.getDashboardResponse?.data?.sessions);
         // setSessionsDateData(DashboardReducer?.getDashboardResponse?.data?.sessions[0]?.session_date)
         break;
-      case "Dashboard/getDashboardFailure":
+      case 'Dashboard/getDashboardFailure':
         dashboardStatus = DashboardReducer.status;
-        console.log("initiated-fail", DashboardReducer.status)
+        console.log('initiated-fail', DashboardReducer.status);
         break;
-
     }
   }
 
-  const onDateSelected = (selectedDate) => {
-    const selected_Date = moment(selectedDate).format("YYYY-MM-DD");
-    console.log("selectedDate", selected_Date)
+  const onDateSelected = selectedDate => {
+    const selected_Date = moment(selectedDate).format('YYYY-MM-DD');
     let obj = {
       date: selected_Date,
-      enrolment_year: moment(selectedDate).format("YYYY"),
+      enrolment_year: moment(selectedDate).format('YYYY'),
     };
-    dispatch(getDashboardReq(obj))
+    dispatch(getDashboardReq(obj));
   };
 
- 
   return (
     <SafeView sticky={[1]}>
       <View style={[css.f1, css.p4]}>
@@ -206,7 +207,7 @@ const Home = props => {
         </View>
 
         <View style={[css.mt4]}>
-          <PatientEnrolmentChart  {...props} />
+          <PatientEnrolmentChart {...props} />
         </View>
         <View style={[css.mt4]}>
           <AssignmentChart {...props} />
@@ -214,6 +215,7 @@ const Home = props => {
         <View style={[css.mt4]}>
           <CalenderView
             {...props}
+            date={sessionsData?.[0]?.session_date}
             data={sessionsData}
             onDateSelected={onDateSelected}
           />
@@ -243,10 +245,10 @@ const styles = StyleSheet.create({
     color: colors.primaryTextColor,
   },
   scoreCard: {
-    width: width / 3,
-    height: width / 3,
+    width: width / 2.5,
+    height: width / 2.5,
     resizeMode: 'contain',
     backgroundColor: '#fff',
     // borderRadius: 10
-  }
+  },
 });

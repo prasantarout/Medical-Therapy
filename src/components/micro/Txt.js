@@ -1,19 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { colors } from '../../themes/colors'
-import { fonts } from '../../themes/fonts'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {colors} from '../../themes/colors';
+import {fonts} from '../../themes/fonts';
 
-const Txt = (props) => {
-  return (  
-      <Text allowFontScaling={false} style={[styles.defaultStyle, props.style]}>{props.children}</Text>   
-  )
-}
+const Txt = props => {
+  return (
+    <Text allowFontScaling={false} style={[styles.defaultStyle, props.style]}>
+      {props.children}
+    </Text>
+  );
+};
 
-export default Txt
+export default Txt;
 
 const styles = StyleSheet.create({
-    defaultStyle:{
-        color: colors.primaryTextColor,
-        fontFamily: fonts.Regular,
-    }
-})
+  defaultStyle: {
+    color: colors.primaryTextColor,
+    fontFamily: fonts.Regular,
+  },
+});

@@ -13,7 +13,7 @@ const QuestionCard = props => {
       <TouchableOpacity
         onPress={() => setShowAnswer(!showAnswer)}
         activeOpacity={0.7}>
-        <Text style={styles.question}>{title}</Text>
+        <Text style={styles.question}>Q. {title}</Text>
       </TouchableOpacity>
       {showAnswer && (
         <View style={{marginTop: normalize(5)}}>
@@ -29,7 +29,7 @@ export default QuestionCard;
 const styles = StyleSheet.create({
   question: {
     fontFamily: fonts.Regular,
-    color: colors.primary,
+    color: '#144067',
     fontSize: 18,
     fontWeight: '500',
   },

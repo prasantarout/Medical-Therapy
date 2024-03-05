@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
@@ -6,15 +6,15 @@ import TitleTxt from '../../../components/common/TitleTxt';
 import SearchInput from '../../../components/inputs/SearchInput';
 import normalize from '../../../utils/normalize';
 import Txt from '../../../components/micro/Txt';
-import { fonts } from '../../../themes/fonts';
-import { colors } from '../../../themes/colors';
-import { icons } from '../../../themes/icons';
+import {fonts} from '../../../themes/fonts';
+import {colors} from '../../../themes/colors';
+import {icons} from '../../../themes/icons';
 import AssignmentCard from '../../../components/common/AssignmentCard';
 import SafeView from '../../../components/common/SafeView';
 import useScreenDimension from '../../../utils/useScreenDimension';
 import CalendarStrip from 'react-native-calendar-strip';
 
-const Assignment = () => {
+const Assignment = props => {
   const assignmentData = [
     {
       id: 1,
@@ -78,9 +78,9 @@ const Assignment = () => {
     },
   ];
 
-  const { screenWidth, screenHeight } = useScreenDimension()
+  const {screenWidth, screenHeight} = useScreenDimension();
 
-  const assignmentRenderItem = ({ item, index }) => {
+  const assignmentRenderItem = ({item, index}) => {
     return (
       <AssignmentCard detail={item.desc} time={item.time} date={item.date} />
     );
@@ -92,10 +92,9 @@ const Assignment = () => {
         // dateNameStyle: { color: '#fff' },
         // dateNumberStyle: { color: '#fff' },
         // dateContainerStyle: { backgroundColor: '#3abef0' },
-      }
+      };
     }
-  }
-
+  };
 
   return (
     <SafeView {...props}>
@@ -107,14 +106,14 @@ const Assignment = () => {
               <CalendarStrip
                 customDatesStyles={customDatesStylesFunc}
                 scrollable={false}
-                calendarHeaderFormat='DD MMM, YYYY'
+                calendarHeaderFormat="DD MMM, YYYY"
                 numDaysInWeek={1}
-                calendarAnimation={{ type: 'sequence', duration: 30 }}
+                calendarAnimation={{type: 'sequence', duration: 30}}
                 style={[styles.calenderStrip]}
-                calendarColor='transparent'
+                calendarColor="transparent"
                 calendarHeaderStyle={[styles.dateStyle]}
-                dateNumberStyle={{ color: 'black' }}
-                dateNameStyle={{ color: 'black' }}
+                dateNumberStyle={{color: 'black'}}
+                dateNameStyle={{color: 'black'}}
                 calendarHeaderContainerStyle={[styles.calendarHeaderStyle]}
                 dayContainerStyle={[styles.dayContainerStyle]}
                 iconLeft={icons.leftArrow}
@@ -124,11 +123,8 @@ const Assignment = () => {
               />
             </View>
           </View>
-          <View style={[{ width: screenWidth / 2.2 }]}>
-            <SearchInput
-              style={[]}
-              placeholder={'Search here...'}
-            />
+          <View style={[{width: screenWidth / 2.2}]}>
+            <SearchInput style={[]} placeholder={'Search here...'} />
           </View>
         </View>
         <View style={[css.f1]}>
@@ -137,7 +133,7 @@ const Assignment = () => {
             data={assignmentData}
             keyExtractor={item => item.id}
             renderItem={assignmentRenderItem}
-            style={{ flex: 1, marginTop: normalize(10) }}
+            style={{flex: 1, marginTop: normalize(10)}}
           />
         </View>
       </View>
@@ -183,30 +179,30 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 38,
     left: 40,
-    zIndex: 99
+    zIndex: 99,
   },
   dayContainerStyle: {
     backgroundColor: 'transparent',
     width: 100,
     zIndex: -1,
-    opacity: 0
+    opacity: 0,
   },
   dateStyle: {
     fontFamily: fonts.Regular,
     fontSize: 20,
-    color: '#444444'
+    color: '#444444',
   },
   iconStyle: {
     width: 25,
     height: 25,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   cardRightIcon: {
     resizeMode: 'contain',
     height: 25,
-    width: 100
+    width: 100,
   },
   iconLeftStyle: {
-    transform: [{ rotate: '180deg' }]
-},
+    transform: [{rotate: '180deg'}],
+  },
 });

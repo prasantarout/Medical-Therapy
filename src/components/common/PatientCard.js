@@ -7,43 +7,61 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import normalize from '../../utils/normalize';
-import { colors } from '../../themes/colors';
+import {colors} from '../../themes/colors';
 import Txt from '../micro/Txt';
 import css from '../../themes/space';
-import { icons } from '../../themes/icons';
-import { fonts } from '../../themes/fonts';
+import {icons} from '../../themes/icons';
+import {fonts} from '../../themes/fonts';
 import LinearGradient from 'react-native-linear-gradient';
 
-
-const Skeleton = ({ style }) => {
+const Skeleton = ({style}) => {
   return (
-    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#f4f4f4', '#e8e8e8', '#dddddd']} style={style} />
-  )
-}
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={['#f4f4f4', '#e8e8e8', '#dddddd']}
+      style={style}
+    />
+  );
+};
 
 const PatientCard = props => {
-  const { name, location, date, time, image, Button, onPress, navigateTo, style } =
-    props;
+  const {
+    name,
+    location,
+    date,
+    time,
+    image,
+    Button,
+    onPress,
+    navigateTo,
+    style,
+  } = props;
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={onPress}
       style={[styles.mainCard, style]}>
-      {image ? <ImageBackground resizeMode='stretch' source={{ uri: image }} style={styles.profile} >
-        {/* <View style={[styles.newCtn]}>
+      {image ? (
+        <ImageBackground
+          resizeMode="stretch"
+          source={{uri: image}}
+          style={styles.profile}>
+          {/* <View style={[styles.newCtn]}>
           <Txt style={[css.textWhite]}>New</Txt>
         </View> */}
-
-      </ImageBackground> :
+        </ImageBackground>
+      ) : (
         <Skeleton style={styles.profile} />
-      }
-      <View style={[{ height: 40 }, css.jcc]} >
-        {name ?
-          <Txt style={styles.titleTxt}>{name}</Txt> :
+      )}
+      <View style={[{height: 40}, css.jcc]}>
+        {name ? (
+          <Txt style={styles.titleTxt}>{name}</Txt>
+        ) : (
           <Skeleton style={styles.skeletonText} />
-        }
+        )}
       </View>
       <View style={[css.row, css.aic, css.mb1]}>
         <Image source={icons.Location} style={styles.IconStyle} />
@@ -53,10 +71,12 @@ const PatientCard = props => {
         <Image source={icons.Calendar} style={styles.IconStyle} />
         <Txt style={styles.subTxt}>{date}</Txt>
       </View>
-      {time ? <View style={[css.row, css.aic]}>
-        <Image source={icons.Clock} style={styles.IconStyle} />
-        <Txt style={styles.subTxt}>{time}</Txt>
-      </View> : null}
+      {time ? (
+        <View style={[css.row, css.aic]}>
+          <Image source={icons.Clock} style={styles.IconStyle} />
+          <Txt style={styles.subTxt}>{time}</Txt>
+        </View>
+      ) : null}
       {Button && (
         <TouchableOpacity onPress={navigateTo} style={[styles.btn]}>
           <Txt style={[styles.btnTxt]}>View Sessions</Txt>
@@ -87,7 +107,7 @@ const styles = StyleSheet.create({
     height: 20,
     minWidth: 100,
     width: '100%',
-    marginTop: 10
+    marginTop: 10,
   },
   titleTxt: {
     fontSize: 20,

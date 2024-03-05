@@ -9,21 +9,21 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
 import TitleTxt from '../../../components/common/TitleTxt';
-import { colors } from '../../../themes/colors';
+import {colors} from '../../../themes/colors';
 import normalize from '../../../utils/normalize';
-import { fonts } from '../../../themes/fonts';
+import {fonts} from '../../../themes/fonts';
 import QuestionCard from '../../../components/common/QuestionCard';
 import Txt from '../../../components/micro/Txt';
-import { icons } from '../../../themes/icons';
+import {icons} from '../../../themes/icons';
 import Modal from 'react-native-modal';
-import { images } from '../../../themes/images';
+import {images} from '../../../themes/images';
 import SimpleInput from '../../../components/inputs/SimpleInput';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   contactUsForSupportReq,
   helpAndSupportReq,
@@ -35,7 +35,7 @@ import DocumentPicker from 'react-native-document-picker';
 let status = '';
 let contactUsForSupportstatus = '';
 
-const HelpnSupport = (props) => {
+const HelpnSupport = props => {
   const [selected, setSelected] = useState(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -97,8 +97,7 @@ const HelpnSupport = (props) => {
     }
   }
 
-
-  const supportRenderItem = ({ item, index }) => {
+  const supportRenderItem = ({item, index}) => {
     return <QuestionCard title={item?.question} value={item?.answer} />;
   };
 
@@ -109,7 +108,7 @@ const HelpnSupport = (props) => {
     dispatch(helpAndSupportReq(obj));
   };
 
-  const categoryRenderItem = ({ item, index }) => {
+  const categoryRenderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -151,13 +150,13 @@ const HelpnSupport = (props) => {
       CustomToast('Please select document');
     } else {
       let obj = new FormData();
-      obj.append("first_name", firstName);
-      obj.append("last_name", lastName);
-      obj.append("email", email);
-      obj.append("phone", phone);
-      obj.append("message", message);
-      obj.append("attachment", document);
-      console.log("attachment", document)
+      obj.append('first_name', firstName);
+      obj.append('last_name', lastName);
+      obj.append('email', email);
+      obj.append('phone', phone);
+      obj.append('message', message);
+      obj.append('attachment', document);
+      console.log('attachment', document);
       dispatch(contactUsForSupportReq(obj));
     }
   };
@@ -174,7 +173,6 @@ const HelpnSupport = (props) => {
     }
   }, []);
 
-
   // setDocumentName
   //   contactUsForSupportReq
   // contactUsForSupportSuccess
@@ -183,7 +181,7 @@ const HelpnSupport = (props) => {
   return (
     <SafeView {...props}>
       <ScrollView
-        style={{ paddingBottom: normalize(35) }}
+        style={{paddingBottom: normalize(35)}}
         showsVerticalScrollIndicator={false}>
         <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'Help & Support'} />
@@ -195,7 +193,7 @@ const HelpnSupport = (props) => {
             data={helpSupportType}
             renderItem={categoryRenderItem}
           />
-          {helpSupportData?.length > 0 && (
+          {helpSupportData?.length > 0 ? (
             <>
               <View style={styles.questionCtnr}>
                 <FlatList
@@ -204,10 +202,14 @@ const HelpnSupport = (props) => {
                   showsVerticalScrollIndicator={false}
                 />
               </View>
-              <TouchableOpacity style={styles.btn}>
+              <TouchableOpacity activeOpacity={0.7} style={styles.btn}>
                 <Txt style={styles.btnTxt}>Load more</Txt>
               </TouchableOpacity>
             </>
+          ) : (
+            <View style={styles.questionCtnr}>
+              <Text style={styles.NoDataTxt}>No Related Questions Found</Text>
+            </View>
           )}
           <TitleTxt title={'Need any help!'} />
           <View style={styles.container}>
@@ -234,7 +236,7 @@ const HelpnSupport = (props) => {
                 <SimpleInput
                   title="Email"
                   style={[css.mr2]}
-                  autoCapitalize='none'
+                  autoCapitalize="none"
                   value={email}
                   placeholder="Enter Email"
                   onChangeText={val => setEmail(val)}
@@ -270,10 +272,17 @@ const HelpnSupport = (props) => {
                 <ImageBackground
                   source={icons.uploadBg}
                   style={styles.uploadCtnr}>
-                  <Image source={documentName ? icons.docx : icons.attach} style={styles.uploadIcon} />
+                  <Image
+                    source={documentName ? icons.docx : icons.attach}
+                    style={styles.uploadIcon}
+                  />
                 </ImageBackground>
               </View>
-              {documentName ? <Txt style={[css.fs18, css.semiBold, css.ml2]}>{documentName}</Txt> :
+              {documentName ? (
+                <Txt style={[css.fs18, css.semiBold, css.ml2]}>
+                  {documentName}
+                </Txt>
+              ) : (
                 <>
                   <Txt
                     style={{
@@ -294,7 +303,7 @@ const HelpnSupport = (props) => {
                     Maximum Size 5MB (.docx, .doc)
                   </Txt>
                 </>
-              }
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -490,5 +499,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
     fontSize: 25,
     color: colors.secondaryTextColor,
+  },
+  NoDataTxt: {
+    fontFamily: fonts.Regular,
+    fontSize: 22,
+    textAlign: 'center',
+    color: colors.secondaryTextColor,
+    paddingBottom: 18,
   },
 });

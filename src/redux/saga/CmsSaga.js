@@ -1,5 +1,5 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { getApi, postApi, postApiNew, putApi } from '../../utils/ApiRequest';
+import {call, put, select, takeLatest} from 'redux-saga/effects';
+import {getApi, postApi, postApiNew, putApi} from '../../utils/ApiRequest';
 
 import {
   getCategorySuccess,
@@ -113,15 +113,9 @@ export function* contactUsForSupportSaga(action) {
     contenttype: 'multipart/form-data',
     Authorization: `Bearer ${items?.token}`,
   };
-  console.log("contactUsForSupportSaga", header, action.payload)
   try {
-    let response = yield call(
-      postApiNew,
-      'contact-us',
-      action.payload,
-      header
-    );
-    console.log("contactUsForSupportSaga-response", response)
+    let response = yield call(postApiNew, 'contact-us', action.payload, header);
+
     if (response?.status == '201') {
       yield put(contactUsForSupportSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -130,15 +124,14 @@ export function* contactUsForSupportSaga(action) {
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
     yield put(contactUsForSupportFailure(error?.response));
-    console.log("catch error", error?.response);
+    console.log('catch error', error?.response);
   }
 }
 
 // Get Upcoming Assignments Saga
 export function* getUpcomingAssignmentsSaga(action) {
-  console.log("getUpcomingAssignmentsSaga started")
+  console.log('getUpcomingAssignmentsSaga started');
   let items = yield select(getItem);
   let header = {
     accept: 'application/json',
@@ -148,7 +141,7 @@ export function* getUpcomingAssignmentsSaga(action) {
 
   try {
     let response = yield call(postApi, 'upcoming-assignments', header);
-    console.log("getUpcomingAssignmentsSaga response", response);
+    console.log('getUpcomingAssignmentsSaga response', response);
     if (response?.status == '200') {
       yield put(getUpcomingAssignmentsSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -164,7 +157,7 @@ export function* getUpcomingAssignmentsSaga(action) {
 
 // Get Upcoming Assignments Saga
 export function* updatePasswordSaga(action) {
-  console.log("getUpcomingAssignmentsSaga started", action.payload)
+  console.log('getUpcomingAssignmentsSaga started', action.payload);
   let items = yield select(getItem);
   let header = {
     accept: 'application/json',
@@ -179,7 +172,7 @@ export function* updatePasswordSaga(action) {
       action.payload,
       header,
     );
-    console.log("updatePasswordSaga-response", response);
+    console.log('updatePasswordSaga-response', response);
     if (response?.status == '200') {
       yield put(updatePasswordSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -192,7 +185,6 @@ export function* updatePasswordSaga(action) {
     yield put(updatePasswordFailure(error?.response));
   }
 }
-
 
 const watchFunction = [
   (function* () {
@@ -208,14 +200,14 @@ const watchFunction = [
     yield takeLatest('CMS/contactUsForSupportReq', contactUsForSupportSaga);
   })(),
   (function* () {
-    yield takeLatest('CMS/getUpcomingAssignmentsReq', getUpcomingAssignmentsSaga);
+    yield takeLatest(
+      'CMS/getUpcomingAssignmentsReq',
+      getUpcomingAssignmentsSaga,
+    );
   })(),
   (function* () {
     yield takeLatest('CMS/updatePasswordReq', updatePasswordSaga);
   })(),
 ];
-
-
-
 
 export default watchFunction;

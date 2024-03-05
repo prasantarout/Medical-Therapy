@@ -1,10 +1,15 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { getApi, getApiWitPayload, getApiWithParam, postApi, putApi } from '../../utils/ApiRequest';
+import {call, put, select, takeLatest} from 'redux-saga/effects';
+import {
+  getApi,
+  getApiWitPayload,
+  getApiWithParam,
+  postApi,
+  putApi,
+} from '../../utils/ApiRequest';
 
 import {
   getPatientSuccess,
   getPatientFailure,
-
   getPatientSessionSuccess,
   getPatientSessionFailure,
 } from '../reducer/PatientReducer';
@@ -21,13 +26,7 @@ export function* getPatientSaga(action) {
   };
 
   try {
-    let response = yield call(
-      postApi,
-      'my-patients',
-      {},
-      header,
-    );
-    console.log('response: ', response);
+    let response = yield call(postApi, 'my-patients', {}, header);
     if (response?.data?.status == 200) {
       yield put(getPatientSuccess(response?.data));
     } else {
@@ -47,16 +46,13 @@ export function* getPatientSessionSaga(action) {
     contenttype: 'application/json',
     accessToken: `Bearer ${item?.token}`,
   };
-  console.log("getPatientSessionSagaHeader", header, action?.payload)
   try {
     let response = yield call(
       getApiWithParam,
       'sessions',
-       action?.payload,
+      action?.payload,
       header,
-     
     );
-    console.log('response: ', response);
     if (response?.data?.status == 200) {
       yield put(getPatientSessionSuccess(response?.data));
     } else {
@@ -69,7 +65,6 @@ export function* getPatientSessionSaga(action) {
   }
 }
 
-
 const watchFunction = [
   (function* () {
     yield takeLatest('PATIENT/getPatientReq', getPatientSaga);
@@ -78,7 +73,5 @@ const watchFunction = [
     yield takeLatest('PATIENT/getPatientSessionReq', getPatientSessionSaga);
   })(),
 ];
-
-
 
 export default watchFunction;

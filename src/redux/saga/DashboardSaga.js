@@ -1,10 +1,9 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { getApi, postApi, postApiNew, putApi } from '../../utils/ApiRequest';
+import {call, put, select, takeLatest} from 'redux-saga/effects';
+import {getApi, postApi, postApiNew, putApi} from '../../utils/ApiRequest';
 
 import {
   getDashboardSuccess,
   getDashboardFailure,
- 
 } from '../reducer/DashboardReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -19,13 +18,8 @@ export function* getDashboardSaga(action) {
   };
 
   try {
-    let response = yield call(
-      postApi,
-      'dashboard',
-      action.payload,
-      header,
-    );
-    console.log('response: ', response);
+    let response = yield call(postApi, 'dashboard', action.payload, header);
+
     if (response?.data?.status == 200) {
       yield put(getDashboardSuccess(response?.data));
     } else {
@@ -42,10 +36,6 @@ const watchFunction = [
   (function* () {
     yield takeLatest('Dashboard/getDashboardReq', getDashboardSaga);
   })(),
-
 ];
-
-
-
 
 export default watchFunction;

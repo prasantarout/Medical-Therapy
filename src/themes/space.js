@@ -63,6 +63,9 @@ const css = StyleSheet.create({
   semiBold: {
     fontFamily: fonts.SemiBold
   },
+  br10: {
+    borderRadius: 10
+  },
   bottomSheet: {
     backgroundColor: '#fff',
     position: 'absolute',

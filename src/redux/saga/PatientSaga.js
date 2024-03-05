@@ -1,9 +1,12 @@
-import {call, put, select, takeLatest} from 'redux-saga/effects';
-import {getApi, postApi, putApi} from '../../utils/ApiRequest';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { getApi, getApiWitPayload, getApiWithParam, postApi, putApi } from '../../utils/ApiRequest';
 
 import {
-    getPatientSuccess,
-    getPatientFailure,
+  getPatientSuccess,
+  getPatientFailure,
+
+  getPatientSessionSuccess,
+  getPatientSessionFailure,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -37,13 +40,45 @@ export function* getPatientSaga(action) {
   }
 }
 
+export function* getPatientSessionSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+  console.log("getPatientSessionSagaHeader", header, action?.payload)
+  try {
+    let response = yield call(
+      getApiWithParam,
+      'sessions',
+       action?.payload,
+      header,
+     
+    );
+    console.log('response: ', response);
+    if (response?.data?.status == 200) {
+      yield put(getPatientSessionSuccess(response?.data));
+    } else {
+      yield put(getPatientSessionFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(getPatientSessionFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
 
 const watchFunction = [
   (function* () {
     yield takeLatest('PATIENT/getPatientReq', getPatientSaga);
   })(),
+  (function* () {
+    yield takeLatest('PATIENT/getPatientSessionReq', getPatientSessionSaga);
+  })(),
 ];
 
- 
+
 
 export default watchFunction;

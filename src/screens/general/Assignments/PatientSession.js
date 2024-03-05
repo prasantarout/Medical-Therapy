@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import css from '../../../themes/space'
 import Tabs from '../../../components/common/Tabs'
@@ -14,9 +14,11 @@ import SafeView from '../../../components/common/SafeView'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
 import { getUpcomingAssignmentsReq } from '../../../redux/reducer/CmsReducer'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { getPatientSessionReq } from '../../../redux/reducer/PatientReducer'
+import moment from 'moment'
 
-
-let upComingAssignmentStatus = ""
+let getPatientSessionStatus = ""
 
 const PatientSession = (props) => {
 
@@ -28,64 +30,96 @@ const PatientSession = (props) => {
     const isFocused = useIsFocused()
     const dispatch = useDispatch()
     const CmsReducer = useSelector(state => state.CmsReducer)
-    
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [readableDate, setReadableDate] = useState("");
+    const PatientReducer = useSelector(state => state.PatientReducer)
+    // ecn
     useEffect(() => {
-        dispatch(getUpcomingAssignmentsReq())
-        console.log("getUpcomingAssignmentsReq - useeffect")
+        let obj = { session_date: '2024-02-12' }
+        dispatch(getPatientSessionReq(obj))
+        let todaysDateString = moment(new Date().toISOString().split('T')[0]);
+        let todaysDate = moment(todaysDateString).format('Do MMMM');
+        setReadableDate(todaysDate)
+        
     }, [isFocused])
 
-    const handleTabPress = (index) => {
-        setActiveTab(index)
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
     };
 
-    const customDatesStylesFunc = date => {
-        if (date.isoWeekday() === 5) {
-            return {
-                // dateNameStyle: { color: '#fff' },
-                // dateNumberStyle: { color: '#fff' },
-                // dateContainerStyle: { backgroundColor: '#3abef0' },
-            }
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        let selectedDate = moment(date).format('Do MMMM')
+        setReadableDate(selectedDate)
+        console.warn("A date has been picked: ", date);
+        hideDatePicker();
+    };
+    const handleSelect = (ecn) => {
+        const isSelected = selectedItems.includes(ecn);
+        if (isSelected) {
+            setSelectedItems(selectedItems.filter(item => item !== ecn));
+        } else {
+            setSelectedItems([...selectedItems, ecn]);
         }
+        
     }
 
-    const renderAssignments = ({ item, index }) => {
+
+    const IconTextBlock = ({ icon, title, textStyle, name, cardIconStyle }) => {
         return (
-            <View style={[css.card, css.mb2]} >
-                <View style={[css.row, css.jcsb, css.aic]}>
-                    <View style={[css.w70]} >
-                        <Txt style={[css.fs18]} >{item?.discription}</Txt>
-                    </View>
-                    <Image source={activeTab == 0 ? icons.inProcess : icons.cardCompleted} style={[styles.cardRightIcon]} />
-                </View>
-                <View style={[css.row, css.aic, css.mt2]} >
-                    <View style={[css.row, css.aic, styles.iconTextContainer]} >
-                        <Image source={icons.cardUser} style={[styles.cardIconStyle]} />
-                        <Txt style={[css.fs18, css.ml1]} >{item?.title}</Txt>
-                    </View>
-                    <View style={[css.row, css.aic, styles.iconTextContainer]} >
-                        <Image source={icons.cardPhone} style={[styles.cardIconStyle]} />
-                        <Txt style={[css.fs18, css.ml1]} >{item?.phone}</Txt>
-                    </View>
-                    <View style={[css.row, css.aic, styles.iconTextContainer]} >
-                        <Image source={icons.cardMail} style={[styles.cardIconStyle]} />
-                        <Txt style={[css.fs18, css.ml1]} >{item?.email}</Txt>
-                    </View>
+            <View style={[styles.iconTextContainer]} >
+                <View style={[css.row, css.aic]} >
+                    {icon ? <Image source={icon} style={[styles.cardIconStyle, cardIconStyle]} /> : null}
+                    <Txt style={[css.fs17, css.ml1, textStyle]} >{name}</Txt>
                 </View>
                 <View style={[css.row, css.aic]} >
-                    <View style={[css.row, css.aic, styles.iconTextContainer]} >
-                        <Image source={icons.cardCalender} style={[styles.cardIconStyle]} />
-                        <Txt style={[css.fs18, css.ml1]} >{item?.date}</Txt>
+                    <View style={[styles.cardIconStyle]} />
+                    <Txt style={[css.fs15, css.ml1, css.textLighte]} >{title}</Txt>
+                </View>
+            </View>
+        )
+    }
+
+    const renderAssignments = ({ item, index }) => {       
+        
+        return (
+            <Pressable
+                style={[css.card, css.mb2, {
+                    backgroundColor: selectedItems?.includes(item.ecn) ? 'rgba(0,0,0,0.1)' : "#fff"
+                }]}
+                onLongPress={() => handleSelect(item?.ecn)}
+                onPress={() => selectedItems?.length > 0 ? handleSelect(item?.ecn) : null}
+            >
+                <View style={[css.row, css.jcsb, css.aic]}>
+                    <View style={[css.row, css.aic]} >
+                        {item?.profile_photo_url ?
+                            <Image source={{ uri: item?.profile_photo_url }} style={[styles.cardUserStyle]} /> :
+                            <Image source={icons.userBlue} style={[styles.cardUserStyle]} />
+                        }
+                        <Txt style={[css.fs18,]} >{item?.patient_name}</Txt>
                     </View>
-                    <View style={[css.row, css.aic, styles.iconTextContainer]} >
-                        <Image source={icons.cardClock} style={[styles.cardIconStyle]} />
-                        <Txt style={[css.fs18, css.ml1]} >{item?.email}</Txt>
-                    </View>
+                    <Image source={item?.status == 'Pending' ? icons.inProcess : icons.cardCompleted} style={[styles.cardRightIcon]} />
+                </View>
+
+                <View style={[css.row, css.aic, css.mt3]} >
+                    <IconTextBlock icon={icons.cardCalender} name="Setup Date" title={item?.setUpDate} />
+                    <IconTextBlock icon={icons.cardClock} name="Total Usage On Device" title={item?.total_hours_usages} />
+                    <IconTextBlock icon={icons.location2} cardIconStyle={{ tintColor: colors.primary }} name="Location" title={item?.location} />
+                </View>
+                <View style={[css.row, css.aic, css.mt2]} >
+                    <IconTextBlock icon={icons.cardCalender} name="Session Date" title={item?.sessionDate} />
+                    <IconTextBlock icon={icons.cardClock} name="Session Time" title={item?.receiptTime} />
                 </View>
                 <View style={[css.mt2, css.row]} >
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={[styles.viewButon, css.center]}
-                        onPress={() => props.navigation.navigate('AssignmentDetails', {
+                        onPress={() => props.navigation.navigate('PatientSessionDetails', {
                             "type": activeTab,
                             "item": item
                         })}
@@ -93,58 +127,44 @@ const PatientSession = (props) => {
                         <Txt style={[styles.viewButonText]}>View</Txt>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Pressable>
         )
     }
 
-
-    if (upComingAssignmentStatus === '' || CmsReducer.status !== upComingAssignmentStatus) {
-        switch (CmsReducer.status) {
-            case 'CMS/getUpcomingAssignmentsReq':
-                upComingAssignmentStatus = CmsReducer.status;
-                console.log("getUpcomingAssignmentsReq", CmsReducer.status)
+    if (getPatientSessionStatus === '' || PatientReducer.status !== getPatientSessionStatus) {
+        switch (PatientReducer.status) {
+            case 'PATIENT/getPatientSessionReq':
+                getPatientSessionStatus = PatientReducer.status;
                 break;
-            case 'CMS/getUpcomingAssignmentsSuccess':
-                upComingAssignmentStatus = CmsReducer.status;
-                console.log("getUpcomingAssignmentsSuccess", CmsReducer.status)
+            case 'PATIENT/getPatientSessionSuccess':
+                getPatientSessionStatus = PatientReducer.status;
                 break;
-            case 'CMS/getUpcomingAssignmentsFailure':
-                upComingAssignmentStatus = CmsReducer.status;
-                console.log("getUpcomingAssignmentsFailure", CmsReducer.status)
+            case 'PATIENT/getPatientSessionFailure':
+                getPatientSessionStatus = PatientReducer.status;
                 break;
         }
     }
 
     return (
         <SafeView {...props}>
-
             <View style={[css.px4, css.f1]}>
-                {/* <Tabs tabs={tabs} initialTab={activeTab} onTabPress={handleTabPress} /> */}
                 <TitleTxt style={[css.mt4]} title="Patient Session" />
                 <View style={[styles.assignmentList, css.f1]}>
-                    <View style={[styles.calenderArea]}>
-                        <CalendarStrip
-                            customDatesStyles={customDatesStylesFunc}
-                            scrollable={false}
-                            calendarHeaderFormat='DD MMM, YYYY'
-                            numDaysInWeek={1}
-                            calendarAnimation={{ type: 'sequence', duration: 30 }}
-                            style={[styles.calenderStrip]}
-                            calendarColor='transparent'
-                            calendarHeaderStyle={[styles.dateStyle]}
-                            dateNumberStyle={{ color: 'black' }}
-                            dateNameStyle={{ color: 'black' }}
-                            calendarHeaderContainerStyle={[styles.calendarHeaderStyle]}
-                            dayContainerStyle={[styles.dayContainerStyle]}
-                            iconLeft={icons.leftArrow}
-                            iconRight={icons.leftArrow}
-                            iconStyle={[styles.iconStyle]}
-                            iconLeftStyle={[styles.iconLeftStyle]}
+                    <View style={[styles.calenderArea, css.row, css.aic]}>
+                        <TouchableOpacity onPress={showDatePicker} activeOpacity={0.7} >
+                            <Image source={icons.calender} style={[styles.calendarIconStyle]} />
+                        </TouchableOpacity>
+                        <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            mode="date"
+                            onConfirm={handleConfirm}
+                            onCancel={hideDatePicker}
                         />
+                        <Txt style={[css.fs17, css.semiBold]} >{readableDate}</Txt>
                     </View>
                     <View style={[css.f1]} >
                         <FlatList
-                            data={upcomingAssignmentList}
+                            data={PatientReducer?.getPatientSessionResponse?.data?.data}
                             numColumns={numCols}
                             key={numCols}
                             renderItem={renderAssignments}
@@ -160,7 +180,8 @@ export default PatientSession
 
 const styles = StyleSheet.create({
     calenderArea: {
-        width: 200,
+        marginBottom: 20,
+        marginTop: 16
     },
     calendarHeaderStyle: {
         position: 'absolute',
@@ -214,4 +235,18 @@ const styles = StyleSheet.create({
         fontFamily: fonts.Bold,
         fontSize: 18
     },
+    calendarIconStyle: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+        tintColor: colors.primary,
+        marginRight: 20
+    },
+    cardUserStyle: {
+        width: 50,
+        height: 50,
+        resizeMode: 'contain',
+        borderRadius: 100,
+        // tintColor: colors.primary,
+    }
 })

@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   status: {},
@@ -7,7 +7,7 @@ const initialState = {
   helpSupportTypeResponse: {},
   helpAndSupportResponse: {},
   contactUsForSupportResponse: {},
-  getUpcomingAssignmentsResponse:{},
+  updatePasswordResponse: {},
 };
 
 const CmsSlice = createSlice({
@@ -67,14 +67,15 @@ const CmsSlice = createSlice({
       state.status = action.type;
     },
 
-    getUpcomingAssignmentsReq(state, action) {
+    // Update Password
+    updatePasswordReq(state, action) {
       state.status = action.type;
     },
-    getUpcomingAssignmentsSuccess(state, action) {
-      state.getUpcomingAssignmentsResponse = action?.payload;
+    updatePasswordSuccess(state, action) {
+      state.updatePasswordResponse = action?.payload;
       state.status = action.type;
     },
-    getUpcomingAssignmentsFailure(state, action) {
+    updatePasswordFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -98,9 +99,10 @@ export const {
   contactUsForSupportSuccess,
   contactUsForSupportFailure,
 
-  getUpcomingAssignmentsReq,
-  getUpcomingAssignmentsSuccess,
-  getUpcomingAssignmentsFailure,
+  updatePasswordReq,
+  updatePasswordSuccess,
+  updatePasswordFailure,
+
 } = CmsSlice.actions;
 
 export default CmsSlice.reducer;

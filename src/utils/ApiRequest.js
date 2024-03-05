@@ -16,33 +16,57 @@ export async function getApi(url, header) {
     },
   });
 }
+export async function getApiWitPayload(url, header,payload) {
+  console.log('GetApiPayload: ', payload);
 
-export async function getApiWithParam(url, param, header) {
-  console.log('getApiWithParam: ', `${constants.BASE_URL}/${url}/${param}`);
-
-  return await axios({
-    method: 'GET',
-    baseURL: constants.BASE_URL,
-    url: url,
+  return await axios.get(`${constants.BASE_URL}/${url}`, {
     headers: {
-      Accept: header.Accept,
-      'Content-type': header.contenttype,
-      Authorization: `Bearer ${header.accesstoken}`,
-      // "x-access-token": `${header.token}`,
+      Accept: header?.accept,
+      'Content-type': header?.contenttype,
+      // 'x-access-token': `${header?.token}`,
+      Authorization: `Bearer ${header.accessToken}`,
     },
+    // data:JSON.stringify(payload)
   });
 }
 
+export async function getApiWithParam(url, param, header) {
+
+  let paramsKey=Object.keys(param)[0];
+  let paramValue=Object.values(param)[0]
+
+
+  return await axios.get(`${constants.BASE_URL}/${url}`, {
+    params:{
+    [paramsKey]:paramValue
+    },
+    headers: {
+          Accept: header.Accept,
+          'Content-type': header.contenttype,
+          Authorization: `Bearer ${header.accessToken}`,
+          // "x-access-token": `${header.token}`,
+        },
+  })
+}
+
 export async function postApi(url, payload, header) {
-  console.log('PostApi: ', `${constants.BASE_URL}/${url}`, payload, header);
-  // console.log('---->Header', header);
+  console.log('PostApiRequestLog: ', `${constants.BASE_URL}/${url}`, payload, header);
   let response = await axios.post(`${constants.BASE_URL}/${url}`, payload, {
     headers: {
       Accept: header?.accept,
       'Content-Type': header?.contenttype,
-      // 'x-access-token': `${header.token}`,
-      // authorization: `${header.accesstoken}`,
       Authorization: `Bearer ${header?.Authorization}`,
+    },
+  });
+  return response;
+}
+export async function postApiNew(url, payload, header) {
+  console.log('PostApiRequestLog: ', `${constants.BASE_URL}/${url}`, payload, header);
+  let response = await axios.post(`${constants.BASE_URL}/${url}`, payload, {
+    headers: {
+      Accept: header?.accept,
+      'Content-Type': header?.contenttype,
+      Authorization: `${header?.Authorization}`,
     },
   });
   return response;

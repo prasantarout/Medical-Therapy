@@ -1,7 +1,7 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import SafeView from '../../../components/common/SafeView';
-import css, { } from '../../../themes/space';
+import css, { height, width } from '../../../themes/space';
 import TitleTxt from '../../../components/common/TitleTxt';
 import Txt from '../../../components/micro/Txt';
 import { Switch } from 'react-native-switch';
@@ -20,8 +20,11 @@ import { fonts } from '../../../themes/fonts';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { useIsFocused } from '@react-navigation/native';
 import CustomToast from '../../../utils/Toast';
+import { isValidPassword } from '../../../utils/Validation';
+import { updatePasswordReq } from '../../../redux/reducer/CmsReducer';
 
 let profileStatus = ""
+let updatePasswordStatus = ""
 
 const MyProfile = (props) => {
 
@@ -42,11 +45,13 @@ const MyProfile = (props) => {
   const [changeImageModal, setChangeImageModal] = useState(false);
   const [assignedSupervisor, setAssignedSupervisor] = useState("");
   const [passwords, setPasswords] = useState({
-    old_pass: '',
-    new_pass: '',
+    old_password: '',
+    new_password: '',
+    confirm_password: '',
   });
 
   const AuthReducer = useSelector(state => state?.AuthReducer)
+  const CmsReducer = useSelector(state => state?.CmsReducer)
   const dispatch = useDispatch()
   const focused = useIsFocused()
   useEffect(() => {
@@ -137,7 +142,6 @@ const MyProfile = (props) => {
     }
   };
 
-
   const fromCamera = async () => {
     ImagePicker.openCamera({
       width: 300,
@@ -177,6 +181,42 @@ const MyProfile = (props) => {
         console.log("imageObj", imageObj)
       })
       .catch((err) => console.log(err));
+  }
+
+  const validNewPassword = isValidPassword(passwords?.new_password)
+
+  const handleUpdatePassword = () => {
+    if (passwords?.old_password == "") {
+      CustomToast("Please enter old password")
+    } else if (passwords?.new_password == "") {
+      CustomToast("Please enter old password")
+    } else if (!validNewPassword) {
+      CustomToast("The new password should contain at least one number, one capital letter, and one special character.")
+    } else if (passwords?.confirm_password != passwords?.new_password) {
+      CustomToast("Password does not match")
+    } else {
+      let obj = {
+        'old_password': passwords?.old_password,
+        'new_password': passwords?.new_password,
+        'confirm_password': passwords?.confirm_password,
+      }
+      dispatch(updatePasswordReq(obj))
+    }
+  }
+
+  if (updatePasswordStatus === '' || CmsReducer.status !== updatePasswordStatus) {
+    switch (CmsReducer.status) {
+      case 'CMS/updatePasswordReq':
+        updatePasswordStatus = CmsReducer.status;
+        setChangePassModal(false)
+        break;
+      case 'CMS/updatePasswordSuccess':
+        updatePasswordStatus = CmsReducer.status;
+        break;
+      case 'CMS/updatePasswordFailure':
+        updatePasswordStatus = CmsReducer.status;
+        break;
+    }
   }
 
   return (
@@ -296,58 +336,55 @@ const MyProfile = (props) => {
           </View>
         </View>
       </SafeView>
-      <Modal isVisible={changePassModal}>
-        <View style={[css.f1, css.center]}>
-          <View style={[css.bgWhite, css.p3, styles.modalPanel]} >
-            <TouchableOpacity onPress={() => setChangePassModal(false)} style={[css.closeIconWrapStyle]} >
-              <Image source={icons.closeIcon} style={[css.closeIconStyle]} />
-            </TouchableOpacity>
-            <View style={[css.center]} >
-              <TitleTxt title="Change Password" />
-            </View>
-            <View>
-              <Input
-                title="Enter Password"
-                placeholder="**************"
-                rightIcon={isSecureNewPass ? icons.eyeClose : icons.eyeOpen}
-                style={[css.mb3, css.mw50]}
-                secureTextEntry={isSecureNewPass}
-                onPressIcon={() => setIsSecureNewPass(!isSecureNewPass)}
-                secure={true}
-                value={passwords.password}
-                onChangeText={text =>
-                  handleInputChange('password', text)
-                }
-              />
-
-              <Input
-                title="Enter Password"
-                placeholder="**************"
-                rightIcon={isSecurePass ? icons.eyeClose : icons.eyeOpen}
-                style={[css.mb3]}
-                secureTextEntry={isSecurePass}
-                onPressIcon={() => setIsSecurePass(!isSecurePass)}
-                secure={true}
-                value={passwords.password}
-                onChangeText={text =>
-                  handleInputChange('password', text)
-                }
-              />
-
-              <Input
-                title="Confirm Password"
-                placeholder="**************"
-                rightIcon={isSecureConfirmPass ? icons.eyeClose : icons.eyeOpen}
-                style={[css.mb3]}
-                secureTextEntry={isSecureConfirmPass}
-                onPressIcon={() => setIsSecureConfirmPass(!isSecureConfirmPass)}
-                secure={true}
-                onChangeText={(text) => setConfirmPassword(text)}
-                value={confirmPassword}
-              />
-            </View>
-            <Button style={[styles.btn]} title="Submit" />
+      <Modal style={[css.f1, css.center]} isVisible={changePassModal}>
+        <View style={[css.bgWhite, css.p8, styles.modalPanel]} >
+          <TouchableOpacity onPress={() => setChangePassModal(false)} style={[css.closeIconWrapStyle]} >
+            <Image source={icons.closeIcon} style={[css.closeIconStyle]} />
+          </TouchableOpacity>
+          <View style={[css.center]} >
+            <TitleTxt title="Change Password" />
           </View>
+          <View style={[css.mt5]}>
+            <Input
+              title="Enter Old Password"
+              placeholder="**************"
+              rightIcon={isSecureNewPass ? icons.eyeClose : icons.eyeOpen}
+              style={[css.mb3, css.mw50]}
+              secureTextEntry={isSecureNewPass}
+              onPressIcon={() => setIsSecureNewPass(!isSecureNewPass)}
+              secure={true}
+              value={passwords?.old_password}
+              onChangeText={text => handleInputChange('old_password', text)}
+            />
+
+            <Input
+              title="Enter New Password"
+              placeholder="**************"
+              rightIcon={isSecurePass ? icons.eyeClose : icons.eyeOpen}
+              style={[css.mb3]}
+              secureTextEntry={isSecurePass}
+              onPressIcon={() => setIsSecurePass(!isSecurePass)}
+              secure={true}
+              value={passwords?.new_password}
+              onChangeText={text =>
+                handleInputChange('new_password', text)
+              }
+            />
+            <Input
+              title="Confirm New Password"
+              placeholder="**************"
+              rightIcon={isSecureConfirmPass ? icons.eyeClose : icons.eyeOpen}
+              style={[css.mb3]}
+              secureTextEntry={isSecureConfirmPass}
+              onPressIcon={() => setIsSecureConfirmPass(!isSecureConfirmPass)}
+              secure={true}
+              value={passwords?.confirm_password}
+              onChangeText={text =>
+                handleInputChange('confirm_password', text)
+              }
+            />
+          </View>
+          <Button style={[styles.btn, css.mt5]} title="Submit" onPress={handleUpdatePassword} />
         </View>
       </Modal>
       <Modal
@@ -462,9 +499,7 @@ const styles = StyleSheet.create({
   },
   modalPanel: {
     borderRadius: 5,
-
-    // minWidth: width / 2,
-    // height: height / 2
+    minWidth: width > 1000 ? width / 2 : width / 1.2,
   },
   generalInfoCard: {
     marginBottom: 50

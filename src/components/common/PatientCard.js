@@ -17,7 +17,7 @@ import { fonts } from '../../themes/fonts';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-const Skeleton = ({style}) => {
+const Skeleton = ({ style }) => {
   return (
     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#f4f4f4', '#e8e8e8', '#dddddd']} style={style} />
   )
@@ -32,16 +32,9 @@ const PatientCard = props => {
       onPress={onPress}
       style={[styles.mainCard, style]}>
       {image ? <ImageBackground resizeMode='stretch' source={{ uri: image }} style={styles.profile} >
-        <View style={[styles.newCtn, css.m2]}>
-          <Txt
-            style={{
-              fontSize: 15,
-              color: colors.white,
-              fontWeight: '500',
-            }}>
-            New
-          </Txt>
-        </View>
+        {/* <View style={[styles.newCtn]}>
+          <Txt style={[css.textWhite]}>New</Txt>
+        </View> */}
 
       </ImageBackground> :
         <Skeleton style={styles.profile} />
@@ -132,7 +125,9 @@ const styles = StyleSheet.create({
     borderRadius: normalize(3),
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-start'
-    // width: normalize(23),
+    alignSelf: 'flex-start',
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
 });

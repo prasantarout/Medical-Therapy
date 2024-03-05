@@ -11,7 +11,7 @@ import useScreenDimension from '../../utils/useScreenDimension';
 
 const ScoreCard = (props) => {
 
-    const screenWidth = useScreenDimension()
+    const { screenWidth, screenHeight } = useScreenDimension()
 
     return (
         <View style={[css.py8, css.bgWhite, styles.card, props.style, css.aic,{

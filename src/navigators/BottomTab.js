@@ -36,6 +36,8 @@ const BottomTab = (props) => {
           iconName = icons.navAssignment;
         } else if (route.name === 'Patients Queue') {
           iconName = icons.navPatient;
+        } else if (route.name === 'Help & Support') {
+          iconName = icons.navHelp;
         } else if (route.name === 'My Profile') {
           iconName = icons.navProfile;
         }
@@ -46,6 +48,7 @@ const BottomTab = (props) => {
       <Tab.Screen name="Dashboard" component={Home} />
       <Tab.Screen name="Patients Session" component={PatientSessionTab} />
       <Tab.Screen name="Patients Queue" component={PatientTab} />
+      <Tab.Screen name="Help & Support" component={HelpnSupport} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>
   )

@@ -10,7 +10,7 @@ import useScreenDimension from '../../utils/useScreenDimension'
 
 const AuthHeader = (props) => {
 
-  const screenWidth = useScreenDimension()
+  const { screenWidth, screenHeight } = useScreenDimension()
 
   return (
     <View style={[css.aic, css.jcc]}>

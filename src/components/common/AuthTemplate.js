@@ -12,7 +12,7 @@ import useScreenDimension from '../../utils/useScreenDimension';
 
 const AuthTemplate = (props) => {
 
-const screenWidth = useScreenDimension()
+const { screenWidth, screenHeight } = useScreenDimension()
 
     return (
         <SafeAreaView style={[css.f1, { backgroundColor: colors.bgColor }, props.style]}>

@@ -7,6 +7,7 @@ import {getTokenRequest} from './src/redux/reducer/AuthReducer';
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
+    
     dispatch(getTokenRequest());
   }, []);
   return (

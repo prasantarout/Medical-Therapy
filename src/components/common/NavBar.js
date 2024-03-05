@@ -22,13 +22,13 @@ const NavBar = (props) => {
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [logoutModal, setLogoutModal] = useState(false);
 
-    const screenWidth = useScreenDimension()
+    const { screenWidth, screenHeight } = useScreenDimension()
     const navigation = useNavigation()
     const AuthReducer = useSelector(state => state?.AuthReducer)
     const dispatch = useDispatch()
     const focused = useIsFocused()
 
-    console.log("NavProps", props)
+    // console.log("NavProps", props)
 
     useEffect(() => {
         dispatch(ProfileRequest())
@@ -97,7 +97,7 @@ const NavBar = (props) => {
                         <Image source={images.logo} style={[styles.imgResponsive]} />
                     </TouchableOpacity>
                     <View style={[styles.rightSection, css.row, css.aic, { width: screenWidth / 2.2, height: 50 }]}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             activeOpacity={0.8}
                             style={[css.row, css.aic]}
                         >
@@ -107,7 +107,7 @@ const NavBar = (props) => {
                                 resizeMode='contain'
                             />
                             <Txt style={[css.ml1, css.mt0, css.semiBold, css.fs17]} >Sync</Txt>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <TouchableOpacity activeOpacity={0.8}
                             onPress={() => navigation?.navigate("Notification")}>

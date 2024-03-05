@@ -78,7 +78,7 @@ const Assignment = () => {
     },
   ];
 
-  const screenWidth = useScreenDimension()
+  const { screenWidth, screenHeight } = useScreenDimension()
 
   const assignmentRenderItem = ({ item, index }) => {
     return (

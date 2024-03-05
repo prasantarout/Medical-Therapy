@@ -1,5 +1,5 @@
 import { Dimensions, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import css, { width } from '../../themes/space';
 import NavBar from '../../components/common/NavBar';
 import SafeView from '../../components/common/SafeView';
@@ -14,16 +14,37 @@ import useScreenDimension from '../../utils/useScreenDimension';
 import useOrientation from '../../utils/useOrientation';
 import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
-import { heightToDp as hp, widthToDp as wp } from '../../utils/responsive';
 import { images } from '../../themes/images';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDashboardReq } from '../../redux/reducer/DashboardReducer';
+import { useIsFocused } from '@react-navigation/native';
+import moment from 'moment';
+
+let dashboardStatus = ""
 
 const Home = props => {
-  const [visible, setVisible] = useState(false);
-  const [years, setYears] = useState('');
-  let screenWidthh = useScreenDimension();
-  let orientation = useOrientation();
 
-  // console.log('hiiiiiiiiiiiiiiiiiiiii');
+  const { screenWidthh, screenHeight } = useScreenDimension();
+  
+  let orientation = useOrientation();
+  const dispatch = useDispatch()
+  const isFocused = useIsFocused()
+  const DashboardReducer = useSelector(state => state.DashboardReducer)
+
+  const [visible, setVisible] = useState(false);
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+  const [years, setYears] = useState('2024');
+  const [dashboardData, setDashboardData] = useState([]);
+  const [sessionsData, setSessionsData] = useState([]);
+  const [sessionsDateData, setSessionsDateData] = useState("");
+
+  useEffect(() => {
+    let obj = {
+      date: date,
+      enrolment_year: years,
+    };
+    dispatch(getDashboardReq(obj))
+  }, [isFocused]);
 
   const data = [
     {
@@ -47,7 +68,7 @@ const Home = props => {
       value: '2028',
     },
   ];
-
+  // getDashboardReq
   let paddingLast = { paddingRight: orientation == 'PORTRAIT' ? 0 : 16 };
   let paddingRight = { paddingRight: orientation == 'PORTRAIT' ? 16 : 0 };
 
@@ -55,6 +76,37 @@ const Home = props => {
     width: orientation == 'PORTRAIT' ? '50%' : '33.2%',
   };
 
+  if (dashboardStatus === "" || DashboardReducer.status !== dashboardStatus) {
+    switch (DashboardReducer.status) {
+      case "Dashboard/getDashboardReq":
+        dashboardStatus = DashboardReducer.status;
+        break;
+      case "Dashboard/getDashboardSuccess":
+        dashboardStatus = DashboardReducer.status;
+        // console.log("CalenderView-Dashboard:", DashboardReducer?.getDashboardResponse?.data)
+        setDashboardData(DashboardReducer?.getDashboardResponse?.data)
+        setSessionsData(DashboardReducer?.getDashboardResponse?.data?.sessions)
+        // setSessionsDateData(DashboardReducer?.getDashboardResponse?.data?.sessions[0]?.session_date)
+        break;
+      case "Dashboard/getDashboardFailure":
+        dashboardStatus = DashboardReducer.status;
+        console.log("initiated-fail", DashboardReducer.status)
+        break;
+
+    }
+  }
+
+  const onDateSelected = (selectedDate) => {
+    const selected_Date = moment(selectedDate).format("YYYY-MM-DD");
+    console.log("selectedDate", selected_Date)
+    let obj = {
+      date: selected_Date,
+      enrolment_year: moment(selectedDate).format("YYYY"),
+    };
+    dispatch(getDashboardReq(obj))
+  };
+
+ 
   return (
     <SafeView sticky={[1]}>
       <View style={[css.f1, css.p4]}>
@@ -80,7 +132,6 @@ const Home = props => {
             <Image source={images.evaluationScore} style={[styles.scoreCard]} />
           </View>
         </View>
-
         <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
           <View style={[css.row, css.jcsb, css.fw, css.mt4, css.f1]}>
@@ -91,8 +142,8 @@ const Home = props => {
                 counterCardWidth,
               ]}>
               <QuickCounter
-                value="200"
-                title="Total Assignments"
+                value={dashboardData?.total_session}
+                title="Total Session Data"
                 color="#28328C"
                 icon={icons.assignment}
                 style={[styles.quickCounterStyle]}
@@ -101,8 +152,8 @@ const Home = props => {
             <View
               style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
-                value="200"
-                title="Pending Assignments"
+                value={dashboardData?.monthly_session}
+                title="Current Month Session Data"
                 color="#FA9A6C"
                 icon={icons.pendingAssignment}
                 style={[styles.quickCounterStyle]}
@@ -111,8 +162,8 @@ const Home = props => {
             <View
               style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
               <QuickCounter
-                value="200"
-                title="Completed Assignments"
+                value={dashboardData?.complete_evaluation}
+                title="Completed Evaulation"
                 color="#3ABEF0"
                 icon={icons.completeAssignment}
                 style={[styles.quickCounterStyle]}
@@ -121,8 +172,8 @@ const Home = props => {
             <View
               style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
-                value="200"
-                title="Total Patients"
+                value={dashboardData?.pending_evaluation}
+                title="Pending Evaulation"
                 color="#28328C"
                 icon={icons.totalPatient}
                 style={[styles.quickCounterStyle]}
@@ -135,7 +186,7 @@ const Home = props => {
                 counterCardWidth,
               ]}>
               <QuickCounter
-                value="200"
+                value={dashboardData?.active_patient}
                 title="Active Patients"
                 color="#FA9A6C"
                 icon={icons.activePatient}
@@ -144,7 +195,7 @@ const Home = props => {
             </View>
             <View style={[styles.counterCardStyle, counterCardWidth]}>
               <QuickCounter
-                value="200"
+                value={dashboardData?.inactive_patient}
                 title="Inactive Patients"
                 color="#3ABEF0"
                 icon={icons.inactivePatient}
@@ -155,13 +206,17 @@ const Home = props => {
         </View>
 
         <View style={[css.mt4]}>
-          <PatientEnrolmentChart />
+          <PatientEnrolmentChart  {...props} />
         </View>
         <View style={[css.mt4]}>
-          <AssignmentChart />
+          <AssignmentChart {...props} />
         </View>
         <View style={[css.mt4]}>
-          <CalenderView />
+          <CalenderView
+            {...props}
+            data={sessionsData}
+            onDateSelected={onDateSelected}
+          />
         </View>
       </View>
     </SafeView>

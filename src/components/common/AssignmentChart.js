@@ -13,7 +13,8 @@ import useOrientation from '../../utils/useOrientation'
 const AssignmentChart = () => {
 
     const [selectedyear, setSelectedYear] = useState("");
-    const screenWidth = useScreenDimension()
+    // const { screenWidth, screenHeight } = useScreenDimension()
+    const { screenWidth, screenHeight } = useScreenDimension();
     let orientation = useOrientation()
 
     const lineData = [
@@ -79,7 +80,7 @@ const AssignmentChart = () => {
         <View style={[styles.patientEnrollment, css.mt4]}>
             <View style={[css.card]}>
                 <View style={[css.row, css.jcsb, css.aic]}>
-                    <TitleTxt title="assignment" />
+                    <TitleTxt title="Evaluation" />
                     <CustomDropdown
                         data={years}
                         labelField='label'

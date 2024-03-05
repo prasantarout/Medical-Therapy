@@ -1,5 +1,5 @@
-import {call, put, select, takeLatest} from 'redux-saga/effects';
-import {getApi, postApi, putApi} from '../../utils/ApiRequest';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { getApi, postApi, postApiNew, putApi } from '../../utils/ApiRequest';
 
 import {
   getCategorySuccess,
@@ -12,6 +12,8 @@ import {
   contactUsForSupportFailure,
   getUpcomingAssignmentsSuccess,
   getUpcomingAssignmentsFailure,
+  updatePasswordSuccess,
+  updatePasswordFailure,
 } from '../reducer/CmsReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -104,18 +106,23 @@ export function* getHelpAndSupportSaga(action) {
 
 // Contact US for Support
 
-export function* ContactUsForSupportSaga(action) {
+export function* contactUsForSupportSaga(action) {
   let items = yield select(getItem);
   let header = {
     accept: 'application/json',
-    contenttype: 'application/json',
-    accessToken: items?.token,
+    contenttype: 'multipart/form-data',
+    Authorization: `Bearer ${items?.token}`,
   };
-
+  console.log("contactUsForSupportSaga", header, action.payload)
   try {
-    let response = yield call(postApi, 'contact-us', action.payload, header);
-
-    if (response?.status == '200') {
+    let response = yield call(
+      postApiNew,
+      'contact-us',
+      action.payload,
+      header
+    );
+    console.log("contactUsForSupportSaga-response", response)
+    if (response?.status == '201') {
       yield put(contactUsForSupportSuccess(response?.data));
       CustomToast(response?.data?.message);
     } else {
@@ -125,6 +132,7 @@ export function* ContactUsForSupportSaga(action) {
   } catch (error) {
     console.log('Catch', error);
     yield put(contactUsForSupportFailure(error?.response));
+    console.log("catch error", error?.response);
   }
 }
 
@@ -137,7 +145,7 @@ export function* getUpcomingAssignmentsSaga(action) {
     contenttype: 'application/json',
     Authorization: `Bearer ${items?.token}`,
   };
-  
+
   try {
     let response = yield call(postApi, 'upcoming-assignments', header);
     console.log("getUpcomingAssignmentsSaga response", response);
@@ -154,6 +162,38 @@ export function* getUpcomingAssignmentsSaga(action) {
   }
 }
 
+// Get Upcoming Assignments Saga
+export function* updatePasswordSaga(action) {
+  console.log("getUpcomingAssignmentsSaga started", action.payload)
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${items?.token}`,
+  };
+
+  try {
+    let response = yield call(
+      postApiNew,
+      'update-password',
+      action.payload,
+      header,
+    );
+    console.log("updatePasswordSaga-response", response);
+    if (response?.status == '200') {
+      yield put(updatePasswordSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(updatePasswordFailure(response?.data));
+      CustomToast(response?.data?.message);
+    }
+  } catch (error) {
+    console.log('Catch', error);
+    yield put(updatePasswordFailure(error?.response));
+  }
+}
+
+
 const watchFunction = [
   (function* () {
     yield takeLatest('CMS/getCategoryReq', getCategorySaga);
@@ -165,13 +205,17 @@ const watchFunction = [
     yield takeLatest('CMS/helpAndSupportReq', getHelpAndSupportSaga);
   })(),
   (function* () {
-    yield takeLatest('CMS/contactUsForSupportReq', ContactUsForSupportSaga);
+    yield takeLatest('CMS/contactUsForSupportReq', contactUsForSupportSaga);
   })(),
   (function* () {
     yield takeLatest('CMS/getUpcomingAssignmentsReq', getUpcomingAssignmentsSaga);
   })(),
+  (function* () {
+    yield takeLatest('CMS/updatePasswordReq', updatePasswordSaga);
+  })(),
 ];
 
- 
+
+
 
 export default watchFunction;

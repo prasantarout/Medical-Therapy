@@ -1,9 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import Colors from '../theme/colors';
-
-// import { Colors } from '../../themes/ImagePath';
+import { colors } from '../themes/colors';
 
 export default function Loader(props) {
   return props.visible ? (
@@ -11,13 +9,13 @@ export default function Loader(props) {
       style={{
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.02)',
         // backgroundColor: 'Transperant',
         zIndex: 999,
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <ActivityIndicator size="large" color={Colors.purple} />
+      <ActivityIndicator size="large" color={colors.primary} />
     </SafeAreaView>
   ) : null;
 }

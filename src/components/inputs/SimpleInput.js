@@ -7,7 +7,7 @@ import css from '../../themes/space'
 
 const SimpleInput = (props) => {
 
-    const { style, value, placeholder, title, onChangeText, inputStyle, titleStyle, multiline } = props
+    const { style, value, placeholder, title, onChangeText, inputStyle, titleStyle, multiline, autoCapitalize } = props
 
     return (
         <View style={[style, styles.contianerStyle]}>
@@ -18,6 +18,7 @@ const SimpleInput = (props) => {
                 value={value}
                 onChangeText={onChangeText}
                 multiline={multiline}
+                autoCapitalize={autoCapitalize}
             />
         </View>
     )

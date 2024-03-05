@@ -31,7 +31,7 @@ const BounceText = ({ title }) => {
 
   const translateY = bounceValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 20], // Change this value to adjust the bounce height
+    outputRange: [0, 5], // Change this value to adjust the bounce height
   });
 
   return (
@@ -47,7 +47,7 @@ export default BounceText;
 
 const styles = StyleSheet.create({
   textStyle: {
-   fontSize: normalize(12),
+   fontSize: normalize(10),
     color: colors.ternaryTextColor,
   },
 });

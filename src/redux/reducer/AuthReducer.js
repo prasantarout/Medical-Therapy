@@ -22,6 +22,7 @@ const AuthSlice = createSlice({
   reducers: {
     //TOKEN
     getTokenRequest(state, action) {
+     
       state.isLoading = true;
       state.status = action.type;
     },

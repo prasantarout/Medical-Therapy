@@ -16,6 +16,8 @@ export const icons = {
   down: require('../assets/icons/down.png'),
   Clock: require('../assets/icons/Clock.png'),
   Calendar: require('../assets/icons/Calendar.png'),
+  userBlue: require('../assets/icons/userBlue.png'),
+  device: require('../assets/icons/device.png'),
   Location: require('../assets/icons/Location.png'),
   closeBtn: require('../assets/icons/closeBtn.png'),
   backArrow: require('../assets/icons/backArrow.png'),
@@ -23,6 +25,9 @@ export const icons = {
   loader: require('../assets/icons/loader.png'),
   uploadBg: require('../assets/icons/uploadBg.png'),
   upload: require('../assets/icons/upload.png'),
+  mask: require('../assets/icons/mask.png'),
+  office: require('../assets/icons/office.png'),
+  docx: require('../assets/icons/docx.png'),
   assignment: require('../assets/icons/assignment.png'),
   totalPatient: require('../assets/icons/totalPatient.png'),
   pendingAssignment: require('../assets/icons/pendingAssignment.png'),
@@ -57,4 +62,9 @@ export const icons = {
   gallery: require('../assets/icons/gallery.png'),
   camera: require('../assets/icons/camera.png'),
   cross: require('../assets/icons/cross.png'),
+          // Animations
+  waves: require('../assets/json/waves.json'),
+  heart: require('../assets/json/heart.json'),
+  loader: require('../assets/json/loader.json'),
+  celebrate: require('../assets/json/celebrate.json'),
 };

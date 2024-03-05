@@ -9,21 +9,21 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
 import TitleTxt from '../../../components/common/TitleTxt';
-import {colors} from '../../../themes/colors';
+import { colors } from '../../../themes/colors';
 import normalize from '../../../utils/normalize';
-import {fonts} from '../../../themes/fonts';
+import { fonts } from '../../../themes/fonts';
 import QuestionCard from '../../../components/common/QuestionCard';
 import Txt from '../../../components/micro/Txt';
-import {icons} from '../../../themes/icons';
+import { icons } from '../../../themes/icons';
 import Modal from 'react-native-modal';
-import {images} from '../../../themes/images';
+import { images } from '../../../themes/images';
 import SimpleInput from '../../../components/inputs/SimpleInput';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   contactUsForSupportReq,
   helpAndSupportReq,
@@ -33,7 +33,9 @@ import CustomToast from '../../../utils/Toast';
 import DocumentPicker from 'react-native-document-picker';
 
 let status = '';
-const HelpnSupport = () => {
+let contactUsForSupportstatus = '';
+
+const HelpnSupport = (props) => {
   const [selected, setSelected] = useState(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -86,6 +88,7 @@ const HelpnSupport = () => {
         setPhone('');
         setMessage('');
         setDocument('');
+        setDocumentName('');
         status = CmsReducer.status;
         break;
       case 'CMS/contactUsForSupportFailure':
@@ -94,47 +97,8 @@ const HelpnSupport = () => {
     }
   }
 
-  const categoryData = [
-    {
-      id: 1,
-      title: 'Accounts',
-    },
-    {
-      id: 2,
-      title: 'Payments',
-    },
-    {
-      id: 3,
-      title: 'Enrolment',
-    },
-    {
-      id: 4,
-      title: 'Service Enrolment',
-    },
-  ];
 
-  const supportData = [
-    {
-      id: 1,
-      title:
-        'Q. Lorem ipsum dolor sit amet, consectetur adipiscing elit Sed eget augue ac tellus eleifend dapibus id eget lectus?',
-      value: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,`,
-    },
-    {
-      id: 2,
-      title:
-        'Q. Lorem ipsum dolor sit amet, consectetur adipiscing elit Sed eget augue ac tellus eleifend dapibus id eget lectus?',
-      value: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,`,
-    },
-    {
-      id: 3,
-      title:
-        'Q. Lorem ipsum dolor sit amet, consectetur adipiscing elit Sed eget augue ac tellus eleifend dapibus id eget lectus?',
-      value: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,`,
-    },
-  ];
-
-  const supportRenderItem = ({item, index}) => {
+  const supportRenderItem = ({ item, index }) => {
     return <QuestionCard title={item?.question} value={item?.answer} />;
   };
 
@@ -145,7 +109,7 @@ const HelpnSupport = () => {
     dispatch(helpAndSupportReq(obj));
   };
 
-  const categoryRenderItem = ({item, index}) => {
+  const categoryRenderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -183,15 +147,17 @@ const HelpnSupport = () => {
       CustomToast('Please enter your Email');
     } else if (phone == '') {
       CustomToast('Please enter your Phone Number');
+    } else if (document == '' || document == undefined) {
+      CustomToast('Please select document');
     } else {
-      let obj = {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        phone: phone,
-        message: message,
-        attachment: document,
-      };
+      let obj = new FormData();
+      obj.append("first_name", firstName);
+      obj.append("last_name", lastName);
+      obj.append("email", email);
+      obj.append("phone", phone);
+      obj.append("message", message);
+      obj.append("attachment", document);
+      console.log("attachment", document)
       dispatch(contactUsForSupportReq(obj));
     }
   };
@@ -201,17 +167,23 @@ const HelpnSupport = () => {
       const response = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
       });
-      setDocument(response[0].uri);
+      setDocument(response[0]);
       setDocumentName(response[0]?.name);
     } catch (err) {
       console.warn(err);
     }
   }, []);
 
+
+  // setDocumentName
+  //   contactUsForSupportReq
+  // contactUsForSupportSuccess
+  // contactUsForSupportFailure
+
   return (
     <SafeView {...props}>
       <ScrollView
-        style={{paddingBottom: normalize(35)}}
+        style={{ paddingBottom: normalize(35) }}
         showsVerticalScrollIndicator={false}>
         <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'Help & Support'} />
@@ -244,7 +216,7 @@ const HelpnSupport = () => {
                 <SimpleInput
                   title="First Name"
                   style={[css.mr2]}
-                  value={[]}
+                  value={firstName}
                   placeholder="Enter First Name"
                   onChangeText={val => setFirstName(val)}
                 />
@@ -253,7 +225,7 @@ const HelpnSupport = () => {
                 <SimpleInput
                   title="Last Name"
                   style={[css.ml2]}
-                  value={[]}
+                  value={lastName}
                   placeholder="Enter Last Name"
                   onChangeText={val => setLastName(val)}
                 />
@@ -262,7 +234,8 @@ const HelpnSupport = () => {
                 <SimpleInput
                   title="Email"
                   style={[css.mr2]}
-                  value={[]}
+                  autoCapitalize='none'
+                  value={email}
                   placeholder="Enter Email"
                   onChangeText={val => setEmail(val)}
                 />
@@ -271,7 +244,7 @@ const HelpnSupport = () => {
                 <SimpleInput
                   title="Phone Number"
                   style={[css.ml2]}
-                  value={[]}
+                  value={phone}
                   placeholder="Enter Phone Number"
                   onChangeText={val => setPhone(val)}
                 />
@@ -280,7 +253,7 @@ const HelpnSupport = () => {
                 <SimpleInput
                   title="Message"
                   style={[css.mr2]}
-                  value={[]}
+                  value={message}
                   placeholder="Type here..."
                   onChangeText={val => setMessage(val)}
                 />
@@ -297,27 +270,31 @@ const HelpnSupport = () => {
                 <ImageBackground
                   source={icons.uploadBg}
                   style={styles.uploadCtnr}>
-                  <Image source={icons.attach} style={styles.uploadIcon} />
+                  <Image source={documentName ? icons.docx : icons.attach} style={styles.uploadIcon} />
                 </ImageBackground>
               </View>
-              <Txt
-                style={{
-                  fontFamily: fonts.Medium,
-                  color: '#444444',
-                  fontSize: 20,
-                  marginLeft: 12,
-                }}>
-                Attach File
-              </Txt>
-              <Txt
-                style={{
-                  fontFamily: fonts.Medium,
-                  color: '#9A9A9A',
-                  fontSize: 19,
-                  marginLeft: 10,
-                }}>
-                Maximum Size 5MB (.docx, .doc)
-              </Txt>
+              {documentName ? <Txt style={[css.fs18, css.semiBold, css.ml2]}>{documentName}</Txt> :
+                <>
+                  <Txt
+                    style={{
+                      fontFamily: fonts.Medium,
+                      color: '#444444',
+                      fontSize: 20,
+                      marginLeft: 12,
+                    }}>
+                    Attach File
+                  </Txt>
+                  <Txt
+                    style={{
+                      fontFamily: fonts.Medium,
+                      color: '#9A9A9A',
+                      fontSize: 19,
+                      marginLeft: 10,
+                    }}>
+                    Maximum Size 5MB (.docx, .doc)
+                  </Txt>
+                </>
+              }
             </TouchableOpacity>
 
             <TouchableOpacity

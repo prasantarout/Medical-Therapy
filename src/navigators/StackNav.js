@@ -31,6 +31,7 @@ const StackNav = () => {
   const initialRouteName = AuthReducer?.token == null ? 'Splash' : 'BottomTab';
 
   if (AuthReducer?.isLoading) {
+  
     return <Splash />;
   } else {
     return (

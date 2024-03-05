@@ -1,42 +1,46 @@
 import { StyleSheet, FlatList, View, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import CalendarStrip from 'react-native-calendar-strip';
-import css from '../../themes/space';
+import css, { width } from '../../themes/space';
 import TitleTxt from './TitleTxt';
 import { assignmentList } from '../../utils/dumpAPI';
 import Txt from '../micro/Txt';
 import { icons } from '../../themes/icons';
 import useOrientation from '../../utils/useOrientation';
 import { colors } from '../../themes/colors';
+import moment from 'moment';
+import BounceText from '../micro/BounceText';
+import CustomAnimatedInfo from '../../utils/CustomAnimatedInfo';
 
 const CalenderView = (props) => {
 
     const customDatesStylesFunc = date => {
-        if (date.isoWeekday() === 5) {
+        // console.log("dateeee", moment(date).format("YYYY-MM-DD"))
+        // console.log("dateeee-propsDate", moment(props.date).format("YYYY-MM-DD"))
+        let weekday = moment(date).format("YYYY-MM-DD")
+        let apidate = moment(props?.date).format("YYYY-MM-DD")
+
+        if (weekday == apidate) {
             return {
-                dateNameStyle: { color: '#fff' },
-                dateNumberStyle: { color: '#fff' },
-                dateContainerStyle: { backgroundColor: '#3abef0' },
+                // dateNameStyle: { color: '#fff' },
+                // dateNumberStyle: { color: '#fff' },
+                // dateContainerStyle: { backgroundColor: '#3abef0' },
             }
         }
     }
     let orientation = useOrientation()
     let cardWidth = orientation == "LANDSCAPE" ? "33.3%" : "50%"
-
-
     return (
         <View style={[styles.patientEnrollment, css.mt4]}>
             <View style={[css.card]}>
-                <View style={[css.row, css.jcsb, css.aic]}>
-                    <TitleTxt title="Upcoming Assignment" />
-
-                </View>
+                <TitleTxt title="Sessions" />
                 <View style={[styles.calenderArea]}>
                     <CalendarStrip
                         customDatesStyles={customDatesStylesFunc}
-                        scrollable
-                        // numDaysInWeek={1}
-                        calendarAnimation={{type: 'sequence', duration: 30}}
+                        startingDate={moment()}
+                        onDateSelected={(date) => props.onDateSelected(date)}
+                        numDaysInWeek={7}
+                        calendarAnimation={{ type: 'sequence', duration: 0 }}
                         style={{ height: 200, paddingTop: 20, paddingBottom: 10 }}
                         calendarColor='transparent'
                         calendarHeaderStyle={{ color: 'black' }}
@@ -46,31 +50,39 @@ const CalenderView = (props) => {
                     />
                 </View>
                 <View style={[css.f1, css.row, css.fw]}>
-                    {
-                        assignmentList?.map((item, index) => {
-                            let borderLeftColor = orientation == "LANDSCAPE" ?(index % 3 === 0 ? colors.primary :
+                    {props.data ?
+                        props.data?.map((item, index) => {
+                            let borderLeftColor = orientation == "LANDSCAPE" ? (index % 3 === 0 ? colors.primary :
                                 index % 3 === 1 ? colors.secondary :
-                                    colors.primary):index % 2 === 0 ? colors.primary : colors.secondary
+                                    colors.primary) : index % 2 === 0 ? colors.primary : colors.secondary
                             return (
-                                <View style={[styles.cardStyle, { width: cardWidth, borderLeftColor: borderLeftColor }]}>
-                                    <Txt style={[css.bold, css.fs18]} >{item?.title}</Txt>
-                                    <View style={[css.row, css.aic,{marginTop:10}]} >
+                                <View key={index} style={[styles.cardStyle, { width: cardWidth, borderLeftColor: borderLeftColor }]}>
+                                    <Txt style={[css.bold, css.fs18]} >{item?.patient_name}</Txt>
+                                    <View style={[css.row, css.aic, { marginTop: 10 }]} >
                                         <View style={[css.row, css.aic]} >
                                             <Image source={icons.calender} style={[styles.iconStyle]} />
-                                            <Txt style={[css.fs12, css.medium]}>{item?.date}</Txt>
+                                            <Txt style={[css.fs12, css.medium]}>{item?.session_date}</Txt>
                                         </View>
-                                        <View style={[css.row, css.aic,css.ml3]} >
+                                        <View style={[css.row, css.aic, css.ml3]} >
                                             <Image source={icons.clock2} style={[styles.iconStyle]} />
-                                            <Txt style={[css.fs12, css.medium]}>{item?.time}</Txt>
+                                            <Txt style={[css.fs12, css.medium]}>{item?.receipt_at}</Txt>
                                         </View>
                                     </View>
-                                    <View style={[css.row, css.aic,{marginTop:10}]} >
+                                    <View style={[css.row, css.aic, { marginTop: 10 }]} >
                                         <Image source={icons.location2} style={[styles.iconStyle]} />
                                         <Txt style={[css.fs12, css.medium]}>{item?.location}</Txt>
                                     </View>
                                 </View>
                             )
-                        })
+                        }) :
+                        <View style={[styles.noDataWrap]}>
+                            <CustomAnimatedInfo
+                                style={[css.mr20]}
+                                isVisible={true}
+                                icon={icons.waves}
+                                title="No Session Found"
+                            />
+                        </View>
                     }
                 </View>
             </View>
@@ -90,5 +102,12 @@ const styles = StyleSheet.create({
         width: 17,
         height: 17,
         marginRight: 10,
+    },
+    noDataWrap: {
+        height: 300,
+        width: width,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // backgroundColor:'red'
     }
 })

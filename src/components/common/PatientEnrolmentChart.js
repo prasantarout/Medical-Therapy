@@ -14,7 +14,7 @@ const PatientEnrolmentChart = () => {
 
     const [selectedyear, setSelectedYear] = useState("");
 
-    const screenWidth = useScreenDimension()
+    const { screenWidth, screenHeight } = useScreenDimension()
     let orientation = useOrientation()
 
     const barData = [

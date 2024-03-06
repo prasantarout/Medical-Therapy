@@ -89,9 +89,9 @@ const Assignment = props => {
   const customDatesStylesFunc = date => {
     if (date.isoWeekday() === 5) {
       return {
-        // dateNameStyle: { color: '#fff' },
-        // dateNumberStyle: { color: '#fff' },
-        // dateContainerStyle: { backgroundColor: '#3abef0' },
+        dateNameStyle: {color: '#fff'},
+        dateNumberStyle: {color: '#fff'},
+        dateContainerStyle: {backgroundColor: '#3abef0'},
       };
     }
   };

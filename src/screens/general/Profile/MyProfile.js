@@ -275,7 +275,9 @@ const MyProfile = props => {
                 source={
                   AuthReducer.ProfileResponse?.data?.profile_photo_path
                     ? {uri: profileImage}
-                    : images.noProfile
+                    : {
+                        uri: `https://ui-avatars.com/api/?name=${AuthReducer.ProfileResponse?.data?.full_name}&bold=true&color=28328C&background=ffffff&size=240`,
+                      }
                 }
               />
             </View>

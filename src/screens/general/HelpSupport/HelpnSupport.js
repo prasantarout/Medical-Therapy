@@ -137,15 +137,27 @@ const HelpnSupport = props => {
     );
   };
 
+  const nameRegex = /^[a-zA-Z ]+$/;
+  const phoneRegex = /^\+?[0-9\s-()]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleSubmit = () => {
     if (firstName == '') {
       CustomToast('Please enter your First Name');
+    } else if (!nameRegex.test(firstName)) {
+      CustomToast('Please enter a Valid First Name');
     } else if (lastName == '') {
       CustomToast('Please enter your Last Name');
+    } else if (!nameRegex.test(lastName)) {
+      CustomToast('Please enter a Valid Last Name');
     } else if (email == '') {
       CustomToast('Please enter your Email');
+    } else if (!emailRegex.test(email)) {
+      CustomToast('Please enter a Valid Email');
     } else if (phone == '') {
       CustomToast('Please enter your Phone Number');
+    } else if (!phoneRegex.test(phone)) {
+      CustomToast('Please enter a Valid Phone Number');
     } else if (document == '' || document == undefined) {
       CustomToast('Please select document');
     } else {

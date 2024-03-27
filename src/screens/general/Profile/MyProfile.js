@@ -1,4 +1,12 @@
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import css, {height, width} from '../../../themes/space';
@@ -234,7 +242,10 @@ const MyProfile = props => {
   return (
     <>
       <SafeView {...props}>
-        <View style={[css.px4]}>
+        <KeyboardAvoidingView
+          style={[{flex: 1}, css.px4]}
+          behavior={Platform.OS === 'android' ? null : 'padding'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
           <View style={[css.rowBetween]}>
             <TitleTxt title="My Profile" />
             <View style={[css.row, css.aic]}>
@@ -389,7 +400,7 @@ const MyProfile = props => {
               ) : null}
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </SafeView>
       <Modal style={[css.f1, css.center]} isVisible={changePassModal}>
         <View style={[css.bgWhite, css.p8, styles.modalPanel]}>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Animated, Easing, StyleSheet } from 'react-native';
-import { colors } from '../../themes/colors';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Animated, Easing, StyleSheet} from 'react-native';
+import {colors} from '../../themes/colors';
 import normalize from '../../utils/normalize';
 
-const BounceText = ({ title }) => {
+const BounceText = ({title}) => {
   const [bounceValue] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -35,19 +35,19 @@ const BounceText = ({ title }) => {
   });
 
   return (
-    <View style={{ alignItems: 'center' }}>
-      <Animated.Text style={[styles.textStyle, { transform: [{ translateY }] }]}>{title}</Animated.Text>
+    <View style={{alignItems: 'center'}}>
+      <Animated.Text style={[styles.textStyle, {transform: [{translateY}]}]}>
+        {title}
+      </Animated.Text>
     </View>
   );
 };
-
-
 
 export default BounceText;
 
 const styles = StyleSheet.create({
   textStyle: {
-   fontSize: normalize(10),
+    fontSize: normalize(10),
     color: colors.ternaryTextColor,
   },
 });

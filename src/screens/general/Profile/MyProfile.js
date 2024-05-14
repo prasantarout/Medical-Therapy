@@ -22,6 +22,7 @@ import Modal from 'react-native-modal';
 import Input from '../../../components/inputs/Input';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  EnableDisableNotificationListRequest,
   ProfileRequest,
   editProfileRequest,
 } from '../../../redux/reducer/AuthReducer';
@@ -64,6 +65,7 @@ const MyProfile = props => {
   const CmsReducer = useSelector(state => state?.CmsReducer);
   const dispatch = useDispatch();
   const focused = useIsFocused();
+
   useEffect(() => {
     setIsEditable(false);
     dispatch(ProfileRequest());
@@ -238,7 +240,6 @@ const MyProfile = props => {
         break;
     }
   }
-
   return (
     <>
       <SafeView {...props}>
@@ -254,7 +255,10 @@ const MyProfile = props => {
               </Txt>
               <Switch
                 value={notification}
-                onValueChange={val => setNotification(!notification)}
+                onValueChange={val => {
+                  setNotification(!notification);
+                  dispatch(EnableDisableNotificationListRequest(!notification));
+                }}
                 circleSize={25}
                 barHeight={35}
                 backgroundActive={colors.primary}
@@ -291,6 +295,7 @@ const MyProfile = props => {
                       }
                 }
               />
+              {console.log(AuthReducer.ProfileResponse?.data?.profile_photo_path, '>>>>>>??????')}
             </View>
             <View style={[css.center, css.px7]}>
               <View style={[]}>
@@ -424,7 +429,6 @@ const MyProfile = props => {
               value={passwords?.old_password}
               onChangeText={text => handleInputChange('old_password', text)}
             />
-
             <Input
               title="Enter New Password"
               placeholder="**************"

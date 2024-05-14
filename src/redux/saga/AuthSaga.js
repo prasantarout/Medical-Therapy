@@ -16,6 +16,12 @@ import {
   forgotPasswordFailure,
   editProfileSuccess,
   editProfileFailure,
+  notificationListSuccess,
+  notificationListFailure,
+  EnableDisableNotificationListSuccess,
+  EnableDisableNotificationListFailure,
+  changePasswordSuccess,
+  changePasswordFailure,
 } from '../reducer/AuthReducer';
 
 import {getApi, postApi} from '../../utils/ApiRequest';
@@ -210,6 +216,87 @@ export function* editProfilesaga(action) {
   }
 }
 
+export function* notificationListSaga(action) {
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: items?.token,
+  };
+  try {
+    let response = yield call(getApi, `notifications`, header);
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(notificationListSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(notificationListFailure(response?.data));
+    }
+  } catch (error) {
+    // CustomToast(error?.response);
+    yield put(notificationListFailure(error?.response));
+    // CustomToast(error?.response?.data?.message);
+  }
+}
+
+export function* EnableDisableNotificationSaga(action) {
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: items?.token,
+  };
+  try {
+    let response = yield call(
+      getApi,
+      `enable-disable-notification/${action.payload}`,
+      header,
+    );
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(EnableDisableNotificationListSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(EnableDisableNotificationListFailure(response?.data));
+    }
+  } catch (error) {
+    // CustomToast(error?.response);
+    yield put(EnableDisableNotificationListFailure(error?.response));
+    // CustomToast(error?.response?.data?.message);
+  }
+}
+
+export function* changePasswordSaga(action) {
+  let items = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: items?.token,
+  };
+  try {
+    let response = yield call(
+      postApi,
+      `update-password`,
+      action.payload,
+      header,
+    );
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(changePasswordSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(changePasswordFailure(response?.data));
+    }
+  } catch (error) {
+    // CustomToast(error?.response);
+    yield put(changePasswordFailure(error?.response));
+    // CustomToast(error?.response?.data?.message);
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('Auth/getTokenRequest', getTokenSaga);
@@ -235,6 +322,21 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('Auth/editProfileRequest', editProfilesaga);
+  })(),
+  (function* () {
+    yield takeLatest('Auth/notificationListRequest', notificationListSaga);
+  })(),
+  (function* () {
+    yield takeLatest(
+      'Auth/EnableDisableNotificationListRequest',
+      EnableDisableNotificationSaga,
+    );
+  })(),
+  (function* () {
+    yield takeLatest(
+      'Auth/changePasswordRequest',
+      changePasswordSaga,
+    );
   })(),
 ];
 

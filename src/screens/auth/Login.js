@@ -8,23 +8,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import css from '../../themes/space';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
-import { colors } from '../../themes/colors';
-import { fonts } from '../../themes/fonts';
+import {colors} from '../../themes/colors';
+import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
-import { icons } from '../../themes/icons';
+import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
 import Txt from '../../components/micro/Txt';
-import {
-  isValidEmail,
-  isValidPhoneNumber,
-} from '../../utils/Validation';
-import { useDispatch, useSelector } from 'react-redux';
-import { signInRequest } from '../../redux/reducer/AuthReducer';
+import {isValidEmail, isValidPhoneNumber} from '../../utils/Validation';
+import {useDispatch, useSelector} from 'react-redux';
+import {signInRequest} from '../../redux/reducer/AuthReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomToast from '../../utils/Toast';
 import LoaderAnimated from '../../utils/LoaderAnimated';
@@ -124,7 +121,7 @@ const Login = props => {
         //  Code...
         break;
       case 'Auth/signInSuccess':
-        loginStatus = AuthReducer.status;        
+        loginStatus = AuthReducer.status;
         setTimeout(() => {
           setLoading(false);
         }, 200);
@@ -137,12 +134,12 @@ const Login = props => {
   }
 
   const handleInputChange = (key, value) => {
-    setsignInInfo({ ...signInInfo, [key]: value });
+    setsignInInfo({...signInInfo, [key]: value});
   };
   return (
     <>
       {/* <LoaderAnimated isVisible={loading} /> */}
-      <SafeAreaView style={[css.f1, { backgroundColor: colors.bgColor }]}>
+      <SafeAreaView style={[css.f1, {backgroundColor: colors.bgColor}]}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -157,7 +154,7 @@ const Login = props => {
                 rightIcon={icons.email}
                 style={[css.mb3]}
                 value={signInInfo?.email}
-                keyboardType='email-address'
+                keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={text => handleInputChange('email', text)}
               />

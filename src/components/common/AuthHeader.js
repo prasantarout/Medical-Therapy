@@ -1,32 +1,36 @@
-import { Image, StyleSheet, View } from 'react-native'
-import React from 'react'
-import { fonts } from '../../themes/fonts'
-import normalize from '../../utils/normalize'
-import { colors } from '../../themes/colors'
-import css from '../../themes/space'
-import { images } from '../../themes/images'
-import Txt from '../micro/Txt'
-import useScreenDimension from '../../utils/useScreenDimension'
+import {Image, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {fonts} from '../../themes/fonts';
+import normalize from '../../utils/normalize';
+import {colors} from '../../themes/colors';
+import css from '../../themes/space';
+import {images} from '../../themes/images';
+import Txt from '../micro/Txt';
+import useScreenDimension from '../../utils/useScreenDimension';
 
-const AuthHeader = (props) => {
-
-  const { screenWidth, screenHeight } = useScreenDimension()
+const AuthHeader = props => {
+  const {screenWidth, screenHeight} = useScreenDimension();
 
   return (
     <View style={[css.aic, css.jcc]}>
-      <View style={[css.mt4, styles.logoContainer, {
-        width: screenWidth / 3.6,
-        maxHeight: 120,
-      }]}>
+      <View
+        style={[
+          css.mt4,
+          styles.logoContainer,
+          {
+            width: screenWidth / 3.6,
+            maxHeight: 120,
+          },
+        ]}>
         <Image style={[styles.logo]} source={images.logo} />
       </View>
       <Txt style={styles.headerText}>{props?.headerText}</Txt>
       <Txt style={[styles.subHeaderText]}>{props?.subHeaderText}</Txt>
     </View>
-  )
-}
+  );
+};
 
-export default AuthHeader
+export default AuthHeader;
 
 const styles = StyleSheet.create({
   headerText: {
@@ -51,4 +55,4 @@ const styles = StyleSheet.create({
     height: '100%',
     maxHeight: 120,
   },
-})
+});

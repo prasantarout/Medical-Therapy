@@ -14,7 +14,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SimpleDropDown from '../../../components/common/SimpleDropDown';
 import SimpleInput from '../../../components/inputs/SimpleInput';
 
-const ServiceEnrollment = (props) => {
+const ServiceEnrollment = props => {
   const [date, setDate] = useState('10/11/23');
   const [time, setTime] = useState('10:30 am');
   const [service, setService] = useState('');
@@ -95,7 +95,6 @@ const ServiceEnrollment = (props) => {
   };
   return (
     <SafeView {...props}>
-      
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Service Enrolment'} />
         <View style={styles.container}>

@@ -96,6 +96,7 @@ const MyPatient = props => {
     }
   };
 
+
   if (getPatientStatus === '' || PatientReducer.status !== getPatientStatus) {
     switch (PatientReducer.status) {
       case 'PATIENT/getPatientReq':

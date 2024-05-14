@@ -1,11 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import TitleTxt from '../../../components/common/TitleTxt';
 import SearchInput from '../../../components/inputs/SearchInput';
 import SmallBtn from '../../../components/buttons/SmallBtn';
-import { images } from '../../../themes/images';
+import {images} from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
 import css from '../../../themes/space';
 import normalize from '../../../utils/normalize';
@@ -13,7 +13,7 @@ import useScreenDimension from '../../../utils/useScreenDimension';
 import useOrientation from '../../../utils/useOrientation';
 
 const EnrolmentQueue = () => {
-  const { width, screenHeight } = useScreenDimension();
+  const {width, screenHeight} = useScreenDimension();
   const orientation = useOrientation();
 
   const patientData = [
@@ -115,7 +115,7 @@ const EnrolmentQueue = () => {
     },
   ];
 
-  const PatientsRenderItem = ({ item, index }) => {
+  const PatientsRenderItem = ({item, index}) => {
     return (
       <PatientCard
         name={item.name}
@@ -135,12 +135,11 @@ const EnrolmentQueue = () => {
 
   return (
     <SafeView {...props}>
-
       <View style={[css.px5, css.f1, css.py4]}>
         <TitleTxt title={'Enrollment Queue'} />
         <View style={[css.row, css.aic, css.mt4]}>
           <SearchInput
-            style={{ width: normalize(268) }}
+            style={{width: normalize(268)}}
             placeholder={'Search here...'}
           />
         </View>
@@ -150,8 +149,8 @@ const EnrolmentQueue = () => {
           showsVerticalScrollIndicator={false}
           data={patientData}
           renderItem={PatientsRenderItem}
-          style={{ flex: 1, marginTop: normalize(10) }}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          style={{flex: 1, marginTop: normalize(10)}}
+          columnWrapperStyle={{justifyContent: 'space-between'}}
         />
       </View>
     </SafeView>

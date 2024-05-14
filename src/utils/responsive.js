@@ -1,6 +1,6 @@
-import { Dimensions, PixelRatio } from 'react-native';
+import {Dimensions, PixelRatio} from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const widthToDp = (number, width) => {
   let givenWidth = typeof number === 'number' ? number : parseFloat(number);
@@ -11,4 +11,4 @@ const heightToDp = number => {
   return PixelRatio.roundToNearestPixel((height * givenHeight) / 100);
 };
 
-export { widthToDp, heightToDp };
+export {widthToDp, heightToDp};

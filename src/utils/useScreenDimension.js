@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions} from 'react-native';
 
 const useScreenDimension = () => {
   const [screenDimensions, setScreenDimensions] = useState({
@@ -10,11 +10,17 @@ const useScreenDimension = () => {
   const handleOrientationChange = () => {
     const newScreenWidth = Dimensions.get('window').width;
     const newScreenHeight = Dimensions.get('window').height;
-    setScreenDimensions({ screenWidth: newScreenWidth, screenHeight: newScreenHeight });
+    setScreenDimensions({
+      screenWidth: newScreenWidth,
+      screenHeight: newScreenHeight,
+    });
   };
 
   useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', handleOrientationChange);
+    const subscription = Dimensions.addEventListener(
+      'change',
+      handleOrientationChange,
+    );
     return () => {
       subscription.remove();
     };

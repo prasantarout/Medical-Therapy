@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   status: {},
@@ -13,6 +13,9 @@ const initialState = {
   ProfileResponse: {},
   forgotPasswordResponse: {},
   editProfileResponse: {},
+  NotificationListRes: {},
+  enableOrDisableNotificationRes: {},
+  changePasswordRes: {},
 };
 
 const AuthSlice = createSlice({
@@ -22,7 +25,6 @@ const AuthSlice = createSlice({
   reducers: {
     //TOKEN
     getTokenRequest(state, action) {
-     
       state.isLoading = true;
       state.status = action.type;
     },
@@ -84,8 +86,6 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
 
-
-
     //////////////////// logout /////////////////////
     logoutRequest(state, action) {
       state.status = action.type;
@@ -99,7 +99,7 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
 
-    // 
+    //
     //////////////////// forgotPassword /////////////////////
     forgotPasswordRequest(state, action) {
       state.status = action.type;
@@ -126,7 +126,6 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
 
-
     //////////////////// Edit Profile /////////////////////
     editProfileRequest(state, action) {
       state.status = action.type;
@@ -136,6 +135,45 @@ const AuthSlice = createSlice({
       state.status = action.type;
     },
     editProfileFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //////////////////// Notification list /////////////////////
+    notificationListRequest(state, action) {
+      state.status = action.type;
+    },
+    notificationListSuccess(state, action) {
+      state.NotificationListRes = action?.payload;
+      state.status = action.type;
+    },
+    notificationListFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //////////////////// Notification list /////////////////////
+    EnableDisableNotificationListRequest(state, action) {
+      state.status = action.type;
+    },
+    EnableDisableNotificationListSuccess(state, action) {
+      state.enableOrDisableNotificationRes = action?.payload;
+      state.status = action.type;
+    },
+    EnableDisableNotificationListFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //////////////////// Notification list /////////////////////
+    changePasswordRequest(state, action) {
+      state.status = action.type;
+    },
+    changePasswordSuccess(state, action) {
+      state.changePasswordRes = action?.payload;
+      state.status = action.type;
+    },
+    changePasswordFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -176,6 +214,18 @@ export const {
   editProfileRequest,
   editProfileSuccess,
   editProfileFailure,
+
+  notificationListRequest,
+  notificationListSuccess,
+  notificationListFailure,
+
+  EnableDisableNotificationListRequest,
+  EnableDisableNotificationListSuccess,
+  EnableDisableNotificationListFailure,
+
+  changePasswordRequest,
+  changePasswordSuccess,
+  changePasswordFailure,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

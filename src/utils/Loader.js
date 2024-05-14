@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import { colors } from '../themes/colors';
+import {colors} from '../themes/colors';
 
 export default function Loader(props) {
   return props.visible ? (

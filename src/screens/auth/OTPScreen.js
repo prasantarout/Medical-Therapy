@@ -1,22 +1,22 @@
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useRef, useState } from 'react';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {useRef, useState} from 'react';
 import css from '../../themes/space';
-import { colors } from '../../themes/colors';
+import {colors} from '../../themes/colors';
 import AuthTemplate from '../../components/common/AuthTemplate';
 import Button from '../../components/buttons/Button';
 import AuthHeader from '../../components/common/AuthHeader';
 import Txt from '../../components/micro/Txt';
-import { useDispatch, useSelector } from 'react-redux';
-import { verifyOtpRequest } from '../../redux/reducer/AuthReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {verifyOtpRequest} from '../../redux/reducer/AuthReducer';
 
-const OTPScreen = (props) => {
+const OTPScreen = props => {
   const [otp, setOtp] = useState(['', '', '', '']);
-  const [isFocused, setIsFocused] = useState()
+  const [isFocused, setIsFocused] = useState();
 
   // console.log("prooops: ", props?.route?.params)
   const inputRefs = useRef(otp.map(() => React.createRef()));
-  const AuthReducer = useSelector(state => state?.AuthReducer)
-  const dispatch = useDispatch()
+  const AuthReducer = useSelector(state => state?.AuthReducer);
+  const dispatch = useDispatch();
 
   const handleChangeText = (text, index) => {
     const updatedOtp = [...otp];
@@ -30,23 +30,24 @@ const OTPScreen = (props) => {
     }
   };
 
-
-  const handleFocus = (index) => {
-    setIsFocused(index)
-    console.log("index:", index);
+  const handleFocus = index => {
+    setIsFocused(index);
+    console.log('index:', index);
   };
 
   // verifyOtpRequest,
   // verifyOtpSuccess,
   // verifyOtpFailure,
-  console.log("asasas", otp.join(''))
+  console.log('asasas', otp.join(''));
 
   const handleOTPVerification = () => {
-    dispatch(verifyOtpRequest({
-      email: props?.route?.params,
-      otp: otp.join('')
-    }))
-  }
+    dispatch(
+      verifyOtpRequest({
+        email: props?.route?.params,
+        otp: otp.join(''),
+      }),
+    );
+  };
 
   // Alert.alert('Verified')
   return (
@@ -60,32 +61,47 @@ const OTPScreen = (props) => {
           <TextInput
             key={index}
             value={digit}
-            ref={(input) => (inputRefs.current[index] = input)}
-            onChangeText={(text) => handleChangeText(text, index)}
+            ref={input => (inputRefs.current[index] = input)}
+            onChangeText={text => handleChangeText(text, index)}
             keyboardType="numeric"
             maxLength={1}
             onFocus={() => handleFocus(index)}
-            style={[styles.otpInput, css.mr5,
-            {
-              marginLeft: index == 0 ? 0 : 40,
-              borderColor: isFocused === index ? colors.secondary : "#d1d1d1",
-            },
-            isFocused === index && styles.focusedStyle,
+            style={[
+              styles.otpInput,
+              css.mr5,
+              {
+                marginLeft: index == 0 ? 0 : 40,
+                borderColor: isFocused === index ? colors.secondary : '#d1d1d1',
+              },
+              isFocused === index && styles.focusedStyle,
             ]}
           />
         ))}
       </View>
-      <Button style={[css.mt3]} title="Verify" onPress={handleOTPVerification} />
+      <Button
+        style={[css.mt3]}
+        title="Verify"
+        onPress={handleOTPVerification}
+      />
       <View style={[css.row, css.aic, css.jcc, css.my6]}>
-        <Txt style={[css.fs20, { color: colors.ternaryTextColor }]}>Didn't Receive OTP?</Txt>
+        <Txt style={[css.fs20, {color: colors.ternaryTextColor}]}>
+          Didn't Receive OTP?
+        </Txt>
         <TouchableOpacity activeOpacity={0.7}>
-          <Txt style={[css.regular, css.fs20, css.ml2, { color: colors.secondary, textDecorationLine: 'underline' }]}>RESEND</Txt>
+          <Txt
+            style={[
+              css.regular,
+              css.fs20,
+              css.ml2,
+              {color: colors.secondary, textDecorationLine: 'underline'},
+            ]}>
+            RESEND
+          </Txt>
         </TouchableOpacity>
       </View>
     </View>
 
     // </AuthTemplate>
-
   );
 };
 
@@ -111,7 +127,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     paddingLeft: 20,
-    marginVertical: 40
+    marginVertical: 40,
   },
 
   focusedStyle: {
@@ -123,8 +139,7 @@ const styles = StyleSheet.create({
       height: 18,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 20.00,
-    elevation: 34
+    shadowRadius: 20.0,
+    elevation: 34,
   },
-
 });

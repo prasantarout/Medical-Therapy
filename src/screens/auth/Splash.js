@@ -1,13 +1,12 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getTokenRequest } from '../../redux/reducer/AuthReducer';
-import { images } from '../../themes/images';
+import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {getTokenRequest} from '../../redux/reducer/AuthReducer';
+import {images} from '../../themes/images';
 import normalize from '../../utils/normalize';
-import { colors } from '../../themes/colors';
+import {colors} from '../../themes/colors';
 
-const Splash = (props) => {
-
+const Splash = props => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Image source={images.logo} style={styles.logo} />

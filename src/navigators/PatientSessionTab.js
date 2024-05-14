@@ -8,9 +8,14 @@ import EvaluationResult from '../screens/general/Assignments/EvaluationResult';
 const Stack = createStackNavigator();
 export default function PatientSessionTab() {
   return (
-    <Stack.Navigator initialRouteName="PatientSession" screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      initialRouteName="PatientSession"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="PatientSession" component={PatientSession} />
-      <Stack.Screen name="PatientSessionDetails" component={PatientSessionDetails} />
+      <Stack.Screen
+        name="PatientSessionDetails"
+        component={PatientSessionDetails}
+      />
       <Stack.Screen name="EvaluationForm" component={EvaluationForm} />
       <Stack.Screen name="EvaluationResult" component={EvaluationResult} />
     </Stack.Navigator>

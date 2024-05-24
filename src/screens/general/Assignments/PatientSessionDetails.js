@@ -12,6 +12,7 @@ import Button from '../../../components/buttons/Button';
 
 const PatientSessionDetails = props => {
   const [item, setItem] = useState(props?.route?.params?.item);
+  // console.log(item,"?>>>>>>>>>>")
 
   const IconTextBlock = ({icon, title, value, valueStyle}) => {
     return (

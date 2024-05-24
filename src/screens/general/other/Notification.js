@@ -60,11 +60,11 @@ const Notification = props => {
                 <View style={[css.f1, css.center, {marginTop: height / 2.5}]}>
                   <Txt
                     style={[
-                      css.fs16,
+                      css.fs20,
                       css.semiBold,
                       {color: colors.searchPlaceholder},
                     ]}>
-                    No Yet found Any Notification
+                    Not Yet found any notification
                   </Txt>
                 </View>
               );

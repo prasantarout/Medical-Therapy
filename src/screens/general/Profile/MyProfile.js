@@ -82,7 +82,7 @@ const MyProfile = props => {
 
         const status = await request(permission);
         request(status).then(result => {
-          console.log('result', result);
+          // console.log('result', result);
         });
         if (status === 'granted') {
           console.log('Permission granted');
@@ -112,7 +112,7 @@ const MyProfile = props => {
         break;
       case 'Auth/ProfileSuccess':
         profileStatus = AuthReducer.status;
-        console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
+        // console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
         setName(AuthReducer.ProfileResponse?.data?.full_name);
         setFirstName(AuthReducer.ProfileResponse?.data?.first_name);
         setLastName(AuthReducer.ProfileResponse?.data?.last_name);
@@ -126,17 +126,17 @@ const MyProfile = props => {
       // Edit Profile
       case 'Auth/editProfileRequest':
         profileStatus = AuthReducer.status;
-        console.log('editProfileRequest');
+        // console.log('editProfileRequest');
         break;
       case 'Auth/editProfileSuccess':
         profileStatus = AuthReducer.status;
-        console.log('editProfileSuccess', AuthReducer.editProfileResponse);
+        // console.log('editProfileSuccess', AuthReducer.editProfileResponse);
         dispatch(ProfileRequest());
         CustomToast('Profile Updated Successfully');
         break;
       case 'Auth/editProfileFailure':
         profileStatus = AuthReducer.status;
-        console.log('editProfileFailure');
+        // console.log('editProfileFailure');
         break;
     }
   }
@@ -154,7 +154,7 @@ const MyProfile = props => {
           ? obj.append('profile_image', profileImageToSend)
           : null;
       }
-      console.log('djgfdasgf', obj, profileImageToSend);
+      // console.log('djgfdasgf', obj, profileImageToSend);
       dispatch(editProfileRequest(obj));
     }
   };
@@ -195,7 +195,7 @@ const MyProfile = props => {
         imageObj.uri = response.path;
         setProfileImage(imageObj.uri);
         setProfileImageToSend(imageObj);
-        console.log('imageObj', imageObj);
+        // console.log('imageObj', imageObj);
       })
       .catch(err => console.log(err));
   };
@@ -212,7 +212,7 @@ const MyProfile = props => {
         'The new password should contain at least one number, one capital letter, and one special character.',
       );
     } else if (passwords?.confirm_password != passwords?.new_password) {
-      CustomToast('Password does not match');
+      CustomToast('New Password and Confirm Password does not match');
     } else {
       let obj = {
         old_password: passwords?.old_password,
@@ -230,10 +230,11 @@ const MyProfile = props => {
     switch (CmsReducer.status) {
       case 'CMS/updatePasswordReq':
         updatePasswordStatus = CmsReducer.status;
-        setChangePassModal(false);
+       
         break;
       case 'CMS/updatePasswordSuccess':
         updatePasswordStatus = CmsReducer.status;
+        setChangePassModal(false);
         break;
       case 'CMS/updatePasswordFailure':
         updatePasswordStatus = CmsReducer.status;
@@ -288,14 +289,14 @@ const MyProfile = props => {
               <Image
                 style={[styles.profileImage]}
                 source={
-                  AuthReducer.ProfileResponse?.data?.profile_photo_path
+                  profileImage!==''
                     ? {uri: profileImage}
                     : {
                         uri: `https://ui-avatars.com/api/?name=${AuthReducer.ProfileResponse?.data?.full_name}&bold=true&color=28328C&background=ffffff&size=240`,
                       }
                 }
               />
-              {console.log(AuthReducer.ProfileResponse?.data?.profile_photo_path, '>>>>>>??????')}
+              {/* {console.log( '>>>>>>??????',profileImage)} */}
             </View>
             <View style={[css.center, css.px7]}>
               <View style={[]}>

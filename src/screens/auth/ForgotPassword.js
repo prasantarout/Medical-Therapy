@@ -29,18 +29,18 @@ const ForgotPassword = (props) => {
     switch (AuthReducer.status) {
       case "Auth/forgotPasswordRequest":
         forgotPasswordStatus = AuthReducer.status;
-        console.log("initiated", AuthReducer.status)
+        // console.log("initiated", AuthReducer.status)
         setIsLoading(true)
         break;
       case "Auth/forgotPasswordSuccess":
         forgotPasswordStatus = AuthReducer.status;
-        console.log("initiated-success", AuthReducer.status)
+        // console.log("initiated-success", AuthReducer.status)
         setIsModalVisible(true)
         setIsLoading(false)
         break;
       case "Auth/forgotPasswordFailure":
         forgotPasswordStatus = AuthReducer.status;
-        console.log("initiated-fail", AuthReducer.status)
+        // console.log("initiated-fail", AuthReducer.status)
         setIsLoading(false)
         break;
 

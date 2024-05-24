@@ -33,7 +33,7 @@ export function* getCategorySaga(action) {
       // action.payload,
       header,
     );
-    console.log('response: ', response);
+    // console.log('response: ', response);
     if (response?.data?.status == 200) {
       yield put(getCategorySuccess(response?.data));
     } else {
@@ -42,14 +42,14 @@ export function* getCategorySaga(action) {
     }
   } catch (error) {
     yield put(getCategoryFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
 // Help And Support Type
 export function* getHelpAndSupportTypeSaga(action) {
   let item = yield select(getItem);
-  console.log(item);
+  // console.log(item);
   let header = {
     Accept: 'application/json',
     contenttype: 'application/json',
@@ -63,7 +63,7 @@ export function* getHelpAndSupportTypeSaga(action) {
       // action.payload,
       header,
     );
-    console.log(response);
+    // console.log(response);
     if (response?.data?.status == 200) {
       yield put(helpSupportTypeSuccess(response?.data));
     } else {
@@ -72,7 +72,7 @@ export function* getHelpAndSupportTypeSaga(action) {
     }
   } catch (error) {
     yield put(helpSupportTypeFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -100,7 +100,7 @@ export function* getHelpAndSupportSaga(action) {
     }
   } catch (error) {
     yield put(helpAndSupportFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -125,13 +125,14 @@ export function* contactUsForSupportSaga(action) {
     }
   } catch (error) {
     yield put(contactUsForSupportFailure(error?.response));
-    console.log('catch error', error?.response);
+    // console.log('catch error', error?.response);
+    CustomToast(error?.response?.data?.message);
   }
 }
 
 // Get Upcoming Assignments Saga
 export function* getUpcomingAssignmentsSaga(action) {
-  console.log('getUpcomingAssignmentsSaga started');
+  // console.log('getUpcomingAssignmentsSaga started');
   let items = yield select(getItem);
   let header = {
     accept: 'application/json',
@@ -141,7 +142,7 @@ export function* getUpcomingAssignmentsSaga(action) {
 
   try {
     let response = yield call(postApi, 'upcoming-assignments', header);
-    console.log('getUpcomingAssignmentsSaga response', response);
+    // console.log('getUpcomingAssignmentsSaga response', response);
     if (response?.status == '200') {
       yield put(getUpcomingAssignmentsSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -150,14 +151,14 @@ export function* getUpcomingAssignmentsSaga(action) {
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
+    // console.log('Catch', error);
     yield put(getUpcomingAssignmentsFailure(error?.response));
   }
 }
 
 // Get Upcoming Assignments Saga
 export function* updatePasswordSaga(action) {
-  console.log('getUpcomingAssignmentsSaga started', action.payload);
+  // console.log('getUpcomingAssignmentsSaga started', action.payload);
   let items = yield select(getItem);
   let header = {
     accept: 'application/json',
@@ -172,7 +173,7 @@ export function* updatePasswordSaga(action) {
       action.payload,
       header,
     );
-    console.log('updatePasswordSaga-response', response);
+    // console.log('updatePasswordSaga-response', response);
     if (response?.status == '200') {
       yield put(updatePasswordSuccess(response?.data));
       CustomToast(response?.data?.message);
@@ -181,8 +182,9 @@ export function* updatePasswordSaga(action) {
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
-    yield put(updatePasswordFailure(error?.response));
+    // console.log('Catch', error?.response?.data?.message);
+    yield put(updatePasswordFailure(error?.response?.data?.message));
+    CustomToast(error?.response?.data?.message);
   }
 }
 

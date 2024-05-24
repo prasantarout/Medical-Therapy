@@ -157,7 +157,7 @@ const HelpnSupport = props => {
       CustomToast('Please enter a Valid Email');
     } else if (phone == '') {
       CustomToast('Please enter your Phone Number');
-    } else if (!phoneRegex.test(phone)) {
+    } else if (phone.length < 10 || phone.length > 19) {
       CustomToast('Please enter a Valid Phone Number');
     } else if (document == '' || document == undefined) {
       CustomToast('Please select document');
@@ -169,7 +169,7 @@ const HelpnSupport = props => {
       obj.append('phone', phone);
       obj.append('message', message);
       obj.append('attachment', document);
-      console.log('attachment', document);
+      // console.log('attachment', document);
       dispatch(contactUsForSupportReq(obj));
     }
   };

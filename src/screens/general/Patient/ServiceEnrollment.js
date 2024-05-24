@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import NavBar from '../../../components/common/NavBar';
 import TitleTxt from '../../../components/common/TitleTxt';
@@ -13,42 +13,32 @@ import {icons} from '../../../themes/icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SimpleDropDown from '../../../components/common/SimpleDropDown';
 import SimpleInput from '../../../components/inputs/SimpleInput';
+import connectionrequest from '../../../utils/NetInfo';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getListOfTherapiesReq,
+  storeServiceEnrolmentReq,
+} from '../../../redux/reducer/PatientReducer';
+import CustomToast from '../../../utils/Toast';
+import {useIsFocused} from '@react-navigation/native';
+import MultiSelectDropdown from '../../../components/common/MultiSelectDropdown';
+import {MultiSelect} from 'react-native-element-dropdown';
+import Loader from '../../../utils/Loader';
 
 const ServiceEnrollment = props => {
-  const [date, setDate] = useState('10/11/23');
+  let status = '';
+  const [date, setDate] = useState('');
   const [time, setTime] = useState('10:30 am');
   const [service, setService] = useState('');
-  const [remark, setRemark] = useState('Input');
+  const [remark, setRemark] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
-
-  const ServiceData = [
-    {
-      id: 0,
-      label: 'Service 1',
-      value: 'Service 1',
-    },
-    {
-      id: 1,
-      label: 'Service 2',
-      value: 'Service 2',
-    },
-    {
-      id: 2,
-      label: 'Service 3',
-      value: 'Service 3',
-    },
-    {
-      id: 3,
-      label: 'Service 4',
-      value: 'Service 4',
-    },
-    {
-      id: 4,
-      label: 'Service 5',
-      value: 'Service 5',
-    },
-  ];
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [isFocus, setIsFocus] = useState(false);
+  const [categoryItem, setCategoryItem] = useState([]);
+  const PatientReducer = useSelector(state => state.PatientReducer);
+  const AuthReducer = useSelector(state => state.AuthReducer);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -59,7 +49,6 @@ const ServiceEnrollment = props => {
   };
 
   const handleConfirm = time => {
-    console.warn('A date has been picked: ', time);
     setDate(moment(time).format('L'));
     hideDatePicker();
   };
@@ -77,6 +66,70 @@ const ServiceEnrollment = props => {
     hideTimePicker();
   };
 
+  const handleEnroll = () => {
+    const requiredFields = [
+      {field: date, message: 'Date is required'},
+      {field: time, message: 'Time is required'},
+      {field: categoryItem, message: 'Services is required'},
+      {
+        field: remark,
+        message: 'Remark is required',
+      },
+    ];
+    for (let item of requiredFields) {
+      if (item.field === '') {
+        CustomToast(item.message);
+        return;
+      }
+    }
+    let obj = {
+      patient_id: AuthReducer?.ProfileResponse?.data?.id,
+      date: date,
+      time: time,
+      service: categoryItem,
+      remark: remark,
+      short_description: null,
+      long_description: null,
+    };
+    connectionrequest()
+      .then(res => {
+        dispatch(storeServiceEnrolmentReq(obj));
+      })
+      .catch(err => {
+        console.log(err, 'err');
+        CustomToast('Please connect To Internet');
+      });
+  };
+
+  useEffect(() => {
+    connectionrequest()
+      .then(res => {
+        dispatch(getListOfTherapiesReq());
+      })
+      .catch(err => {
+        console.log(err, 'err');
+        CustomToast('Please connect To Internet');
+      });
+  }, [isFocused]);
+
+ 
+  useEffect(() => {
+    if (status == '' || PatientReducer.status != status) {
+      switch (PatientReducer.status) {
+        case 'PATIENT/storeServiceEnrolmentReq':
+          status = PatientReducer.status;
+          break;
+        case 'PATIENT/storeServiceEnrolmentSuccess':
+          status = PatientReducer.status;
+          props?.navigation?.navigate('MyPatient');
+          break;
+        case 'PATIENT/storeServiceEnrolmentFailure':
+          status = PatientReducer.status;
+          break;
+      }
+    }
+  }, [PatientReducer?.status]);
+
   const ValueField = props => {
     return (
       <View style={styles.ValueField}>
@@ -93,16 +146,39 @@ const ServiceEnrollment = props => {
       </View>
     );
   };
+
+  const renderItem = item => {
+    const isSelected = categoryItem?.includes(item?._id);
+    return (
+      <View style={styles.item}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.selectedTextStyle}>{item?.name}</Text>
+        </View>
+        {isSelected && (
+          <Image source={icons?.CircleCheck} style={{height: 20, width: 20}} />
+        )}
+      </View>
+    );
+  };
+
   return (
     <SafeView {...props}>
       <View style={[css.px5, css.f1, css.py4]}>
+        <Loader
+          visible={PatientReducer?.status == 'PATIENT/storeServiceEnrolmentReq'}
+        />
         <TitleTxt title={'Service Enrolment'} />
         <View style={styles.container}>
           <View style={[css.row, css.jcsb]}>
             <ValueField
               title={'Date'}
               icon={icons.Calendar}
-              value={date}
+              value={date === '' ? 'select date' : date}
               onPress={() => showDatePicker()}
               style={{
                 height: normalize(11),
@@ -121,27 +197,57 @@ const ServiceEnrollment = props => {
           </View>
           <View style={[css.row, css.px5]}>
             <View style={[css.w50, css.mt10]}>
-              <SimpleDropDown
-                data={ServiceData}
-                title="Service"
-                style={[css.mr2]}
-                value={service}
-                placeholder="Select"
-                onChange={item => setService(item.value)}
+              <Txt style={[css.fs20]}>{'services'}</Txt>
+              <MultiSelect
+                style={[styles.dropdown]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={
+                  PatientReducer?.getListOfTherapiesRes?.data?.length > 0
+                    ? PatientReducer?.getListOfTherapiesRes?.data
+                    : []
+                }
+                labelField="name"
+                valueField="id"
+                placeholder="Services"
+                value={categoryItem}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setCategoryItem(item);
+                  setIsFocus(false);
+                }}
+                renderItem={renderItem}
+                renderSelectedItem={(item, unSelect) => (
+                  <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                    <View style={styles.selectedStyle}>
+                      <Text style={styles.textSelectedStyle}>{item?.name}</Text>
+                      <Image
+                        source={icons?.delete}
+                        style={{height: normalize(15), width: normalize(15)}}
+                        tintColor="black"
+                        resizeMode="contain"
+                        aspectRatio={16 / 9}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
               />
             </View>
             <View style={[css.w50, css.mt10, css.ml2]}>
               <SimpleInput
                 title="Remark"
                 style={[css.ml2]}
-                value={[]}
+                value={remark}
                 placeholder="Input"
-                onChange={val => setRemark(val)}
+                onChangeText={val => setRemark(val)}
               />
             </View>
           </View>
 
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={handleEnroll}>
             <Txt style={styles.btnTxt}>Enroll</Txt>
           </TouchableOpacity>
           <DateTimePickerModal
@@ -210,5 +316,65 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 22,
     fontWeight: '500',
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  selectedStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 14,
+    backgroundColor: colors?.placeholder,
+    marginTop: 8,
+    marginRight: 12,
+    color: '#808080',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  textSelectedStyle: {
+    marginRight: 5,
+    fontSize: 16,
+    color: 'black',
+  },
+  dropdown: {
+    borderColor: colors?.lightGrey,
+    borderBottomWidth: 0.8,
+    borderBottomColor: colors.borderColor,
+    paddingHorizontal: 8,
+    height: normalize(16),
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: colors?.searchPlaceholder,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: '#808080',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

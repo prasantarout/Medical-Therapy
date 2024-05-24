@@ -78,7 +78,7 @@ const NavBar = props => {
         break;
       case 'Auth/ProfileSuccess':
         profileStatus = AuthReducer.status;
-        console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
+        // console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
         break;
       case 'Auth/ProfileFailure':
         profileStatus = AuthReducer.status;

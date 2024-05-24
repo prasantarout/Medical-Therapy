@@ -94,7 +94,7 @@ const Home = props => {
         break;
       case 'Dashboard/getDashboardFailure':
         dashboardStatus = DashboardReducer.status;
-        console.log('initiated-fail', DashboardReducer.status);
+        // console.log('initiated-fail', DashboardReducer.status);
         break;
     }
   }

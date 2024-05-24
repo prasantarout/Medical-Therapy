@@ -51,8 +51,7 @@ const Login = props => {
       const value = await AsyncStorage.getItem('rememberMe');
       const email_value = await AsyncStorage.getItem('email');
       const password_value = await AsyncStorage.getItem('password');
-
-      console.log('AsyncStorage', email_value, password_value, value);
+      // console.log('AsyncStorage', email_value, password_value, value);
 
       if (value === 'true') {
         setIsRememberMe(value == 'true' ? true : false);
@@ -144,7 +143,7 @@ const Login = props => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthHeader
-              headerText="Login"
+              headerText="Therapist Login"
               subHeaderText="Please fill up this form to login your account."
             />
             <View style={[css.f1, css.py11, css.px16]}>
@@ -158,7 +157,6 @@ const Login = props => {
                 autoCapitalize="none"
                 onChangeText={text => handleInputChange('email', text)}
               />
-
               <Input
                 title="Enter Password"
                 placeholder="**************"

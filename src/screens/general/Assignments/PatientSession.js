@@ -26,6 +26,9 @@ import {getUpcomingAssignmentsReq} from '../../../redux/reducer/CmsReducer';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {getPatientSessionReq} from '../../../redux/reducer/PatientReducer';
 import moment from 'moment';
+import connectionrequest from '../../../utils/NetInfo';
+import CustomToast from '../../../utils/Toast';
+import Loader from '../../../utils/Loader';
 
 let getPatientSessionStatus = '';
 
@@ -41,15 +44,25 @@ const PatientSession = props => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [readableDate, setReadableDate] = useState('');
+  const [selectDate, setSelectDate] = useState('');
   const PatientReducer = useSelector(state => state.PatientReducer);
-  // ecn
+  // ecn'2024-05-06'
   useEffect(() => {
-    let obj = {session_date: '2024-02-12'};
-    dispatch(getPatientSessionReq(obj));
     let todaysDateString = moment(new Date().toISOString().split('T')[0]);
     let todaysDate = moment(todaysDateString).format('Do MMMM');
+    let todayDateFormat = moment(todaysDateString).format('YYYY-MM-DD');
     setReadableDate(todaysDate);
-  }, [isFocused]);
+
+    let obj = {session_date: selectDate !== '' ? selectDate : todayDateFormat};
+    connectionrequest()
+      .then(res => {
+        dispatch(getPatientSessionReq(obj));
+      })
+      .catch(err => {
+        console.log(err, 'err');
+        CustomToast('Please connect To Internet');
+      });
+  }, [isFocused, selectDate]);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -62,7 +75,8 @@ const PatientSession = props => {
   const handleConfirm = date => {
     let selectedDate = moment(date).format('Do MMMM');
     setReadableDate(selectedDate);
-    console.warn('A date has been picked: ', date);
+    setSelectDate(moment(date).format('YYYY-MM-DD'));
+    // console.warn('A date has been picked: ', selectedDate);
     hideDatePicker();
   };
   const handleSelect = ecn => {
@@ -194,9 +208,14 @@ const PatientSession = props => {
     }
   }
 
+  // console.log(PatientReducer?.getPatientSessionResponse,">>>>>??????dddddd")
+
   return (
     <SafeView {...props}>
       <View style={[css.px4, css.f1]}>
+        {/* <Loader
+          visible={PatientReducer?.status === 'PATIENT/getPatientSessionReq'}
+        /> */}
         <TitleTxt style={[css.mt4]} title="Patient Session" />
         <View style={[styles.assignmentList, css.f1]}>
           <View style={[styles.calenderArea, css.row, css.aic]}>

@@ -37,7 +37,7 @@ export function* getTokenSaga() {
     const response = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
     if (response != null) {
       yield put(getTokenSuccess(response));
-      console.log('UserToken', response);
+      // console.log('UserToken', response);
     } else {
       yield put(getTokenSuccess(null));
     }
@@ -64,7 +64,8 @@ export function* signUpSaga(action) {
     }
   } catch (error) {
     yield put(signUpFailure(error?.response));
-    CustomToast(error?.response?.message);
+    console.log(error,">>>>>>>>>????????")
+    CustomToast(error?.response?.data?.message);
   }
 }
 
@@ -196,7 +197,7 @@ export function* Profilesaga(action) {
 export function* editProfilesaga(action) {
   let items = yield select(getItem);
   let header = {
-    Accept: 'multipart/form-data',
+    Accept: 'application/json',
     contenttype: 'multipart/form-data',
     Authorization: `Bearer ${items?.token}`,
   };

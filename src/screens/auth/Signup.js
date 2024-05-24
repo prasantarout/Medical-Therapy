@@ -89,12 +89,12 @@ const Signup = props => {
     switch (AuthReducer.status) {
       case 'Auth/signUpReq':
         signupStatus = AuthReducer.status;
-        console.log('initiated', AuthReducer.status);
+        // console.log('initiated', AuthReducer.status);
         setIsLoading(true);
         break;
       case 'Auth/signUpSucces':
         signupStatus = AuthReducer.status;
-        console.log('initiated-success', AuthReducer.status);
+        // console.log('initiated-success', AuthReducer.status);
         setTimeout(() => {
           props?.navigation.navigate('Login');
         }, 2600);
@@ -104,7 +104,7 @@ const Signup = props => {
         break;
       case 'Auth/signUpFailure':
         signupStatus = AuthReducer.status;
-        console.log('initiated-fail', AuthReducer.status);
+        // console.log('initiated-fail', AuthReducer.status);
         setIsLoading(false);
         break;
     }

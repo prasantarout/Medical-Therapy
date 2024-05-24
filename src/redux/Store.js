@@ -19,7 +19,9 @@ const rootReducer = combineReducers({
 });
 
 let SagaMiddleware = createSagaMiddleware();
-const middleware = [SagaMiddleware, logger];
+// const middleware = [SagaMiddleware, logger];
+const middleware = [SagaMiddleware];
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,

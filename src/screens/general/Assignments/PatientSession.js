@@ -208,7 +208,7 @@ const PatientSession = props => {
     }
   }
 
-  console.log(PatientReducer?.getPatientSessionResponse,">>>>>??????dddddd")
+  // console.log(PatientReducer?.getPatientSessionResponse,">>>>>??????dddddd")
 
   return (
     <SafeView {...props}>

@@ -168,7 +168,7 @@ const HelpnSupport = props => {
       obj.append('phone', phone);
       obj.append('message', message);
       obj.append('attachment', document);
-      console.log('attachment', document);
+      // console.log('attachment', document);
       dispatch(contactUsForSupportReq(obj));
     }
   };

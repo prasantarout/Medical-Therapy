@@ -51,7 +51,7 @@ const Login = props => {
       const value = await AsyncStorage.getItem('rememberMe');
       const email_value = await AsyncStorage.getItem('email');
       const password_value = await AsyncStorage.getItem('password');
-      console.log('AsyncStorage', email_value, password_value, value);
+      // console.log('AsyncStorage', email_value, password_value, value);
 
       if (value === 'true') {
         setIsRememberMe(value == 'true' ? true : false);

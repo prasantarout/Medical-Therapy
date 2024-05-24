@@ -8,12 +8,12 @@ import {colors} from '../../themes/colors';
 const SimpleDropDown = props => {
   const [isFocus, setIsFocus] = useState(false);
 
-  const {style, value, placeholder, title, onChange, data} = props;
+  const {style, value, placeholder, title, onChange, data,labelField,valueField} = props;
 
   return (
     <View style={[style, styles.contianerStyle]}>
       <Txt style={[css.fs20]}>{title}</Txt>
-      <Dropdown
+      <Dropdown 
         style={[styles.dropdownStyle, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
@@ -21,11 +21,12 @@ const SimpleDropDown = props => {
         value={value}
         placeholder={placeholder}
         maxHeight={280}
-        labelField="label"
-        valueField="value"
+        labelField={labelField ? labelField : "label"}
+        valueField={valueField ? valueField :"value"}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={onChange}
+        // multiple={true}
       />
     </View>
   );
@@ -48,4 +49,5 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   dropdownStyle: {},
+
 });

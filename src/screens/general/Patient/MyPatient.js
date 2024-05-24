@@ -95,6 +95,7 @@ const MyPatient = props => {
       setPatientInfo(filteredPatients);
     }
   };
+  console.log(PatientReducer.getPatientResponse?.data?.data,">>>>>>>?????")
 
 
   if (getPatientStatus === '' || PatientReducer.status !== getPatientStatus) {
@@ -290,6 +291,7 @@ const MyPatient = props => {
             contentContainerStyle={[css.fg1]}
             ListEmptyComponent={renderEmptyComponent}
           />
+          {console.log(patientInfo,">>>>>>>>?????sss")}
         </View>
       </SafeView>
       <Modal

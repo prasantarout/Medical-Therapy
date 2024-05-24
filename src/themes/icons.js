@@ -1,3 +1,4 @@
+
 export const icons = {
   email: require('../assets/icons/email.png'),
   eyeOpen: require('../assets/icons/eyeOpen.png'),
@@ -62,9 +63,12 @@ export const icons = {
   gallery: require('../assets/icons/gallery.png'),
   camera: require('../assets/icons/camera.png'),
   cross: require('../assets/icons/cross.png'),
+  CircleCheck:require('../assets/icons/CircleCheck.png'),
+  delete:require('../assets/icons/delete.png'),
           // Animations
   waves: require('../assets/json/waves.json'),
   heart: require('../assets/json/heart.json'),
   loader: require('../assets/json/loader.json'),
   celebrate: require('../assets/json/celebrate.json'),
+ 
 };

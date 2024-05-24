@@ -49,6 +49,7 @@ const Signup = props => {
     last_name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
   const validEmail = isValidEmail(signUpInfo.email);
@@ -64,7 +65,9 @@ const Signup = props => {
       CustomToast('Please enter email');
     } else if (signUpInfo?.password == '') {
       CustomToast('Please enter password');
-    } else if (signUpInfo?.password != confirmPassword) {
+    } else if (signUpInfo?.confirmPassword == '') {
+      CustomToast('Please enter confirm password');
+    } else if (signUpInfo?.password != signUpInfo?.confirmPassword) {
       CustomToast("Password dosen't match");
     } else if (!validEmail) {
       CustomToast('Please enter valid email');
@@ -121,7 +124,7 @@ const Signup = props => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthHeader
               headerText="Sign Up"
-              subHeaderText="Please fill up this form to login your account."
+              subHeaderText="Please fill up this form to create your account."
             />
             <View style={[css.f1, css.py5, css.px16]}>
               <Input
@@ -179,8 +182,10 @@ const Signup = props => {
                 secureTextEntry={isSecureConfrmPass}
                 onPressIcon={() => setIsSecureConfrmPass(!isSecureConfrmPass)}
                 secure={true}
-                onChangeText={text => setConfirmPassword(text)}
-                value={confirmPassword}
+                onChangeText={text =>
+                  handleInputChange('confirmPassword', text)
+                }
+                value={signUpInfo.confirmPassword}
               />
 
               <Button

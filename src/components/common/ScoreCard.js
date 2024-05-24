@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-// import CircularProgress from 'react-native-circular-progress-indicator';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import css from '../../themes/space';
 import Txt from '../micro/Txt';
 import {fonts} from '../../themes/fonts';
@@ -25,20 +25,19 @@ const ScoreCard = props => {
         },
       ]}>
       {/* <CircularProgress
-                value={props?.value}
-                radius={screenWidth / 12}
-                duration={2000}
-                activeStrokeWidth={25}
-                inActiveStrokeWidth={20}
-                activeStrokeColor={props?.activeStrokeColor}
-                activeStrokeSecondaryColor={props?.activeStrokeSecondaryColor}
-                inActiveStrokeColor={'#f5f5f5'}
-                inActiveStrokeOpacity={1}
-                maxValue={100}
-                rotation={-150}
-                circleBackgroundColor="#fff"
-            >
-            </CircularProgress> */}
+        value={props?.value}
+        radius={screenWidth / 12}
+        duration={2000}
+        activeStrokeWidth={25}
+        inActiveStrokeWidth={20}
+        activeStrokeColor={props?.activeStrokeColor}
+        activeStrokeSecondaryColor={props?.activeStrokeSecondaryColor}
+        inActiveStrokeColor={'#f5f5f5'}
+        inActiveStrokeOpacity={1}
+        maxValue={100}
+        rotation={-150}
+        circleBackgroundColor="#fff">
+        </CircularProgress> */}
       <View style={[css.aic, css.mt3]}>
         <Txt style={[css.fs18, styles.titleStyle]}>{props.title}</Txt>
       </View>

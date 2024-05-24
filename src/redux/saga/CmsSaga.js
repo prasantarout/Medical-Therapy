@@ -126,6 +126,7 @@ export function* contactUsForSupportSaga(action) {
   } catch (error) {
     yield put(contactUsForSupportFailure(error?.response));
     console.log('catch error', error?.response);
+    CustomToast(error?.response?.data?.message);
   }
 }
 
@@ -181,8 +182,9 @@ export function* updatePasswordSaga(action) {
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
-    yield put(updatePasswordFailure(error?.response));
+    console.log('Catch', error?.response?.data?.message);
+    yield put(updatePasswordFailure(error?.response?.data?.message));
+    CustomToast(error?.response?.data?.message);
   }
 }
 

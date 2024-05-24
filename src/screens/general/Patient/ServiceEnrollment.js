@@ -112,7 +112,6 @@ const ServiceEnrollment = props => {
       });
   }, [isFocused]);
 
- 
   useEffect(() => {
     if (status == '' || PatientReducer.status != status) {
       switch (PatientReducer.status) {

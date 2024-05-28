@@ -8,6 +8,7 @@ import AuthHeader from '../../components/common/AuthHeader';
 import Txt from '../../components/micro/Txt';
 import {useDispatch, useSelector} from 'react-redux';
 import {verifyOtpRequest} from '../../redux/reducer/AuthReducer';
+import normalize from '../../utils/normalize';
 
 const OTPScreen = props => {
   const [otp, setOtp] = useState(['', '', '', '']);

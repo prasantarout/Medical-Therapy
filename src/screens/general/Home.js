@@ -1,40 +1,32 @@
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import css, {width} from '../../themes/space';
-import NavBar from '../../components/common/NavBar';
-import SafeView from '../../components/common/SafeView';
-import TitleTxt from '../../components/common/TitleTxt';
-import HeaderTitle from '../../components/common/HeaderTitle';
-import ScoreCard from '../../components/common/ScoreCard';
-import QuickCounter from '../../components/common/QuickCounter';
-import {icons} from '../../themes/icons';
-import {colors} from '../../themes/colors';
-import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
-import useScreenDimension from '../../utils/useScreenDimension';
-import useOrientation from '../../utils/useOrientation';
-import AssignmentChart from '../../components/common/AssignmentChart';
-import CalenderView from '../../components/common/CalenderView';
-import {images} from '../../themes/images';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 import {
   EvaluationEnrolmentReq,
   getDashboardReq,
   patientEnrolmentReq,
 } from '../../redux/reducer/DashboardReducer';
+import css, {width} from '../../themes/space';
+import SafeView from '../../components/common/SafeView';
+import {Image, StyleSheet, View} from 'react-native';
+import HeaderTitle from '../../components/common/HeaderTitle';
+import ScoreCard from '../../components/common/ScoreCard';
+import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
+import AssignmentChart from '../../components/common/AssignmentChart';
+import CalenderView from '../../components/common/CalenderView';
+import {colors} from '../../themes/colors';
+import {images} from '../../themes/images';
+import TitleTxt from '../../components/common/TitleTxt';
+import QuickCounter from '../../components/common/QuickCounter';
+import {icons} from '../../themes/icons';
+import useOrientation from '../../utils/useOrientation';
 import {useIsFocused} from '@react-navigation/native';
-import moment from 'moment';
+import {AnimatedCircularProgress} from '../../components/common/CircularProgressBar';
 
 let dashboardStatus = '';
 
 const Home = props => {
-  const {screenWidthh, screenHeight} = useScreenDimension();
-
   let orientation = useOrientation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -80,11 +72,11 @@ const Home = props => {
     },
   ];
 
-  let paddingLast = {paddingRight: orientation == 'PORTRAIT' ? 0 : 16};
-  let paddingRight = {paddingRight: orientation == 'PORTRAIT' ? 16 : 0};
+  let paddingLast = {paddingRight: orientation === 'PORTRAIT' ? 0 : 16};
+  let paddingRight = {paddingRight: orientation === 'PORTRAIT' ? 16 : 0};
 
   let counterCardWidth = {
-    width: orientation == 'PORTRAIT' ? '50%' : '33.2%',
+    width: orientation === 'PORTRAIT' ? '50%' : '33.2%',
   };
 
   if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
@@ -123,24 +115,14 @@ const Home = props => {
           <ScoreCard
             title="Service Score"
             value={DashboardReducer?.getDashboardResponse?.data?.service_score}
-            activeStrokeColor="#623792"
-            activeStrokeSecondaryColor={'#343286'}
-            style={[css.mr3]}
           />
           <ScoreCard
             title="Evaluation Score"
             value={
               DashboardReducer?.getDashboardResponse?.data?.evaluation_score
             }
-            activeStrokeColor="#623792"
-            activeStrokeSecondaryColor={'#343286'}
+            strokeColor="#14BEF0"
           />
-          {/* <View style={[styles.scoreCard]}>
-            <Image source={images.serviceScore} style={[styles.scoreCard]} />
-          </View> */}
-          {/* <View style={[styles.scoreCard]}>
-            <Image source={images.evaluationScore} style={[styles.scoreCard]} />
-          </View> */}
         </View>
         <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
@@ -216,13 +198,12 @@ const Home = props => {
         </View>
 
         <View style={[css.mt4]}>
-          <PatientEnrolmentChart {...props} />
+          <PatientEnrolmentChart
+            dataItem={DashboardReducer?.patientEnrolmentRes?.data}
+          />
         </View>
         <View style={[css.mt4]}>
-          <AssignmentChart
-            {...props}
-            dataItem={DashboardReducer?.evaluationEnrolmentRes?.data}
-          />
+          <AssignmentChart dataItem={DashboardReducer?.evaluationRes?.data} />
         </View>
         <View style={[css.mt4]}>
           <CalenderView

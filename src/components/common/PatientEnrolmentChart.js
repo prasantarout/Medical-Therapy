@@ -11,123 +11,15 @@ import {BarChart} from 'react-native-gifted-charts';
 import useOrientation from '../../utils/useOrientation';
 import moment from 'moment';
 
-const PatientEnrolmentChart = () => {
+const PatientEnrolmentChart = ({dataItem}) => {
+  const [barChartData, setBarChartData] = useState([]);
   const [selectedyear, setSelectedYear] = useState('');
   const {screenWidth, screenHeight} = useScreenDimension();
-  
-  const [year, setYears] = useState('');
-  let orientation = useOrientation();
+  useEffect(() => {
+    setBarChartData(getFormattedData(dataItem));
+  }, [dataItem, selectedyear]);
 
-  const [barData,setBardata] = useState([
-    {
-      value:0,
-      label: 'Jan',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'Feb',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'Mar',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value: 30,
-      label: 'Apr',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value: 60,
-      label: 'May',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {
-      value:0,
-      label: 'Jun',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'Jul',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'Aug',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'SEP',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-      activeOpacity: 1,
-    },
-    {value: 0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'OCT',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value:0,
-      label: 'Nov',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-    {
-      value: 0,
-      label: 'Dec',
-      spacing: 2,
-      labelWidth:30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#28328c',
-    },
-    {value:0, frontColor: '#3abef0'},
-  ]);
+  let orientation = useOrientation();
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
@@ -170,7 +62,7 @@ const PatientEnrolmentChart = () => {
         </View>
         <View style={[styles.chartArea]}>
           <BarChart
-            data={barData}
+            data={barChartData}
             barWidth={8}
             spacing={screenWidth / 17.4}
             xAxisThickness={1}
@@ -193,7 +85,41 @@ const PatientEnrolmentChart = () => {
     </View>
   );
 };
+const getFormattedData = dataItem => {
+  let newList = [];
+  if (dataItem) {
+    const totalMonth = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
 
+    totalMonth.map((value, index) => {
+      newList.push({
+        value: dataItem?.active_enrollment[index][value],
+        label: value,
+        spacing: 2,
+        labelWidth: 30,
+        labelTextStyle: {color: 'gray'},
+        frontColor: '#28328c',
+      });
+      newList.push({
+        value: dataItem?.inactive_enrollment[index][value],
+        frontColor: '#3abef0',
+      });
+    });
+  }
+  return newList;
+};
 export default PatientEnrolmentChart;
 
 const styles = StyleSheet.create({

@@ -46,7 +46,7 @@ export function* patientEnrolmentSaga(action) {
 
   try {
     let response = yield call(getApi, 'barchat-data', header);
-     console.log(response.data,">>>>>>?????Sss>>>>>>")
+    console.log(response.data, '>>>>>>?????Sss>>>>>>');
     if (response?.data?.status == 200) {
       yield put(patientEnrolmentSuccess(response?.data));
     } else {
@@ -59,7 +59,6 @@ export function* patientEnrolmentSaga(action) {
   }
 }
 
-
 export function* EvaluationEnrolmentSaga(action) {
   let item = yield select(getItem);
   let header = {
@@ -67,11 +66,11 @@ export function* EvaluationEnrolmentSaga(action) {
     contenttype: 'application/json',
     accessToken: `Bearer ${item?.token}`,
   };
-  console.log(header,">>>>>>????")
+  console.log(header, '>>>>>>????');
 
   try {
     let response = yield call(getApi, 'graph-data', header);
-     console.log(response.data,">>>>>>?????Sss>>>>>> evaluation")
+    console.log(response.data, '>>>>>>?????Sss>>>>>> evaluation');
     if (response?.data?.status == 200) {
       yield put(EvaluationEnrolmentSuccess(response?.data));
     } else {
@@ -92,7 +91,10 @@ const watchFunction = [
     yield takeLatest('Dashboard/patientEnrolmentReq', patientEnrolmentSaga);
   })(),
   (function* () {
-    yield takeLatest('Dashboard/EvaluationEnrolmentReq', EvaluationEnrolmentSaga);
+    yield takeLatest(
+      'Dashboard/EvaluationEnrolmentReq',
+      EvaluationEnrolmentSaga,
+    );
   })(),
 ];
 

@@ -14,17 +14,16 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
 import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
-import normalize from '../../utils/normalize';
 import {icons} from '../../themes/icons';
 import AuthHeader from '../../components/common/AuthHeader';
 import Input from '../../components/inputs/Input';
 import Txt from '../../components/micro/Txt';
-import {isValidEmail, isValidPhoneNumber} from '../../utils/Validation';
+// import {isValidEmail, isValidPhoneNumber} from '../../utils/Validation';
 import {useDispatch, useSelector} from 'react-redux';
 import {signInRequest} from '../../redux/reducer/AuthReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomToast from '../../utils/Toast';
-import LoaderAnimated from '../../utils/LoaderAnimated';
+import normalize from '../../utils/normalize';
 
 let loginStatus = '';
 
@@ -38,8 +37,8 @@ const Login = props => {
   });
 
   const dispatch = useDispatch();
-  const validEmail = isValidEmail(signInInfo.email);
-  const validPhoneNumber = isValidPhoneNumber(signInInfo.phone);
+  // const validEmail = isValidEmail(signInInfo.email);
+  // const validPhoneNumber = isValidPhoneNumber(signInInfo.phone);
   const AuthReducer = useSelector(state => state.AuthReducer);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const Login = props => {
       // console.log('AsyncStorage', email_value, password_value, value);
 
       if (value === 'true') {
-        setIsRememberMe(value == 'true' ? true : false);
+        setIsRememberMe(value === 'true' ? true : false);
         setsignInInfo({
           email: email_value,
           password: password_value,
@@ -68,9 +67,9 @@ const Login = props => {
   };
 
   const handleLogin = () => {
-    if (signInInfo?.email == '') {
+    if (signInInfo?.email === '') {
       CustomToast('Please enter email');
-    } else if (signInInfo?.password == '') {
+    } else if (signInInfo?.password === '') {
       CustomToast('Please enter password');
     } else {
       rememberMeState();
@@ -93,23 +92,6 @@ const Login = props => {
     } catch (e) {
       console.error('setRememberMeStatus-error', e);
     }
-  };
-
-  const Checkbox = () => {
-    return (
-      <TouchableOpacity
-        onPress={() => setIsRememberMe(!isRememberMe)}
-        style={[
-          styles.checkboxStyle,
-          {
-            backgroundColor: isRememberMe ? colors.secondary : 'transparent',
-          },
-        ]}>
-        {isRememberMe ? (
-          <Image style={[styles.checkIconStyle]} source={icons.check} />
-        ) : null}
-      </TouchableOpacity>
-    );
   };
 
   if (loginStatus === '' || AuthReducer.status !== loginStatus) {
@@ -170,7 +152,10 @@ const Login = props => {
               />
               <View style={[css.mb3, css.rowBetween]}>
                 <View style={[css.row, css.aic]}>
-                  <Checkbox />
+                  <Checkbox
+                    isRememberMe={isRememberMe}
+                    setIsRememberMe={setIsRememberMe}
+                  />
                   <Txt style={[css.ml1, css.fs18]}>Remember Me</Txt>
                 </View>
                 <TouchableOpacity
@@ -202,6 +187,23 @@ const Login = props => {
         </KeyboardAvoidingView>
       </SafeAreaView>
     </>
+  );
+};
+
+const Checkbox = ({isRememberMe, setIsRememberMe}) => {
+  return (
+    <TouchableOpacity
+      onPress={() => setIsRememberMe(!isRememberMe)}
+      style={[
+        styles.checkboxStyle,
+        {
+          backgroundColor: isRememberMe ? colors.secondary : 'transparent',
+        },
+      ]}>
+      {isRememberMe ? (
+        <Image style={[styles.checkIconStyle]} source={icons.check} />
+      ) : null}
+    </TouchableOpacity>
   );
 };
 

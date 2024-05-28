@@ -3,17 +3,17 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import css, {width} from '../../themes/space';
+import css from '../../themes/space';
 import Txt from '../micro/Txt';
 import {colors} from '../../themes/colors';
 import {icons} from '../../themes/icons';
 import {images} from '../../themes/images';
 import {fonts} from '../../themes/fonts';
+import normalize from '../../utils/normalize';
 
 const CustomModal = props => {
   const {isVisible, style, onCloseRequest, children, icon, title, subtitle} =

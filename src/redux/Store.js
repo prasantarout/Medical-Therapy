@@ -6,7 +6,6 @@ import CmsReducer from './reducer/CmsReducer';
 import AuthReducer from './reducer/AuthReducer';
 import PatientReducer from './reducer/PatientReducer';
 import DashboardReducer from './reducer/DashboardReducer';
-// import AssignmentsReducer from './reducer/AssignmentsReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
@@ -19,8 +18,7 @@ const rootReducer = combineReducers({
 });
 
 let SagaMiddleware = createSagaMiddleware();
-// const middleware = [SagaMiddleware, logger];
-const middleware = [SagaMiddleware];
+const middleware = [SagaMiddleware, logger];
 
 const persistConfig = {
   key: 'root',

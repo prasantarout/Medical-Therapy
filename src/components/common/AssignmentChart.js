@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomDropdown from './CustomDropdown';
 import {years} from '../../utils/dumpAPI';
 import TitleTxt from './TitleTxt';
@@ -9,70 +9,16 @@ import Divider from '../micro/Divider';
 import Txt from '../micro/Txt';
 import {LineChart} from 'react-native-gifted-charts';
 import useOrientation from '../../utils/useOrientation';
-import { Text } from 'react-native-svg';
+import {Text} from 'react-native-svg';
 
 const AssignmentChart = ({dataItem}) => {
-  // console.log(dataItem,">>>>>>>>?????graph")
+  const [lineChartData, setLineChartData] = useState([]);
+  useEffect(() => {
+    setLineChartData(dataItem);
+  }, [dataItem]);
   const [selectedyear, setSelectedYear] = useState('');
-  // const { screenWidth, screenHeight } = useScreenDimension()
   const {screenWidth, screenHeight} = useScreenDimension();
   let orientation = useOrientation();
-
-  // let completedArr = [];
-  // completedArr.push(dataItem.completed); 
-  // console.log(completedArr,">>>>>>>Ress")
-  
-  // let tempArr = completedArr.map((item, index) => {
-  //   return {
-  //     value: item,
-  //     dataPointText: `${index + 1}`
-  //   };
-  // });
-  // console.log(tempArr,">>>>>>???>>>tempArr")
-
-  const lineData = [
-    {value: 50, dataPointText: '0'},
-    {value: 10, dataPointText: '10'},
-    {value: 8, dataPointText: '8'},
-    {value: 58, dataPointText: '58'},
-    {value: 56, dataPointText: '56'},
-    {value: 78, dataPointText: '78'},
-    {value: 74, dataPointText: '74'},
-    {value: 98, dataPointText: '98'},
-    {value: 56, dataPointText: '56'},
-    {value: 78, dataPointText: '78'},
-    {value: 74, dataPointText: '74'},
-    {value: 98, dataPointText: '98'},
-  ];
-
-  const lineData2 = [
-    {value: 0, dataPointText: '0'},
-    {value: 20, dataPointText: '20'},
-    {value: 18, dataPointText: '18'},
-    {value: 40, dataPointText: '40'},
-    {value: 36, dataPointText: '36'},
-    {value: 60, dataPointText: '60'},
-    {value: 54, dataPointText: '54'},
-    {value: 85, dataPointText: '85'},
-    {value: 56, dataPointText: '56'},
-    {value: 78, dataPointText: '78'},
-    {value: 74, dataPointText: '74'},
-    {value: 98, dataPointText: '98'},
-  ];
-  const lineData3 = [
-    {value: 80, dataPointText: '0'},
-    {value: 35, dataPointText: '20'},
-    {value: 28, dataPointText: '18'},
-    {value: 50, dataPointText: '40'},
-    {value: 66, dataPointText: '36'},
-    {value: 20, dataPointText: '60'},
-    {value: 44, dataPointText: '54'},
-    {value: 65, dataPointText: '85'},
-    {value: 86, dataPointText: '56'},
-    {value: 38, dataPointText: '78'},
-    {value: 44, dataPointText: '74'},
-    // {value: 18, dataPointText: '98'},
-  ];
 
   const RenderTitles = ({title, backgroundColor}) => {
     return (
@@ -111,13 +57,13 @@ const AssignmentChart = ({dataItem}) => {
         </View>
         <View style={[styles.chartArea]}>
           <LineChart
-            data={lineData}
-            data2={lineData2}
-            data3={lineData3}
+            data={lineChartData?.completed}
+            data2={lineChartData?.pending}
+            data3={lineChartData?.total}
             height={250}
             showHorizontalLines
-            spacing={screenWidth / 12.6}
-            initialSpacing={0}
+            spacing={screenWidth / 15}
+            initialSpacing={20}
             color1={color1}
             color2={color2}
             color3={color3}
@@ -133,6 +79,7 @@ const AssignmentChart = ({dataItem}) => {
             textShiftX={-5}
             textFontSize={13}
             rulesType="solid"
+            maxValue={100}
           />
           <Divider />
 

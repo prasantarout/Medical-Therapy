@@ -1,12 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import CircularProgress from 'react-native-circular-progress-indicator';
 import css from '../../themes/space';
 import Txt from '../micro/Txt';
 import {fonts} from '../../themes/fonts';
-import {heightToDp as hp, widthToDp as wp} from '../../utils/responsive';
-import normalize from '../../utils/normalize';
 import useScreenDimension from '../../utils/useScreenDimension';
+import CircularProgressBar from './CircularProgressBar';
+import normalize from '../../utils/normalize';
 
 const ScoreCard = props => {
   const {screenWidth, screenHeight} = useScreenDimension();
@@ -24,22 +23,14 @@ const ScoreCard = props => {
           maxHeight: screenWidth / 2.5,
         },
       ]}>
-      <CircularProgress
-        value={props?.value}
-        radius={screenWidth / 12}
-        duration={2000}
-        activeStrokeWidth={25}
-        inActiveStrokeWidth={20}
-        activeStrokeColor={props?.activeStrokeColor}
-        activeStrokeSecondaryColor={props?.activeStrokeSecondaryColor}
-        inActiveStrokeColor={'#f5f5f5'}
-        inActiveStrokeOpacity={1}
-        maxValue={100}
-        rotation={-150}
-        circleBackgroundColor="#fff">
-        </CircularProgress>
+      <CircularProgressBar
+        radius={normalize(40)}
+        progress={props?.value}
+        strokeWidth={30}
+        strokeColor={props?.strokeColor}
+      />
       <View style={[css.aic, css.mt3]}>
-        <Txt style={[css.fs18, styles.titleStyle]}>{props.title}</Txt>
+        <Txt style={styles.titleStyle}>{props.title}</Txt>
       </View>
     </View>
   );
@@ -52,11 +43,10 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     flexGrow: 1,
-    // maxWidth: 100
   },
   titleStyle: {
     color: '#444444',
-    fontFamily: fonts.Medium,
-    fontSize: 25,
+    fontFamily: fonts.Bold,
+    fontSize: 16,
   },
 });

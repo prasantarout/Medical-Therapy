@@ -5,7 +5,7 @@ const initialState = {
   error: {},
   getDashboardResponse: {},
   patientEnrolmentRes: {},
-  evaluationEnrolmentRes:{}
+  evaluationRes:{}
 };
 
 const DashboardSlice = createSlice({
@@ -42,7 +42,7 @@ const DashboardSlice = createSlice({
       state.status = action.type;
     },
     EvaluationEnrolmentSuccess(state, action) {
-      state.evaluationEnrolmentRes = action?.payload;
+      state.evaluationRes = action?.payload;
       state.status = action.type;
     },
     EvaluationEnrolmentFailure(state, action) {

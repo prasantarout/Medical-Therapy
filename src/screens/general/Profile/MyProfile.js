@@ -112,13 +112,12 @@ const MyProfile = props => {
         break;
       case 'Auth/ProfileSuccess':
         profileStatus = AuthReducer.status;
-        // console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
         setName(AuthReducer.ProfileResponse?.data?.full_name);
         setFirstName(AuthReducer.ProfileResponse?.data?.first_name);
         setLastName(AuthReducer.ProfileResponse?.data?.last_name);
         setEmail(AuthReducer.ProfileResponse?.data?.email);
         setPhone(AuthReducer.ProfileResponse?.data?.phone);
-        setProfileImage(AuthReducer.ProfileResponse?.data?.profile_photo_url);
+        setProfileImage(AuthReducer.ProfileResponse?.data?.user_photo);
         break;
       case 'Auth/ProfileFailure':
         profileStatus = AuthReducer.status;
@@ -230,7 +229,7 @@ const MyProfile = props => {
     switch (CmsReducer.status) {
       case 'CMS/updatePasswordReq':
         updatePasswordStatus = CmsReducer.status;
-       
+
         break;
       case 'CMS/updatePasswordSuccess':
         updatePasswordStatus = CmsReducer.status;
@@ -289,14 +288,13 @@ const MyProfile = props => {
               <Image
                 style={[styles.profileImage]}
                 source={
-                  profileImage!==''
+                  profileImage !== ''
                     ? {uri: profileImage}
                     : {
                         uri: `https://ui-avatars.com/api/?name=${AuthReducer.ProfileResponse?.data?.full_name}&bold=true&color=28328C&background=ffffff&size=240`,
                       }
                 }
               />
-              {/* {console.log( '>>>>>>??????',profileImage)} */}
             </View>
             <View style={[css.center, css.px7]}>
               <View style={[]}>

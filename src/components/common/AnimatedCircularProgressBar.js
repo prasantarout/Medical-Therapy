@@ -1,36 +1,56 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Animated, Easing} from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {View, Text, Animated, Easing, StyleSheet} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
 import {fonts} from '../../themes/fonts';
 
-const CircularProgressBar = ({
-  radius,
+const AnimatedCircularProgressBar = ({
+  radius = 40,
   strokeWidth,
   progress,
   strokeColor = '#3D2578',
 }) => {
-  const diameter = radius * 2;
-  const circumference = Math.PI * diameter;
+  const animation = useRef(new Animated.Value(0)).current;
 
-  const progressValue =
-    progress >= 100 ? 100 : progress <= 0 ? 0 : 105 - progress;
-  const progressOffset = (progressValue / 100) * circumference;
+  useEffect(() => {
+    animate();
+  }, []);
+
+  const animate = () => {
+    Animated.loop(
+      Animated.timing(animation, {
+        toValue: 100,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ).start();
+  };
+
+  const circumference = 2 * Math.PI * radius; // Assuming radius is 40
+  const strokeDashoffset = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [circumference, 0],
+  });
 
   const styles = customStyles({radius, strokeWidth});
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.backgroundContainer} />
-      <View style={[styles.progressContainer, {transform: 'rotate(123deg)'}]}>
-        <Svg height={diameter} width={diameter}>
+      <View
+        style={[
+          styles.progressContainer,
+          {transform: [{rotate: '123deg'}]}, // Make sure to use array for transform
+        ]}>
+        <Svg height={100} width={100}>
           <Circle
             stroke={strokeColor}
             fill="none"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             strokeDasharray={`${circumference}, ${circumference}`}
-            strokeDashoffset={progressOffset + 40}
+            strokeDashoffset={strokeDashoffset}
             cx={radius}
             cy={radius}
             r={radius - strokeWidth / 2}
@@ -93,4 +113,4 @@ const customStyles = ({radius, strokeWidth}) =>
     },
   });
 
-export default CircularProgressBar;
+export default AnimatedCircularProgressBar;

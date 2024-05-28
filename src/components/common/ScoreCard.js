@@ -29,6 +29,7 @@ const ScoreCard = props => {
         strokeWidth={30}
         strokeColor={props?.strokeColor}
       />
+
       <View style={[css.aic, css.mt3]}>
         <Txt style={styles.titleStyle}>{props.title}</Txt>
       </View>

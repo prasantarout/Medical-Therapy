@@ -24,7 +24,7 @@ const ScoreCard = props => {
           maxHeight: screenWidth / 2.5,
         },
       ]}>
-      {/* <CircularProgress
+      <CircularProgress
         value={props?.value}
         radius={screenWidth / 12}
         duration={2000}
@@ -37,7 +37,7 @@ const ScoreCard = props => {
         maxValue={100}
         rotation={-150}
         circleBackgroundColor="#fff">
-        </CircularProgress> */}
+        </CircularProgress>
       <View style={[css.aic, css.mt3]}>
         <Txt style={[css.fs18, styles.titleStyle]}>{props.title}</Txt>
       </View>

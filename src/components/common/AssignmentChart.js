@@ -9,12 +9,26 @@ import Divider from '../micro/Divider';
 import Txt from '../micro/Txt';
 import {LineChart} from 'react-native-gifted-charts';
 import useOrientation from '../../utils/useOrientation';
+import { Text } from 'react-native-svg';
 
-const AssignmentChart = () => {
+const AssignmentChart = ({dataItem}) => {
+  // console.log(dataItem,">>>>>>>>?????graph")
   const [selectedyear, setSelectedYear] = useState('');
   // const { screenWidth, screenHeight } = useScreenDimension()
   const {screenWidth, screenHeight} = useScreenDimension();
   let orientation = useOrientation();
+
+  // let completedArr = [];
+  // completedArr.push(dataItem.completed); 
+  // console.log(completedArr,">>>>>>>Ress")
+  
+  // let tempArr = completedArr.map((item, index) => {
+  //   return {
+  //     value: item,
+  //     dataPointText: `${index + 1}`
+  //   };
+  // });
+  // console.log(tempArr,">>>>>>???>>>tempArr")
 
   const lineData = [
     {value: 50, dataPointText: '0'},
@@ -57,7 +71,7 @@ const AssignmentChart = () => {
     {value: 86, dataPointText: '56'},
     {value: 38, dataPointText: '78'},
     {value: 44, dataPointText: '74'},
-    {value: 18, dataPointText: '98'},
+    // {value: 18, dataPointText: '98'},
   ];
 
   const RenderTitles = ({title, backgroundColor}) => {
@@ -123,13 +137,13 @@ const AssignmentChart = () => {
           <Divider />
 
           <View style={[css.row, css.aic, css.asc, css.mt3]}>
-            <RenderTitles title="Total Assignment" backgroundColor="#28328C" />
+            <RenderTitles title="Total Evaluation" backgroundColor="#28328C" />
             <RenderTitles
-              title="Pending Assignment"
+              title="Pending Evaluation"
               backgroundColor="#3ABEF0"
             />
             <RenderTitles
-              title="Complete Assignment"
+              title="Complete Evaluation"
               backgroundColor="#FF9A6C"
             />
           </View>

@@ -157,7 +157,7 @@ const HelpnSupport = props => {
       CustomToast('Please enter a Valid Email');
     } else if (phone == '') {
       CustomToast('Please enter your Phone Number');
-    } else if (phone.length < 10 || phone.length > 19) {
+    } else if (phone.length < 10 || phone.length > 16) {
       CustomToast('Please enter a Valid Phone Number');
     } else if (document == '' || document == undefined) {
       CustomToast('Please select document');

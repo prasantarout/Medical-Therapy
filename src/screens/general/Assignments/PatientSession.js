@@ -62,19 +62,22 @@ const PatientSession = props => {
         console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
-  }, [isFocused, selectDate]);
+  }, [isFocused]);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
+
+  console.log(readableDate,">>>>>>>????")
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
 
   const handleConfirm = date => {
-    let selectedDate = moment(date).format('Do MMMM');
-    setReadableDate(selectedDate);
+    // let selectedDate = moment(date).format('Do MMMM');
+    // console.log("date",date,selectDate);
+    setReadableDate(moment(date).format('Do MMMM'));
     setSelectDate(moment(date).format('YYYY-MM-DD'));
     // console.warn('A date has been picked: ', selectedDate);
     hideDatePicker();

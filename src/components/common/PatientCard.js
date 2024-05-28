@@ -79,7 +79,7 @@ const PatientCard = props => {
       ) : null}
       {Button && (
         <TouchableOpacity onPress={navigateTo} style={[styles.btn]}>
-          <Txt style={[styles.btnTxt]}>View Sessions</Txt>
+          <Txt style={[styles.btnTxt]}>View Enrolment</Txt>
         </TouchableOpacity>
       )}
     </TouchableOpacity>

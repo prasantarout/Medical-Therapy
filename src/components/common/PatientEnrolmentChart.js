@@ -14,37 +14,38 @@ import moment from 'moment';
 const PatientEnrolmentChart = () => {
   const [selectedyear, setSelectedYear] = useState('');
   const {screenWidth, screenHeight} = useScreenDimension();
+  
   const [year, setYears] = useState('');
   let orientation = useOrientation();
 
-  const barData = [
+  const [barData,setBardata] = useState([
     {
-      value: 40,
+      value:0,
       label: 'Jan',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 20, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 50,
+      value:0,
       label: 'Feb',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 40, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 75,
+      value:0,
       label: 'Mar',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 25, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
       value: 30,
       label: 'Apr',
@@ -53,7 +54,7 @@ const PatientEnrolmentChart = () => {
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 20, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
       value: 60,
       label: 'May',
@@ -62,36 +63,35 @@ const PatientEnrolmentChart = () => {
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 40, frontColor: '#3abef0'},
     {
-      value: 65,
+      value:0,
       label: 'Jun',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 30, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 40,
+      value:0,
       label: 'Jul',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 20, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 50,
+      value:0,
       label: 'Aug',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 40, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 75,
+      value:0,
       label: 'SEP',
       spacing: 2,
       labelWidth: 30,
@@ -99,35 +99,35 @@ const PatientEnrolmentChart = () => {
       frontColor: '#28328c',
       activeOpacity: 1,
     },
-    {value: 25, frontColor: '#3abef0'},
+    {value: 0, frontColor: '#3abef0'},
     {
-      value: 30,
+      value:0,
       label: 'OCT',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 20, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 60,
+      value:0,
       label: 'Nov',
       spacing: 2,
       labelWidth: 30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 40, frontColor: '#3abef0'},
+    {value:0, frontColor: '#3abef0'},
     {
-      value: 65,
+      value: 0,
       label: 'Dec',
       spacing: 2,
-      labelWidth: 30,
+      labelWidth:30,
       labelTextStyle: {color: 'gray'},
       frontColor: '#28328c',
     },
-    {value: 30, frontColor: '#3abef0'},
-  ];
+    {value:0, frontColor: '#3abef0'},
+  ]);
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
@@ -185,8 +185,8 @@ const PatientEnrolmentChart = () => {
           <Divider />
 
           <View style={[css.row, css.aic, css.asc, css.mt3]}>
-            <RenderTitles title="New Patient" backgroundColor="#28328C" />
-            <RenderTitles title="Repeated Patient" backgroundColor="#3ABEF0" />
+            <RenderTitles title="Active Patient" backgroundColor="#28328C" />
+            <RenderTitles title="Inactive Patient" backgroundColor="#3ABEF0" />
           </View>
         </View>
       </View>

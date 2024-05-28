@@ -52,7 +52,7 @@ const HelpnSupport = props => {
 
   useEffect(() => {
     dispatch(helpSupportTypeReq());
-    // getHelpSupportFunc();
+    getHelpSupportFunc(selected);
   }, []);
 
   if (status === '' || CmsReducer.status !== status) {
@@ -101,9 +101,9 @@ const HelpnSupport = props => {
     return <QuestionCard title={item?.question} value={item?.answer} />;
   };
 
-  const getHelpSupportFunc = () => {
+  const getHelpSupportFunc = item => {
     let obj = {
-      type_id: selected,
+      type_id: item,
     };
     dispatch(helpAndSupportReq(obj));
   };
@@ -112,7 +112,8 @@ const HelpnSupport = props => {
     return (
       <TouchableOpacity
         onPress={() => {
-          setSelected(item.id), getHelpSupportFunc();
+          setSelected(item.id);
+          getHelpSupportFunc(item.id);
         }}
         activeOpacity={0.6}
         style={[
@@ -156,7 +157,7 @@ const HelpnSupport = props => {
       CustomToast('Please enter a Valid Email');
     } else if (phone == '') {
       CustomToast('Please enter your Phone Number');
-    } else if (phone.length < 10 || phone.length > 19) {
+    } else if (phone.length < 10 || phone.length > 16) {
       CustomToast('Please enter a Valid Phone Number');
     } else if (document == '' || document == undefined) {
       CustomToast('Please select document');

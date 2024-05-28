@@ -22,7 +22,11 @@ import AssignmentChart from '../../components/common/AssignmentChart';
 import CalenderView from '../../components/common/CalenderView';
 import {images} from '../../themes/images';
 import {useDispatch, useSelector} from 'react-redux';
-import {getDashboardReq} from '../../redux/reducer/DashboardReducer';
+import {
+  EvaluationEnrolmentReq,
+  getDashboardReq,
+  patientEnrolmentReq,
+} from '../../redux/reducer/DashboardReducer';
 import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 
@@ -37,6 +41,7 @@ const Home = props => {
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [visible, setVisible] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+  const [year, setYear] = useState(moment().format('YYYY-MM-DD'));
   const [years, setYears] = useState('2024');
   const [dashboardData, setDashboardData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
@@ -48,6 +53,8 @@ const Home = props => {
       enrolment_year: years,
     };
     dispatch(getDashboardReq(obj));
+    dispatch(patientEnrolmentReq());
+    dispatch(EvaluationEnrolmentReq());
   }, [isFocused]);
 
   const data = [
@@ -113,25 +120,27 @@ const Home = props => {
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
         <View style={[css.row, css.jcse]}>
-          {/* <ScoreCard
+          <ScoreCard
             title="Service Score"
-            value={90}
+            value={DashboardReducer?.getDashboardResponse?.data?.service_score}
             activeStrokeColor="#623792"
             activeStrokeSecondaryColor={'#343286'}
             style={[css.mr3]}
           />
           <ScoreCard
             title="Evaluation Score"
-            value={70}
+            value={
+              DashboardReducer?.getDashboardResponse?.data?.evaluation_score
+            }
             activeStrokeColor="#623792"
             activeStrokeSecondaryColor={'#343286'}
-          /> */}
-          <View style={[styles.scoreCard]}>
+          />
+          {/* <View style={[styles.scoreCard]}>
             <Image source={images.serviceScore} style={[styles.scoreCard]} />
-          </View>
-          <View style={[styles.scoreCard]}>
+          </View> */}
+          {/* <View style={[styles.scoreCard]}>
             <Image source={images.evaluationScore} style={[styles.scoreCard]} />
-          </View>
+          </View> */}
         </View>
         <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
@@ -210,7 +219,10 @@ const Home = props => {
           <PatientEnrolmentChart {...props} />
         </View>
         <View style={[css.mt4]}>
-          <AssignmentChart {...props} />
+          <AssignmentChart
+            {...props}
+            dataItem={DashboardReducer?.evaluationEnrolmentRes?.data}
+          />
         </View>
         <View style={[css.mt4]}>
           <CalenderView

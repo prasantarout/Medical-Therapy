@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/general/Home';
 import {icons} from '../themes/icons';
@@ -9,6 +9,12 @@ import {colors} from '../themes/colors';
 import {fonts} from '../themes/fonts';
 import PatientSessionTab from './PatientSessionTab';
 import PatientTab from './PatientTab';
+import {createStackNavigator} from '@react-navigation/stack';
+import ActivePatients from '../screens/general/Home/ActivePatients';
+import CompletedEvaulation from '../screens/general/Home/CompletedEvaulation';
+import CurrentMonthSessionData from '../screens/general/Home/CurrentMonthSessionData';
+import InactivePatients from '../screens/general/Home/InactivePatients';
+import PendingEvaulation from '../screens/general/Home/PendingEvaulation';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,13 +31,44 @@ const BottomTab = props => {
         tabBarStyle: {backgroundColor: colors.primary, height: 80},
         tabBarIcon: ({focused}) => TabIcon({focused: focused, route: route}),
       })}>
-      <Tab.Screen name="Dashboard" component={Home} />
+      <Tab.Screen name="Dashboard" component={DashboardNavigator} />
       <Tab.Screen name="Patients Session" component={PatientSessionTab} />
       <Tab.Screen name="Patients Queue" component={PatientTab} />
       <Tab.Screen name="Help & Support" component={HelpnSupport} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>
-    // <Text>tab navigator</Text>
+  );
+};
+
+const DashboardStack = createStackNavigator();
+const DashboardNavigator = () => {
+  return (
+    <DashboardStack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        gestureEnabled: false,
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}>
+      <DashboardStack.Screen name="Home" component={Home} />
+      <DashboardStack.Screen name="ActivePatients" component={ActivePatients} />
+      <DashboardStack.Screen
+        name="CompletedEvaulation"
+        component={CompletedEvaulation}
+      />
+      <DashboardStack.Screen
+        name="CurrentMonthSessionData"
+        component={CurrentMonthSessionData}
+      />
+      <DashboardStack.Screen
+        name="InactivePatients"
+        component={InactivePatients}
+      />
+      <DashboardStack.Screen
+        name="PendingEvaulation"
+        component={PendingEvaulation}
+      />
+    </DashboardStack.Navigator>
   );
 };
 

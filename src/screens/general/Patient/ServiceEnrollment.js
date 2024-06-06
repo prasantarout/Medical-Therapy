@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
-import NavBar from '../../../components/common/NavBar';
 import TitleTxt from '../../../components/common/TitleTxt';
 import css from '../../../themes/space';
 import normalize from '../../../utils/normalize';
@@ -11,7 +11,6 @@ import moment from 'moment';
 import {fonts} from '../../../themes/fonts';
 import {icons} from '../../../themes/icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import SimpleDropDown from '../../../components/common/SimpleDropDown';
 import SimpleInput from '../../../components/inputs/SimpleInput';
 import connectionrequest from '../../../utils/NetInfo';
 import {useDispatch, useSelector} from 'react-redux';
@@ -21,7 +20,6 @@ import {
 } from '../../../redux/reducer/PatientReducer';
 import CustomToast from '../../../utils/Toast';
 import {useIsFocused} from '@react-navigation/native';
-import MultiSelectDropdown from '../../../components/common/MultiSelectDropdown';
 import {MultiSelect} from 'react-native-element-dropdown';
 import Loader from '../../../utils/Loader';
 
@@ -29,7 +27,6 @@ const ServiceEnrollment = props => {
   let status = '';
   const [date, setDate] = useState('');
   const [time, setTime] = useState('10:30 am');
-  const [service, setService] = useState('');
   const [remark, setRemark] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
@@ -316,20 +313,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '500',
   },
-  selectedTextStyle: {
-    fontSize: 14,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  icon: {
-    marginRight: 5,
-  },
   item: {
     padding: 17,
     flexDirection: 'row',
@@ -361,19 +344,19 @@ const styles = StyleSheet.create({
     height: normalize(16),
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: normalize(14),
     color: colors?.searchPlaceholder,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: normalize(14),
     color: '#808080',
   },
   iconStyle: {
-    width: 20,
-    height: 20,
+    width: normalize(20),
+    height: normalize(20),
   },
   inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    height: normalize(40),
+    fontSize: normalize(14),
   },
 });

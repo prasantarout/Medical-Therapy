@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import css from '../../themes/space';
 import Txt from '../micro/Txt';
@@ -6,7 +6,23 @@ import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 
 const QuickCounter = props => {
-  return (
+  return props?.pressable ? (
+    <TouchableOpacity
+      style={[
+        css.bgWhite,
+        styles.card,
+        css.p4,
+        props.style,
+        {borderColor: props.color},
+      ]}
+      onPress={props?.onPress}>
+      <View style={[css.row, css.aic, css.jcsb]}>
+        <Txt style={[styles.valueStyle]}>{props?.value}</Txt>
+        <Image style={[styles.cardIcon]} source={props?.icon} />
+      </View>
+      <Txt style={[styles.titleStyle]}>{props?.title}</Txt>
+    </TouchableOpacity>
+  ) : (
     <View
       style={[
         css.bgWhite,
@@ -29,11 +45,9 @@ export default QuickCounter;
 const styles = StyleSheet.create({
   card: {
     borderLeftWidth: 3,
-    // flex:1
     height: '100%',
   },
   valueStyle: {
-    color: '#444444',
     fontFamily: fonts.Bold,
     fontSize: normalize(12),
     color: '#144067',
@@ -43,7 +57,6 @@ const styles = StyleSheet.create({
     color: '#444444',
     fontFamily: fonts.Medium,
     fontSize: 20,
-    color: '#144067',
     marginTop: 10,
   },
   cardIcon: {

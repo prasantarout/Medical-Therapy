@@ -1,32 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import useOrientation from '../../../utils/useOrientation';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useEffect, useState} from 'react';
 import moment from 'moment';
 import {
   EvaluationEnrolmentReq,
   getDashboardReq,
   patientEnrolmentReq,
-} from '../../redux/reducer/DashboardReducer';
-import css, {width} from '../../themes/space';
-import SafeView from '../../components/common/SafeView';
-import {Image, StyleSheet, View} from 'react-native';
-import HeaderTitle from '../../components/common/HeaderTitle';
-import ScoreCard from '../../components/common/ScoreCard';
-import PatientEnrolmentChart from '../../components/common/PatientEnrolmentChart';
-import AssignmentChart from '../../components/common/AssignmentChart';
-import CalenderView from '../../components/common/CalenderView';
-import {colors} from '../../themes/colors';
-import {images} from '../../themes/images';
-import TitleTxt from '../../components/common/TitleTxt';
-import QuickCounter from '../../components/common/QuickCounter';
-import {icons} from '../../themes/icons';
-import useOrientation from '../../utils/useOrientation';
-import {useIsFocused} from '@react-navigation/native';
-import {AnimatedCircularProgress} from '../../components/common/CircularProgressBar';
+} from '../../../redux/reducer/DashboardReducer';
+import TitleTxt from '../../../components/common/TitleTxt';
+import {StyleSheet, View} from 'react-native';
+import ScoreCard from '../../../components/common/ScoreCard';
+import css, {width} from '../../../themes/space';
+import HeaderTitle from '../../../components/common/HeaderTitle';
+import SafeView from '../../../components/common/SafeView';
+import QuickCounter from '../../../components/common/QuickCounter';
+import {icons} from '../../../themes/icons';
+import PatientEnrolmentChart from '../../../components/common/PatientEnrolmentChart';
+import AssignmentChart from '../../../components/common/AssignmentChart';
+import CalenderView from '../../../components/common/CalenderView';
+import {colors} from '../../../themes/colors';
 
 let dashboardStatus = '';
 
 const Home = props => {
+  const navigation = useNavigation();
   let orientation = useOrientation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -37,7 +37,6 @@ const Home = props => {
   const [years, setYears] = useState('2024');
   const [dashboardData, setDashboardData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
-  const [sessionsDateData, setSessionsDateData] = useState('');
 
   useEffect(() => {
     let obj = {
@@ -149,6 +148,10 @@ const Home = props => {
                 color="#FA9A6C"
                 icon={icons.pendingAssignment}
                 style={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('CurrentMonthSessionData');
+                }}
               />
             </View>
             <View
@@ -159,6 +162,10 @@ const Home = props => {
                 color="#3ABEF0"
                 icon={icons.completeAssignment}
                 style={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('CompletedEvaulation');
+                }}
               />
             </View>
             <View
@@ -169,6 +176,10 @@ const Home = props => {
                 color="#28328C"
                 icon={icons.totalPatient}
                 style={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('PendingEvaulation');
+                }}
               />
             </View>
             <View
@@ -183,6 +194,10 @@ const Home = props => {
                 color="#FA9A6C"
                 icon={icons.activePatient}
                 style={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('ActivePatients');
+                }}
               />
             </View>
             <View style={[styles.counterCardStyle, counterCardWidth]}>
@@ -192,6 +207,10 @@ const Home = props => {
                 color="#3ABEF0"
                 icon={icons.inactivePatient}
                 style={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('InactivePatients');
+                }}
               />
             </View>
           </View>

@@ -1,17 +1,136 @@
-import React from 'react';
-import DashboardCradDetails from './DashboardCradDetails';
-import {View} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import SafeView from '../../../components/common/SafeView';
 import css from '../../../themes/space';
+import TitleTxt from '../../../components/common/TitleTxt';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import Txt from '../../../components/micro/Txt';
+import normalize from '../../../utils/normalize';
+import {colors} from '../../../themes/colors';
+import CustomTable from '../../../components/common/CustomTable';
+import {fonts} from '../../../themes/fonts';
+import {useDispatch, useSelector} from 'react-redux';
+import {getPendingEvaulationReq} from '../../../redux/reducer/DashboardReducer';
+
+let dashboardStatus = '';
+
+const headerDataArr = [
+  {
+    label: 'Submitted Date',
+    width: 4,
+  },
+  {
+    label: 'Patient Name',
+    width: 4,
+  },
+  {
+    label: 'Evaluation Form Type',
+    width: 4.5,
+  },
+  {
+    label: 'Evaluation Status',
+    width: 4,
+  },
+];
+
+const bodyDataArr = [['Test Tester', '2', '3', '4']];
 
 const PendingEvaulation = () => {
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const DashboardReducer = useSelector(state => state.DashboardReducer);
+  const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+
+  if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
+    switch (DashboardReducer.status) {
+      case 'Dashboard/getPendingEvaulationReq':
+        dashboardStatus = DashboardReducer.status;
+        break;
+      case 'Dashboard/getPendingEvaulationSuccess':
+        dashboardStatus = DashboardReducer.status;
+        setTableBodyDataArr(
+          DashboardReducer?.getPendingEvaulationResponse?.data,
+        );
+        break;
+      case 'Dashboard/getPendingEvaulationFailure':
+        dashboardStatus = DashboardReducer.status;
+        break;
+    }
+  }
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getPendingEvaulationReq());
+    }
+  }, [isFocused]);
   return (
     <SafeView sticky={[1]}>
-      <View style={[css.f1, css.p4]}>
-        <DashboardCradDetails title={'PendingEvaulation'} />
+      <View style={styles.headerContainer}>
+        <TitleTxt title="Pending Evaluations" />
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.goBack()}>
+          <Txt style={styles.btnTxt}>Back</Txt>
+        </TouchableOpacity>
+      </View>
+      <View style={[css.f1, css.p4, css.pt0]}>
+        <CustomTable
+          actionButtonText={'View Details'}
+          onPressActionButton={(value, index) => {
+            console.log('came', value, index);
+          }}
+          tableHeaderDataArr={headerDataArr}
+          tableBodyDataArr={bodyDataArr}
+          // tableBodyDataArr={tableBodyDataArr}
+        />
       </View>
     </SafeView>
   );
 };
 
 export default PendingEvaulation;
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: normalize(8),
+  },
+  btn: {
+    backgroundColor: colors.primary,
+    borderRadius: normalize(4),
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: normalize(16),
+    paddingHorizontal: normalize(10),
+  },
+  btnTxt: {
+    color: colors.white,
+    fontSize: 22,
+    fontWeight: '500',
+  },
+  calenderContainer: {
+    flexDirection: 'row',
+  },
+  calenderTextContainer: {
+    flexDirection: 'row',
+    width: normalize(75),
+    height: normalize(20),
+    alignItems: 'center',
+  },
+  calenderText: {
+    marginLeft: 10,
+    color: colors.primaryTextColor,
+    fontSize: 22,
+    fontFamily: fonts.Medium,
+  },
+  calenderIcon: {
+    height: normalize(8),
+    width: normalize(8),
+    resizeMode: 'contain',
+    tintColor: colors.primaryTextColor,
+  },
+});

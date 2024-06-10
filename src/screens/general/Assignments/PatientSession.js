@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
-  Alert,
   FlatList,
   Image,
   Pressable,
@@ -10,50 +10,100 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import css from '../../../themes/space';
-import Tabs from '../../../components/common/Tabs';
 import TitleTxt from '../../../components/common/TitleTxt';
-import CalendarStrip from 'react-native-calendar-strip';
 import {fonts} from '../../../themes/fonts';
 import {icons} from '../../../themes/icons';
 import useOrientation from '../../../utils/useOrientation';
-import {upcomingAssignmentList} from '../../../utils/dumpAPI';
 import Txt from '../../../components/micro/Txt';
 import {colors} from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
-import {getUpcomingAssignmentsReq} from '../../../redux/reducer/CmsReducer';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {getPatientSessionReq} from '../../../redux/reducer/PatientReducer';
 import moment from 'moment';
 import connectionrequest from '../../../utils/NetInfo';
 import CustomToast from '../../../utils/Toast';
 import Loader from '../../../utils/Loader';
+import CustomCalender from '../../../components/common/CustomCalender';
+import CustomModal from '../../../components/common/CustomModal';
+import normalize from '../../../utils/normalize';
+
+let calenderOptions = [
+  'Last 7 days',
+  'Last 15 days',
+  'Last 30 days',
+  'Last 45 days',
+  'Last 90 days',
+  'Custom Date',
+];
 
 let getPatientSessionStatus = '';
 
 const PatientSession = props => {
   const orientation = useOrientation();
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = ['Upcoming Assignments', 'Completed Assignments'];
-  // const initialTab = 0;
   const [numCols, setColumnNo] = useState(orientation == 'PORTRAIT' ? 1 : 2);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const CmsReducer = useSelector(state => state.CmsReducer);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [readableDate, setReadableDate] = useState('');
   const [selectDate, setSelectDate] = useState('');
   const PatientReducer = useSelector(state => state.PatientReducer);
-  // ecn'2024-05-06'
-  useEffect(() => {
-    let todaysDateString = moment(new Date().toISOString().split('T')[0]);
-    let todaysDate = moment(todaysDateString).format('Do MMMM');
-    let todayDateFormat = moment(todaysDateString).format('YYYY-MM-DD');
-    setReadableDate(todaysDate);
+  const [selectedCalenderOption, setSelectedCalenderOption] = useState(
+    calenderOptions[0],
+  );
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-    let obj = {session_date: selectDate !== '' ? selectDate : todayDateFormat};
+  const getDateFormat = date => {
+    if (date) {
+      let todaysDateString = moment(date.toISOString().split('T')[0]);
+      let todaysDate = moment(todaysDateString).format('Do MMMM');
+      return todaysDate;
+    } else {
+      return '';
+    }
+  };
+
+  const selectDateType = type => {
+    setSelectedCalenderOption(type);
+    switch (type) {
+      case calenderOptions[0]:
+        setStartDate(new Date(new Date().setDate(new Date().getDate() - 7)));
+        setEndDate(new Date());
+        break;
+      case calenderOptions[1]:
+        setStartDate(new Date(new Date().setDate(new Date().getDate() - 15)));
+        setEndDate(new Date());
+        break;
+      case calenderOptions[2]:
+        setStartDate(new Date(new Date().setDate(new Date().getDate() - 30)));
+        setEndDate(new Date());
+        break;
+      case calenderOptions[3]:
+        setStartDate(new Date(new Date().setDate(new Date().getDate() - 45)));
+        setEndDate(new Date());
+        break;
+      case calenderOptions[4]:
+        setStartDate(new Date(new Date().setDate(new Date().getDate() - 90)));
+        setEndDate(new Date());
+        break;
+      case calenderOptions[5]:
+        setStartDate('');
+        setEndDate('');
+        break;
+      default:
+        break;
+    }
+  };
+  useEffect(() => {
+    selectDateType(calenderOptions[0]);
+    fetchData();
+  }, [isFocused]);
+
+  useEffect(() => {
+    let obj = {session_date: selectDate};
     connectionrequest()
       .then(res => {
         dispatch(getPatientSessionReq(obj));
@@ -62,26 +112,19 @@ const PatientSession = props => {
         console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
-  }, [isFocused]);
+  }, [readableDate]);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const fetchData = () => {
+    connectionrequest()
+      .then(res => {
+        dispatch(getPatientSessionReq({session_date: startDate || endDate}));
+      })
+      .catch(err => {
+        console.log(err, 'err');
+        CustomToast('Please connect To Internet');
+      });
   };
 
-  console.log(readableDate,">>>>>>>????")
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    // let selectedDate = moment(date).format('Do MMMM');
-    // console.log("date",date,selectDate);
-    setReadableDate(moment(date).format('Do MMMM'));
-    setSelectDate(moment(date).format('YYYY-MM-DD'));
-    // console.warn('A date has been picked: ', selectedDate);
-    hideDatePicker();
-  };
   const handleSelect = ecn => {
     const isSelected = selectedItems.includes(ecn);
     if (isSelected) {
@@ -89,26 +132,6 @@ const PatientSession = props => {
     } else {
       setSelectedItems([...selectedItems, ecn]);
     }
-  };
-
-  const IconTextBlock = ({icon, title, textStyle, name, cardIconStyle}) => {
-    return (
-      <View style={[styles.iconTextContainer]}>
-        <View style={[css.row, css.aic]}>
-          {icon ? (
-            <Image
-              source={icon}
-              style={[styles.cardIconStyle, cardIconStyle]}
-            />
-          ) : null}
-          <Txt style={[css.fs17, css.ml1, textStyle]}>{name}</Txt>
-        </View>
-        <View style={[css.row, css.aic]}>
-          <View style={[styles.cardIconStyle]} />
-          <Txt style={[css.fs15, css.ml1, css.textLighte]}>{title}</Txt>
-        </View>
-      </View>
-    );
   };
 
   const renderAssignments = ({item, index}) => {
@@ -211,55 +234,161 @@ const PatientSession = props => {
     }
   }
 
-  // console.log(PatientReducer?.getPatientSessionResponse,">>>>>??????dddddd")
-
   return (
-    <SafeView {...props}>
-      <View style={[css.px4, css.f1]}>
-        {/* <Loader
-          visible={PatientReducer?.status === 'PATIENT/getPatientSessionReq'}
-        /> */}
-        <TitleTxt style={[css.mt4]} title="Patient Session" />
-        <View style={[styles.assignmentList, css.f1]}>
-          <View style={[styles.calenderArea, css.row, css.aic]}>
-            <TouchableOpacity onPress={showDatePicker} activeOpacity={0.7}>
-              <Image
-                source={icons.calender}
-                style={[styles.calendarIconStyle]}
-              />
-            </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-            <Txt style={[css.fs17, css.semiBold]}>{readableDate}</Txt>
-          </View>
-          <View style={[css.f1, css.jcc, css.aic]}>
-            {PatientReducer?.getPatientSessionResponse?.data?.data?.length >
-            0 ? (
-              <View style={[css.f1, css.w100, css.px1]}>
-                <FlatList
-                  data={PatientReducer?.getPatientSessionResponse?.data?.data}
-                  numColumns={numCols}
-                  key={numCols}
-                  renderItem={renderAssignments}
+    <>
+      <SafeView {...props}>
+        <View style={[css.px4, css.f1]}>
+          <Loader
+            visible={PatientReducer?.status === 'PATIENT/getPatientSessionReq'}
+          />
+          <TitleTxt style={[css.mt4]} title="Patient Session" />
+          <View style={[styles.assignmentList, css.f1]}>
+            <View style={[styles.calenderArea, css.row, css.aic]}>
+              <TouchableOpacity
+                onPress={() => setDatePickerVisibility(true)}
+                activeOpacity={0.7}>
+                <Image
+                  source={icons.calender}
+                  style={[styles.calendarIconStyle]}
                 />
-              </View>
-            ) : (
-              <Txt style={{fontSize: 23}}>No Assignments Found </Txt>
-            )}
+              </TouchableOpacity>
+              <Txt style={[css.fs17, css.semiBold]}>
+                {`${getDateFormat(startDate) || 'Start Date'} - ${
+                  getDateFormat(endDate) || 'End Date'
+                }`}
+              </Txt>
+            </View>
+
+            <View style={[css.f1, css.jcc, css.aic]}>
+              {PatientReducer?.getPatientSessionResponse?.data?.data?.length >
+              0 ? (
+                <View style={[css.f1, css.w100, css.px1]}>
+                  <FlatList
+                    data={PatientReducer?.getPatientSessionResponse?.data?.data}
+                    numColumns={numCols}
+                    key={numCols}
+                    renderItem={renderAssignments}
+                  />
+                </View>
+              ) : (
+                <Txt style={{fontSize: 23}}>No Assignments Found </Txt>
+              )}
+            </View>
           </View>
         </View>
-      </View>
-    </SafeView>
+      </SafeView>
+      <CustomModal
+        isVisible={isDatePickerVisible}
+        onCloseRequest={() => {
+          setDatePickerVisibility(false);
+        }}>
+        <View style={styles.modalMainContainer}>
+          <View style={styles.modalLeftContainer}>
+            <View>
+              <CalenderOptions
+                selectedOption={selectedCalenderOption}
+                setSelectedOption={selectDateType}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.doneBtn}
+              onPress={() => {
+                fetchData();
+                setDatePickerVisibility(false);
+              }}>
+              <Text style={styles.doneBtnText}>Done</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalRightContainer}>
+            <CustomCalender
+              type={selectedCalenderOption}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+            />
+          </View>
+        </View>
+      </CustomModal>
+    </>
   );
+};
+
+const IconTextBlock = ({icon, title, textStyle, name, cardIconStyle}) => {
+  return (
+    <View style={[styles.iconTextContainer]}>
+      <View style={[css.row, css.aic]}>
+        {icon ? (
+          <Image source={icon} style={[styles.cardIconStyle, cardIconStyle]} />
+        ) : null}
+        <Txt style={[css.fs17, css.ml1, textStyle]}>{name}</Txt>
+      </View>
+      <View style={[css.row, css.aic]}>
+        <View style={[styles.cardIconStyle]} />
+        <Txt style={[css.fs15, css.ml1, css.textLighte]}>{title}</Txt>
+      </View>
+    </View>
+  );
+};
+
+const CalenderOptions = ({selectedOption, setSelectedOption, onPress}) => {
+  return calenderOptions.map((value, index) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedOption(value);
+        }}
+        style={
+          value === selectedOption
+            ? styles.activeSelectedOption
+            : styles.inactiveSelectedOption
+        }>
+        <Text style={styles.optionText}>{value}</Text>
+      </TouchableOpacity>
+    );
+  });
 };
 
 export default PatientSession;
 
 const styles = StyleSheet.create({
+  modalMainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  modalLeftContainer: {
+    marginRight: normalize(10),
+    width: normalize(50),
+    justifyContent: 'space-between',
+    height: normalize(150),
+  },
+  modalRightContainer: {
+    height: normalize(150),
+    width: normalize(150),
+  },
+  activeSelectedOption: {
+    padding: normalize(2),
+    backgroundColor: colors.secondary,
+    borderRadius: 4,
+  },
+  inactiveSelectedOption: {
+    padding: normalize(2),
+  },
+  optionText: {
+    fontFamily: fonts.Bold,
+    color: colors.primary,
+  },
+  doneBtn: {
+    padding: normalize(2),
+    backgroundColor: colors.secondary,
+    borderRadius: 4,
+  },
+  doneBtnText: {
+    fontFamily: fonts.Bold,
+    color: colors.white,
+    textAlign: 'center',
+  },
   calenderArea: {
     marginBottom: 20,
     marginTop: 16,
@@ -328,6 +457,5 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: 'contain',
     borderRadius: 100,
-    // tintColor: colors.primary,
   },
 });

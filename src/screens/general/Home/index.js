@@ -48,29 +48,6 @@ const Home = props => {
     dispatch(EvaluationEnrolmentReq());
   }, [isFocused]);
 
-  const data = [
-    {
-      label: '2024',
-      value: '2024',
-    },
-    {
-      label: '2025',
-      value: '2025',
-    },
-    {
-      label: '2026',
-      value: '2026',
-    },
-    {
-      label: '2027',
-      value: '2027',
-    },
-    {
-      label: '2028',
-      value: '2028',
-    },
-  ];
-
   let paddingLast = {paddingRight: orientation === 'PORTRAIT' ? 0 : 16};
   let paddingRight = {paddingRight: orientation === 'PORTRAIT' ? 16 : 0};
 
@@ -150,7 +127,7 @@ const Home = props => {
                 style={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
-                  navigation.navigate('CurrentMonthSessionData');
+                  navigation.navigate('Patients Session');
                 }}
               />
             </View>

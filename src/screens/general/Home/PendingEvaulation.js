@@ -12,6 +12,8 @@ import CustomTable from '../../../components/common/CustomTable';
 import {fonts} from '../../../themes/fonts';
 import {useDispatch, useSelector} from 'react-redux';
 import {getPendingEvaulationReq} from '../../../redux/reducer/DashboardReducer';
+import {getFormattedDate} from '../../../utils/DateConverter';
+import Loader from '../../../utils/Loader';
 
 let dashboardStatus = '';
 
@@ -34,7 +36,7 @@ const headerDataArr = [
   },
 ];
 
-const bodyDataArr = [['Test Tester', '2', '3', '4']];
+// const bodyDataArr = [['Test Tester', '2', '3', '4']];
 
 const PendingEvaulation = () => {
   const navigation = useNavigation();
@@ -42,6 +44,29 @@ const PendingEvaulation = () => {
   const dispatch = useDispatch();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+
+  const tableFormatConvert = () => {
+    let formattedData = [];
+    DashboardReducer?.getPendingEvaulationResponse?.data?.map(
+      (bodyDataRow, bodyDataIndex) => {
+        let row = {};
+        row[headerDataArr[0].label] =
+          getFormattedDate(bodyDataRow.created_at, 'Do-MMM-YYYY') || 'N/A';
+        row[headerDataArr[1].label] = bodyDataRow?.patient_name || 'N/A';
+        row[headerDataArr[2].label] = bodyDataRow.question_type || 'N/A';
+        row[headerDataArr[3].label] = bodyDataRow.status || 'N/A';
+
+        formattedData.push(row);
+      },
+    );
+    return formattedData;
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getPendingEvaulationReq());
+    }
+  }, [isFocused]);
 
   if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
     switch (DashboardReducer.status) {
@@ -51,7 +76,9 @@ const PendingEvaulation = () => {
       case 'Dashboard/getPendingEvaulationSuccess':
         dashboardStatus = DashboardReducer.status;
         setTableBodyDataArr(
-          DashboardReducer?.getPendingEvaulationResponse?.data,
+          tableFormatConvert(
+            DashboardReducer?.getPendingEvaulationResponse?.data,
+          ),
         );
         break;
       case 'Dashboard/getPendingEvaulationFailure':
@@ -60,13 +87,11 @@ const PendingEvaulation = () => {
     }
   }
 
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(getPendingEvaulationReq());
-    }
-  }, [isFocused]);
   return (
     <SafeView sticky={[1]}>
+      <Loader
+        visible={dashboardStatus === 'Dashboard/getPendingEvaulationReq'}
+      />
       <View style={styles.headerContainer}>
         <TitleTxt title="Pending Evaluations" />
         <TouchableOpacity
@@ -79,11 +104,11 @@ const PendingEvaulation = () => {
         <CustomTable
           actionButtonText={'View Details'}
           onPressActionButton={(value, index) => {
-            console.log('came', value, index);
+            console.log(value, index);
           }}
           tableHeaderDataArr={headerDataArr}
-          tableBodyDataArr={bodyDataArr}
-          // tableBodyDataArr={tableBodyDataArr}
+          // tableBodyDataArr={bodyDataArr}
+          tableBodyDataArr={tableBodyDataArr}
         />
       </View>
     </SafeView>

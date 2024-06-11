@@ -24,15 +24,12 @@ const CustomCalender = ({
   }, [type, startDate, endDate]);
 
   const getMarkedList = (start, end) => {
-    console.log('end', end);
     let marked = {};
     let presentDate = new Date(start);
-    console.log('present', presentDate);
     while (presentDate <= end) {
       let year = presentDate?.getFullYear().toString();
       let month = (presentDate?.getMonth() + 1).toString().padStart(2, '0');
       let day = presentDate?.getDate().toString().padStart(2, '0');
-      console.log('`${year}-${month}-${day}`', `${year}-${month}-${day}`);
       marked[`${year}-${month}-${day}`] = {
         startingDay: presentDate?.getTime() === start?.getTime(),
         endingDay: presentDate?.getTime() === end?.getTime(),

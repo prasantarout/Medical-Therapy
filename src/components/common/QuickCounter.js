@@ -5,22 +5,34 @@ import Txt from '../micro/Txt';
 import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 
-const QuickCounter = props => {
-  return props?.pressable ? (
+const QuickCounter = ({
+  pressable,
+  containerStyle,
+  value,
+  color,
+  onPress,
+  icon,
+  iconTintColor,
+  title,
+}) => {
+  return pressable ? (
     <TouchableOpacity
       style={[
         css.bgWhite,
         styles.card,
         css.p4,
-        props.style,
-        {borderColor: props.color},
+        containerStyle,
+        {borderColor: color},
       ]}
-      onPress={props?.onPress}>
+      onPress={onPress}>
       <View style={[css.row, css.aic, css.jcsb]}>
-        <Txt style={[styles.valueStyle]}>{props?.value}</Txt>
-        <Image style={[styles.cardIcon]} source={props?.icon} />
+        <Txt style={[styles.valueStyle]}>{value || 0}</Txt>
+        <Image
+          style={[styles.cardIcon, {tintColor: iconTintColor}]}
+          source={icon}
+        />
       </View>
-      <Txt style={[styles.titleStyle]}>{props?.title}</Txt>
+      <Txt style={[styles.titleStyle]}>{title}</Txt>
     </TouchableOpacity>
   ) : (
     <View
@@ -28,14 +40,17 @@ const QuickCounter = props => {
         css.bgWhite,
         styles.card,
         css.p4,
-        props.style,
-        {borderColor: props.color},
+        containerStyle,
+        {borderColor: color},
       ]}>
       <View style={[css.row, css.aic, css.jcsb]}>
-        <Txt style={[styles.valueStyle]}>{props?.value}</Txt>
-        <Image style={[styles.cardIcon]} source={props?.icon} />
+        <Txt style={[styles.valueStyle]}>{value}</Txt>
+        <Image
+          style={[styles.cardIcon, {tintColor: iconTintColor}]}
+          source={icon}
+        />
       </View>
-      <Txt style={[styles.titleStyle]}>{props?.title}</Txt>
+      <Txt style={[styles.titleStyle]}>{title}</Txt>
     </View>
   );
 };

@@ -13,6 +13,8 @@ import CustomTable from '../../../components/common/CustomTable';
 import {fonts} from '../../../themes/fonts';
 import {useDispatch, useSelector} from 'react-redux';
 import {getActivePatientReq} from '../../../redux/reducer/DashboardReducer';
+import {getFormattedDate} from '../../../utils/DateConverter';
+import Loader from '../../../utils/Loader';
 
 let dashboardStatus = '';
 
@@ -54,7 +56,7 @@ const headerDataArr = [
   },
 ];
 
-const bodyDataArr = [['Test Tester', '2', '3', '4', '5', '6']];
+// const bodyDataArr = [['Test Tester', '2', '3', '4', '5', '6']];
 
 const ActivePatients = () => {
   const navigation = useNavigation();
@@ -63,6 +65,32 @@ const ActivePatients = () => {
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
 
+  const tableFormatConvert = () => {
+    let formattedData = [];
+    DashboardReducer?.getActivePatientResponse?.data?.map(
+      (bodyDataRow, bodyDataIndex) => {
+        let row = {};
+        row[headerDataArr[0].label] = bodyDataRow?.patient?.full_name || 'N/A';
+        row[headerDataArr[1].label] = bodyDataRow?.patient?.setupDate || 'N/A';
+        row[headerDataArr[2].label] = bodyDataRow.device_serial_no || 'N/A';
+        row[headerDataArr[3].label] =
+          bodyDataRow.total_usage_hours_on_device || 'N/A';
+        row[headerDataArr[4].label] =
+          getFormattedDate(bodyDataRow.session_date, 'Do-MMM') || 'N/A';
+        row[headerDataArr[5].label] = bodyDataRow.session_time || 'N/A';
+
+        formattedData.push(row);
+      },
+    );
+    return formattedData;
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getActivePatientReq());
+    }
+  }, [isFocused]);
+
   if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
     switch (DashboardReducer.status) {
       case 'Dashboard/getActivePatientReq':
@@ -70,7 +98,9 @@ const ActivePatients = () => {
         break;
       case 'Dashboard/getActivePatientSuccess':
         dashboardStatus = DashboardReducer.status;
-        setTableBodyDataArr(DashboardReducer?.getActivePatientResponse?.data);
+        setTableBodyDataArr(
+          tableFormatConvert(DashboardReducer?.getActivePatientResponse?.data),
+        );
         break;
       case 'Dashboard/getActivePatientFailure':
         dashboardStatus = DashboardReducer.status;
@@ -79,13 +109,9 @@ const ActivePatients = () => {
     }
   }
 
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(getActivePatientReq());
-    }
-  }, [isFocused]);
   return (
     <SafeView sticky={[1]}>
+      <Loader visible={dashboardStatus === 'Dashboard/getActivePatientReq'} />
       <View style={styles.headerContainer}>
         <TitleTxt title="Active Patient" />
         <TouchableOpacity
@@ -98,11 +124,11 @@ const ActivePatients = () => {
         <CustomTable
           actionButtonText={'View'}
           onPressActionButton={(value, index) => {
-            console.log('came', value, index);
+            console.log(value, index);
           }}
           tableHeaderDataArr={headerDataArr}
-          tableBodyDataArr={bodyDataArr}
-          // tableBodyDataArr={tableBodyDataArr}
+          // tableBodyDataArr={bodyDataArr}
+          tableBodyDataArr={tableBodyDataArr}
         />
       </View>
     </SafeView>

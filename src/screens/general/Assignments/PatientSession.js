@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Dimensions,
   FlatList,
   Image,
   Pressable,
@@ -27,6 +28,9 @@ import Loader from '../../../utils/Loader';
 import CustomCalender from '../../../components/common/CustomCalender';
 import CustomModal from '../../../components/common/CustomModal';
 import normalize from '../../../utils/normalize';
+import {getFormattedDate} from '../../../utils/DateConverter';
+
+const height = Dimensions.get('screen').height;
 
 let calenderOptions = [
   'Last 7 days',
@@ -55,16 +59,6 @@ const PatientSession = props => {
   );
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  const getDateFormat = date => {
-    if (date) {
-      let todaysDateString = moment(date.toISOString().split('T')[0]);
-      let todaysDate = moment(todaysDateString).format('Do MMMM');
-      return todaysDate;
-    } else {
-      return '';
-    }
-  };
 
   const selectDateType = type => {
     setSelectedCalenderOption(type);
@@ -97,27 +91,25 @@ const PatientSession = props => {
         break;
     }
   };
+
   useEffect(() => {
     selectDateType(calenderOptions[0]);
     fetchData();
   }, [isFocused]);
 
   useEffect(() => {
-    let obj = {session_date: selectDate};
-    connectionrequest()
-      .then(res => {
-        dispatch(getPatientSessionReq(obj));
-      })
-      .catch(err => {
-        console.log(err, 'err');
-        CustomToast('Please connect To Internet');
-      });
+    fetchData();
   }, [readableDate]);
 
   const fetchData = () => {
     connectionrequest()
       .then(res => {
-        dispatch(getPatientSessionReq({session_date: startDate || endDate}));
+        dispatch(
+          getPatientSessionReq({
+            start_date: getFormattedDate(startDate, 'YYYY-MM-DD'),
+            end_date: getFormattedDate(endDate, 'YYYY-MM-DD'),
+          }),
+        );
       })
       .catch(err => {
         console.log(err, 'err');
@@ -246,34 +238,48 @@ const PatientSession = props => {
             <View style={[styles.calenderArea, css.row, css.aic]}>
               <TouchableOpacity
                 onPress={() => setDatePickerVisibility(true)}
-                activeOpacity={0.7}>
+                activeOpacity={0.7}
+                style={[css.row, css.aic]}>
                 <Image
                   source={icons.calender}
                   style={[styles.calendarIconStyle]}
                 />
+                <Txt style={[css.fs17, css.semiBold]}>
+                  {`${
+                    getFormattedDate(startDate, 'Do-MMMM') || 'Start Date'
+                  } - ${getFormattedDate(endDate, 'Do-MMMM') || 'End Date'}`}
+                </Txt>
               </TouchableOpacity>
-              <Txt style={[css.fs17, css.semiBold]}>
-                {`${getDateFormat(startDate) || 'Start Date'} - ${
-                  getDateFormat(endDate) || 'End Date'
-                }`}
-              </Txt>
             </View>
 
-            <View style={[css.f1, css.jcc, css.aic]}>
-              {PatientReducer?.getPatientSessionResponse?.data?.data?.length >
-              0 ? (
-                <View style={[css.f1, css.w100, css.px1]}>
-                  <FlatList
-                    data={PatientReducer?.getPatientSessionResponse?.data?.data}
-                    numColumns={numCols}
-                    key={numCols}
-                    renderItem={renderAssignments}
-                  />
-                </View>
-              ) : (
+            {PatientReducer?.getPatientSessionResponse?.data?.data?.length >
+            0 ? (
+              <View
+                style={[
+                  css.jcc,
+                  css.aifs,
+                  css.w100,
+                  {height: height - normalize(130)},
+                ]}>
+                <FlatList
+                  data={PatientReducer?.getPatientSessionResponse?.data?.data}
+                  numColumns={numCols}
+                  key={numCols}
+                  renderItem={renderAssignments}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+            ) : (
+              <View
+                style={[
+                  css.jcc,
+                  css.aic,
+                  css.w100,
+                  {height: height - normalize(130)},
+                ]}>
                 <Txt style={{fontSize: 23}}>No Assignments Found </Txt>
-              )}
-            </View>
+              </View>
+            )}
           </View>
         </View>
       </SafeView>
@@ -343,7 +349,14 @@ const CalenderOptions = ({selectedOption, setSelectedOption, onPress}) => {
             ? styles.activeSelectedOption
             : styles.inactiveSelectedOption
         }>
-        <Text style={styles.optionText}>{value}</Text>
+        <Text
+          style={
+            value === selectedOption
+              ? styles.activeOptionText
+              : styles.inactiveOptionText
+          }>
+          {value}
+        </Text>
       </TouchableOpacity>
     );
   });
@@ -375,9 +388,13 @@ const styles = StyleSheet.create({
   inactiveSelectedOption: {
     padding: normalize(2),
   },
-  optionText: {
+  inactiveOptionText: {
     fontFamily: fonts.Bold,
     color: colors.primary,
+  },
+  activeOptionText: {
+    fontFamily: fonts.Bold,
+    color: colors.white,
   },
   doneBtn: {
     padding: normalize(2),

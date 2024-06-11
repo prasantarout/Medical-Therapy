@@ -31,17 +31,13 @@ const Home = props => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
-  const [visible, setVisible] = useState(false);
-  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-  const [year, setYear] = useState(moment().format('YYYY-MM-DD'));
-  const [years, setYears] = useState('2024');
   const [dashboardData, setDashboardData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
 
   useEffect(() => {
     let obj = {
-      date: date,
-      enrolment_year: years,
+      date: moment(new Date()).format('YYYY-MM-DD').toString,
+      enrolment_year: new Date().getFullYear().toString(),
     };
     dispatch(getDashboardReq(obj));
     dispatch(patientEnrolmentReq());
@@ -62,14 +58,11 @@ const Home = props => {
         break;
       case 'Dashboard/getDashboardSuccess':
         dashboardStatus = DashboardReducer.status;
-        // console.log("CalenderView-Dashboard:", DashboardReducer?.getDashboardResponse?.data)
         setDashboardData(DashboardReducer?.getDashboardResponse?.data);
         setSessionsData(DashboardReducer?.getDashboardResponse?.data?.sessions);
-        // setSessionsDateData(DashboardReducer?.getDashboardResponse?.data?.sessions[0]?.session_date)
         break;
       case 'Dashboard/getDashboardFailure':
         dashboardStatus = DashboardReducer.status;
-        // console.log('initiated-fail', DashboardReducer.status);
         break;
     }
   }
@@ -110,21 +103,25 @@ const Home = props => {
                 counterCardWidth,
               ]}>
               <QuickCounter
-                value={dashboardData?.total_session}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data?.total_session
+                }
                 title="Total Session Data"
                 color="#28328C"
                 icon={icons.assignment}
-                style={[styles.quickCounterStyle]}
+                containerStyle={[styles.quickCounterStyle]}
               />
             </View>
             <View
               style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
-                value={dashboardData?.monthly_session}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data?.monthly_session
+                }
                 title="Current Month Session Data"
                 color="#FA9A6C"
                 icon={icons.pendingAssignment}
-                style={[styles.quickCounterStyle]}
+                containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
                   navigation.navigate('Patients Session');
@@ -134,11 +131,14 @@ const Home = props => {
             <View
               style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
               <QuickCounter
-                value={dashboardData?.complete_evaluation}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data
+                    ?.complete_evaluation
+                }
                 title="Completed Evaulation"
                 color="#3ABEF0"
                 icon={icons.completeAssignment}
-                style={[styles.quickCounterStyle]}
+                containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
                   navigation.navigate('CompletedEvaulation');
@@ -148,11 +148,14 @@ const Home = props => {
             <View
               style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
               <QuickCounter
-                value={dashboardData?.pending_evaluation}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data
+                    ?.pending_evaluation
+                }
                 title="Pending Evaulation"
                 color="#28328C"
-                icon={icons.totalPatient}
-                style={[styles.quickCounterStyle]}
+                icon={icons.assignment}
+                containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
                   navigation.navigate('PendingEvaulation');
@@ -166,11 +169,13 @@ const Home = props => {
                 counterCardWidth,
               ]}>
               <QuickCounter
-                value={dashboardData?.active_patient}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data?.active_patient
+                }
                 title="Active Patients"
                 color="#FA9A6C"
                 icon={icons.activePatient}
-                style={[styles.quickCounterStyle]}
+                containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
                   navigation.navigate('ActivePatients');
@@ -179,11 +184,13 @@ const Home = props => {
             </View>
             <View style={[styles.counterCardStyle, counterCardWidth]}>
               <QuickCounter
-                value={dashboardData?.inactive_patient}
+                value={
+                  DashboardReducer?.getDashboardResponse?.data?.inactive_patient
+                }
                 title="Inactive Patients"
                 color="#3ABEF0"
                 icon={icons.inactivePatient}
-                style={[styles.quickCounterStyle]}
+                containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
                   navigation.navigate('InactivePatients');

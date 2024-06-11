@@ -30,9 +30,7 @@ const CustomTable = ({
   paddingBottom = 0,
 }) => {
   const styles = customStyles({paddingBottom: paddingBottom});
-  const sortFunction = headerIndex => {
-    console.log('headerIndex', headerIndex);
-  };
+  const sortFunction = headerIndex => {};
   return (
     <View style={styles.mainContainer}>
       <ScrollView
@@ -90,7 +88,7 @@ const CustomTable = ({
                 tableBodyDataArr.map((bodyRowData, bodyRowIndex) => {
                   return (
                     <View style={styles.tableBodyRowContainer}>
-                      {bodyRowData.map((cellData, index) => {
+                      {tableHeaderDataArr.map((_, index) => {
                         return (
                           <View
                             style={[
@@ -117,7 +115,7 @@ const CustomTable = ({
                                 styles.tableBodyText,
                                 tableBodyTextStyle,
                               ]}>
-                              {cellData}
+                              {bodyRowData[tableHeaderDataArr[index]?.label]}
                             </Text>
                           </View>
                         );

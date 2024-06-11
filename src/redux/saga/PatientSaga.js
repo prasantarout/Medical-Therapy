@@ -1,11 +1,9 @@
 import {call, put, select, takeLatest} from 'redux-saga/effects';
 import {
   getApi,
-  getApiWitPayload,
   getApiWithParam,
   postApi,
   postApiNew,
-  putApi,
 } from '../../utils/ApiRequest';
 
 import {
@@ -55,8 +53,8 @@ export function* getPatientSessionSaga(action) {
     let response = yield call(
       getApiWithParam,
       'sessions',
-      action?.payload,
       header,
+      action?.payload,
     );
     if (response?.data?.status == 200) {
       yield put(getPatientSessionSuccess(response?.data));
@@ -97,7 +95,6 @@ export function* storeEnrolmentSaga(action) {
     CustomToast(error?.response?.data?.message);
   }
 }
-
 
 export function* getListOfTherapiesSaga(action) {
   let item = yield select(getItem);

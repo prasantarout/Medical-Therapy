@@ -1,5 +1,5 @@
 import {call, put, select, takeLatest} from 'redux-saga/effects';
-import {getApi, postApi} from '../../utils/ApiRequest';
+import {getApi, getApiWithParam, postApi} from '../../utils/ApiRequest';
 
 import {
   getDashboardSuccess,
@@ -75,7 +75,7 @@ export function* getActivePatientSaga(action) {
   };
 
   try {
-    let response = yield call(getApi, 'dashboard-active-patient', header);
+    let response = yield call(getApi, 'dashboard-active-patients', header);
     if (response?.data?.status == 200) {
       yield put(getActivePatientSuccess(response?.data));
     } else {
@@ -96,7 +96,11 @@ export function* getInactivePatientSaga(action) {
   };
 
   try {
-    let response = yield call(getApi, 'dashboard-inactive-patient', header);
+    let response = yield call(
+      getApiWithParam,
+      'dashboard-inactive-patients',
+      header,
+    );
     if (response?.data?.status == 200) {
       yield put(getInactivePatientSuccess(response?.data));
     } else {
@@ -117,7 +121,7 @@ export function* getPendingEvaulationSaga(action) {
   };
 
   try {
-    let response = yield call(getApi, 'dashboard-pending-evaluation', header);
+    let response = yield call(getApi, 'dashboard-pending-evaluations', header);
     if (response?.data?.status == 200) {
       yield put(getPendingEvaulationSuccess(response?.data));
     } else {
@@ -138,7 +142,11 @@ export function* getCompletedEvaulationSaga(action) {
   };
 
   try {
-    let response = yield call(getApi, 'dashboard-completed-evaluation', header);
+    let response = yield call(
+      getApi,
+      'dashboard-completed-evaluations',
+      header,
+    );
     if (response?.data?.status == 200) {
       yield put(getCompletedEvaulationSuccess(response?.data));
     } else {

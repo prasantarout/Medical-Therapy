@@ -14,14 +14,12 @@ import css from '../../../themes/space';
 import TitleTxt from '../../../components/common/TitleTxt';
 import {fonts} from '../../../themes/fonts';
 import {icons} from '../../../themes/icons';
-import useOrientation from '../../../utils/useOrientation';
 import Txt from '../../../components/micro/Txt';
 import {colors} from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {getPatientSessionReq} from '../../../redux/reducer/PatientReducer';
-import moment from 'moment';
 import connectionrequest from '../../../utils/NetInfo';
 import CustomToast from '../../../utils/Toast';
 import Loader from '../../../utils/Loader';
@@ -29,6 +27,7 @@ import CustomCalender from '../../../components/common/CustomCalender';
 import CustomModal from '../../../components/common/CustomModal';
 import normalize from '../../../utils/normalize';
 import {getFormattedDate} from '../../../utils/DateConverter';
+import {global} from '../../../utils/global';
 
 const height = Dimensions.get('screen').height;
 
@@ -44,15 +43,10 @@ let calenderOptions = [
 let getPatientSessionStatus = '';
 
 const PatientSession = props => {
-  const orientation = useOrientation();
-  const [activeTab, setActiveTab] = useState(0);
-  const [numCols, setColumnNo] = useState(orientation == 'PORTRAIT' ? 1 : 2);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [readableDate, setReadableDate] = useState('');
-  const [selectDate, setSelectDate] = useState('');
   const PatientReducer = useSelector(state => state.PatientReducer);
   const [selectedCalenderOption, setSelectedCalenderOption] = useState(
     calenderOptions[0],
@@ -93,13 +87,11 @@ const PatientSession = props => {
   };
 
   useEffect(() => {
-    selectDateType(calenderOptions[0]);
-    fetchData();
+    if (isFocused && !global.patientSessionFocus) {
+      selectDateType(calenderOptions[0]);
+      fetchData();
+    }
   }, [isFocused]);
-
-  useEffect(() => {
-    fetchData();
-  }, [readableDate]);
 
   const fetchData = () => {
     connectionrequest()
@@ -196,12 +188,13 @@ const PatientSession = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={[styles.viewButon, css.center]}
-            onPress={() =>
+            onPress={() => {
+              global.patientSessionFocus = true;
               props.navigation.navigate('PatientSessionDetails', {
-                type: activeTab,
+                type: 0,
                 item: item,
-              })
-            }>
+              });
+            }}>
             <Txt style={[styles.viewButonText]}>View</Txt>
           </TouchableOpacity>
         </View>
@@ -237,7 +230,10 @@ const PatientSession = props => {
           <View style={[styles.assignmentList, css.f1]}>
             <View style={[styles.calenderArea, css.row, css.aic]}>
               <TouchableOpacity
-                onPress={() => setDatePickerVisibility(true)}
+                onPress={() => {
+                  global.patientSessionFocus = false;
+                  setDatePickerVisibility(true);
+                }}
                 activeOpacity={0.7}
                 style={[css.row, css.aic]}>
                 <Image
@@ -263,8 +259,6 @@ const PatientSession = props => {
                 ]}>
                 <FlatList
                   data={PatientReducer?.getPatientSessionResponse?.data?.data}
-                  numColumns={numCols}
-                  key={numCols}
                   renderItem={renderAssignments}
                   showsVerticalScrollIndicator={false}
                 />
@@ -277,7 +271,7 @@ const PatientSession = props => {
                   css.w100,
                   {height: height - normalize(130)},
                 ]}>
-                <Txt style={{fontSize: 23}}>No Assignments Found </Txt>
+                <Txt style={css.fs23}>No Assignments Found </Txt>
               </View>
             )}
           </View>

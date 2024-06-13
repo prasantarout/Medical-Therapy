@@ -6,6 +6,7 @@ const initialState = {
   getDashboardResponse: {},
   getInactivePatientResponse: [],
   getActivePatientResponse: [],
+  getActivePatientSessionResponse: [],
   getPendingEvaulationResponse: [],
   getCompletedEvaulationResponse: [],
   patientEnrolmentRes: {},
@@ -52,6 +53,19 @@ const DashboardSlice = createSlice({
       state.status = action.type;
     },
     getActivePatientFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //getActivePatientDeatilsReq
+    getActivePatientSessionReq(state, action) {
+      state.status = action.type;
+    },
+    getActivePatientSessionSuccess(state, action) {
+      state.getActivePatientSessionResponse = action?.payload;
+      state.status = action.type;
+    },
+    getActivePatientSessionFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -120,6 +134,10 @@ export const {
   getActivePatientReq,
   getActivePatientSuccess,
   getActivePatientFailure,
+
+  getActivePatientSessionReq,
+  getActivePatientSessionSuccess,
+  getActivePatientSessionFailure,
 
   getCompletedEvaulationReq,
   getCompletedEvaulationSuccess,

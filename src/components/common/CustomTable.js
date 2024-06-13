@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Dimensions,
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -28,6 +29,7 @@ const CustomTable = ({
   tableBodyContainerStyle = {},
   tableBodyTextStyle = {},
   paddingBottom = 0,
+  onBottomReach = () => {},
 }) => {
   const styles = customStyles({paddingBottom: paddingBottom});
   const sortFunction = headerIndex => {};
@@ -83,66 +85,78 @@ const CustomTable = ({
             )}
           </View>
           <View style={[styles.tableBodyContainer, tableBodyContainerStyle]}>
-            <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-              {tableBodyDataArr.length > 0 ? (
-                tableBodyDataArr.map((bodyRowData, bodyRowIndex) => {
-                  return (
-                    <View style={styles.tableBodyRowContainer}>
-                      {tableHeaderDataArr.map((_, index) => {
-                        return (
-                          <View
-                            style={[
-                              styles.tableBodyTextContainer,
-                              {
-                                width:
-                                  Math.round(width / 12) *
-                                  tableHeaderDataArr[index]?.width,
-                              },
-                            ]}
-                            key={index}>
-                            {tableHeaderDataArr[index]?.rowLeftIcon && (
-                              <Image
-                                style={[
-                                  styles.sortByIconStyle,
-                                  css.mr2,
-                                  css.mt1,
-                                ]}
-                                source={tableHeaderDataArr[index]?.rowLeftIcon}
-                              />
-                            )}
-                            <Text
-                              style={[
-                                styles.tableBodyText,
-                                tableBodyTextStyle,
-                              ]}>
-                              {bodyRowData[tableHeaderDataArr[index]?.label]}
-                            </Text>
-                          </View>
-                        );
-                      })}
-                      {actionButtonText && (
-                        <View style={[css.aic, css.jcc]}>
-                          <TouchableOpacity
-                            style={styles.btn}
-                            onPress={() =>
-                              onPressActionButton(bodyRowData, bodyRowIndex)
-                            }>
-                            <Txt style={styles.btnTxt}>{actionButtonText}</Txt>
-                          </TouchableOpacity>
-                        </View>
-                      )}
-                    </View>
-                  );
-                })
-              ) : (
-                <View style={styles.noDataFoundTextContainer}>
-                  <Text style={styles.noDataFoundText}>{noDataText}</Text>
-                </View>
-              )}
-            </ScrollView>
+            {tableBodyDataArr.length > 0 ? (
+              <FlatList
+                data={tableBodyDataArr}
+                renderItem={({item, index}) =>
+                  TableRow(
+                    item,
+                    index,
+                    tableHeaderDataArr,
+                    actionButtonText,
+                    onPressActionButton,
+                    tableBodyTextStyle,
+                    paddingBottom,
+                  )
+                }
+                onEndReached={onBottomReach}
+              />
+            ) : (
+              <View style={styles.noDataFoundTextContainer}>
+                <Text style={styles.noDataFoundText}>{noDataText}</Text>
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
+    </View>
+  );
+};
+
+const TableRow = (
+  bodyRowData,
+  bodyRowIndex,
+  tableHeaderDataArr,
+  actionButtonText,
+  onPressActionButton,
+  tableBodyTextStyle,
+  paddingBottom,
+) => {
+  const styles = customStyles({paddingBottom: paddingBottom});
+  return (
+    <View style={styles.tableBodyRowContainer}>
+      {tableHeaderDataArr.map((_, index) => {
+        return (
+          <View
+            style={[
+              styles.tableBodyTextContainer,
+              {
+                width:
+                  Math.round(width / 12) * tableHeaderDataArr[index]?.width,
+              },
+            ]}
+            key={index}>
+            {tableHeaderDataArr[index]?.rowLeftIcon && (
+              <Image
+                style={[styles.sortByIconStyle, css.mr2, css.mt1]}
+                source={tableHeaderDataArr[index]?.rowLeftIcon}
+              />
+            )}
+            <Text style={[styles.tableBodyText, tableBodyTextStyle]}>
+              {bodyRowData[tableHeaderDataArr[index]?.label]}
+            </Text>
+          </View>
+        );
+      })}
+      {actionButtonText && (
+        <View style={[css.aic, css.jcc]}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => onPressActionButton(bodyRowData, bodyRowIndex)}>
+            <Txt style={styles.btnTxt}>{actionButtonText}</Txt>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -194,7 +208,7 @@ const customStyles = ({paddingBottom}) =>
       minHeight: normalize(26),
       borderBottomWidth: 1,
       alignItems: 'center',
-      paddingVertical: 10,
+      paddingVertical: 20,
     },
     tableBodyTextContainer: {
       flexDirection: 'row',

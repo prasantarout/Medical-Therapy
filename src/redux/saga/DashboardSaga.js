@@ -16,6 +16,8 @@ import {
   getCompletedEvaulationSuccess,
   getPendingEvaulationSuccess,
   getPendingEvaulationFailure,
+  getActivePatientSessionSuccess,
+  getActivePatientSessionFailure,
 } from '../reducer/DashboardReducer';
 
 let getItem = state => state.AuthReducer;
@@ -83,6 +85,32 @@ export function* getActivePatientSaga(action) {
     }
   } catch (error) {
     yield put(getActivePatientFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
+export function* getActivePatientSessionSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: item?.token,
+  };
+
+  try {
+    let response = yield call(
+      postApi,
+      'dashboard-active-patients-session',
+      action?.payload,
+      header,
+    );
+    if (response?.data?.status == 200) {
+      yield put(getActivePatientSessionSuccess(response?.data));
+    } else {
+      yield put(getActivePatientSessionSuccess(response?.data));
+    }
+  } catch (error) {
+    yield put(getActivePatientSessionFailure(error?.response));
     console.log('error: ', error);
   }
 }
@@ -191,6 +219,12 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('Dashboard/getActivePatientReq', getActivePatientSaga);
+  })(),
+  (function* () {
+    yield takeLatest(
+      'Dashboard/getActivePatientSessionReq',
+      getActivePatientSessionSaga,
+    );
   })(),
   (function* () {
     yield takeLatest(

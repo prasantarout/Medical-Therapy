@@ -19,7 +19,8 @@ const SafeView = props => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[css.fg1]}
-          stickyHeaderIndices={props.sticky}>
+          stickyHeaderIndices={props.sticky}
+          bounces={false}>
           <View style={[styles.avoidStatusBar]}>{props.children}</View>
         </ScrollView>
       </SafeAreaView>

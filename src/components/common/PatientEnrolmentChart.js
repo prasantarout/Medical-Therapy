@@ -8,43 +8,14 @@ import useScreenDimension from '../../utils/useScreenDimension';
 import Divider from '../micro/Divider';
 import Txt from '../micro/Txt';
 import {BarChart} from 'react-native-gifted-charts';
-import useOrientation from '../../utils/useOrientation';
-import moment from 'moment';
 
 const PatientEnrolmentChart = ({dataItem}) => {
   const [barChartData, setBarChartData] = useState([]);
   const [selectedyear, setSelectedYear] = useState('');
-  const {screenWidth, screenHeight} = useScreenDimension();
+  const {screenWidth} = useScreenDimension();
   useEffect(() => {
     setBarChartData(getFormattedData(dataItem));
   }, [dataItem, selectedyear]);
-
-  let orientation = useOrientation();
-
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-    for (let i = currentYear; i >= currentYear - 2; i--) {
-      years.push(i);
-    }
-  }, []);
-
-  const RenderTitles = ({title, backgroundColor}) => {
-    return (
-      <View style={[css.row, css.aic, css.mr2]}>
-        <View style={[styles.colorBox, {backgroundColor: backgroundColor}]} />
-        <Txt
-          style={[
-            css.textPrimary,
-            css.medium,
-            orientation == 'LANDSCAPE' ? css.fs20 : css.fs15,
-            {marginTop: 4},
-          ]}>
-          {title}
-        </Txt>
-      </View>
-    );
-  };
 
   return (
     <View style={[styles.patientEnrollment, css.mt4]}>
@@ -68,9 +39,8 @@ const PatientEnrolmentChart = ({dataItem}) => {
             xAxisThickness={1}
             yAxisThickness={0}
             yAxisTextStyle={[css.textPrimary]}
-            // noOfSections={3}
             activeOpacity={0.8}
-            maxValue={100}
+            maxValue={10}
             lineBehindBars={true}
             rulesType="solid"
           />
@@ -85,6 +55,16 @@ const PatientEnrolmentChart = ({dataItem}) => {
     </View>
   );
 };
+
+const RenderTitles = ({title, backgroundColor}) => {
+  return (
+    <View style={[css.row, css.aic, css.mr2]}>
+      <View style={[styles.colorBox, {backgroundColor: backgroundColor}]} />
+      <Txt style={[css.textPrimary, css.medium]}>{title}</Txt>
+    </View>
+  );
+};
+
 const getFormattedData = dataItem => {
   let newList = [];
   if (dataItem) {
@@ -105,7 +85,7 @@ const getFormattedData = dataItem => {
 
     totalMonth.map((value, index) => {
       newList.push({
-        value: dataItem?.active_enrollment[index][value],
+        value: dataItem?.active_enrollment[index][value] || 0,
         label: value,
         spacing: 2,
         labelWidth: 30,
@@ -113,7 +93,7 @@ const getFormattedData = dataItem => {
         frontColor: '#28328c',
       });
       newList.push({
-        value: dataItem?.inactive_enrollment[index][value],
+        value: dataItem?.inactive_enrollment[index][value] || 0,
         frontColor: '#3abef0',
       });
     });

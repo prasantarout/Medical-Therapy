@@ -31,7 +31,6 @@ const Home = props => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
-  const [dashboardData, setDashboardData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
 
   useEffect(() => {
@@ -58,7 +57,6 @@ const Home = props => {
         break;
       case 'Dashboard/getDashboardSuccess':
         dashboardStatus = DashboardReducer.status;
-        setDashboardData(DashboardReducer?.getDashboardResponse?.data);
         setSessionsData(DashboardReducer?.getDashboardResponse?.data?.sessions);
         break;
       case 'Dashboard/getDashboardFailure':

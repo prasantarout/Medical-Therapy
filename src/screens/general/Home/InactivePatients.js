@@ -116,10 +116,6 @@ const InactivePatients = () => {
       </View>
       <View style={[css.f1, css.p4, css.pt0]}>
         <CustomTable
-          actionButtonText={'View'}
-          onPressActionButton={(value, index) => {
-            console.log(value, index);
-          }}
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}
           tableBodyDataArr={tableBodyDataArr}

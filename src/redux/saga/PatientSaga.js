@@ -15,6 +15,8 @@ import {
   storeServiceEnrolmentFailure,
   getListOfTherapiesSuccess,
   getListOfTherapiesFailure,
+  getPatientSessionDetailsFailure,
+  getPatientSessionDetailsSuccess,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -64,6 +66,32 @@ export function* getPatientSessionSaga(action) {
     }
   } catch (error) {
     yield put(getPatientSessionFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
+export function* getPatientSessionDetailsSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${item?.token}`,
+  };
+  try {
+    let response = yield call(
+      postApi,
+      'dashboard-active-patients-session-details',
+      action?.payload,
+      header,
+    );
+    if (response?.data?.status == 200) {
+      yield put(getPatientSessionDetailsSuccess(response?.data?.data));
+    } else {
+      yield put(getPatientSessionDetailsFailure(response?.data?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(getPatientSessionDetailsFailure(error?.response));
     console.log('error: ', error);
   }
 }
@@ -129,6 +157,12 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('PATIENT/getPatientSessionReq', getPatientSessionSaga);
+  })(),
+  (function* () {
+    yield takeLatest(
+      'PATIENT/getPatientSessionDetailsReq',
+      getPatientSessionDetailsSaga,
+    );
   })(),
   (function* () {
     yield takeLatest('PATIENT/storeServiceEnrolmentReq', storeEnrolmentSaga);

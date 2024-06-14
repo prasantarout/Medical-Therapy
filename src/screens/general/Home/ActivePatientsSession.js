@@ -101,7 +101,7 @@ const ActivePatientsSession = () => {
         <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.goBack()}>
-          <Txt style={styles.btnTxt}>Back{pageNo}</Txt>
+          <Txt style={styles.btnTxt}>Back</Txt>
         </TouchableOpacity>
       </View>
       <View style={[css.f1, css.p4, css.pt0]}>
@@ -109,7 +109,9 @@ const ActivePatientsSession = () => {
           tableHeaderDataArr={headerDataArr}
           tableBodyDataArr={tableBodyDataArr}
           actionButtonText={'View'}
-          onPressActionButton={(value, index) => {}}
+          onPressActionButton={(value, index) => {
+            navigation.navigate('ActivePatientSessionDetails');
+          }}
           onBottomReach={() => {
             dispatch(
               getActivePatientSessionReq({

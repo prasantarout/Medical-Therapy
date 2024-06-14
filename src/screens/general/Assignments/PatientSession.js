@@ -148,7 +148,7 @@ const PatientSession = props => {
           </View>
           <Image
             source={
-              item?.status == 'Pending' ? icons.inProcess : icons.cardCompleted
+              item?.status === 'Pending' ? icons.inProcess : icons.cardCompleted
             }
             style={[styles.cardRightIcon]}
           />
@@ -191,8 +191,8 @@ const PatientSession = props => {
             onPress={() => {
               global.patientSessionFocus = true;
               props.navigation.navigate('PatientSessionDetails', {
-                type: 0,
-                item: item,
+                ecn: item?.ecn,
+                date: item?.sessionDate,
               });
             }}>
             <Txt style={[styles.viewButonText]}>View</Txt>

@@ -1,4 +1,11 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import NavBar from '../../../components/common/NavBar';
 import css from '../../../themes/space';
@@ -13,6 +20,7 @@ import AssignmentCard from '../../../components/common/AssignmentCard';
 import SafeView from '../../../components/common/SafeView';
 import useScreenDimension from '../../../utils/useScreenDimension';
 import CalendarStrip from 'react-native-calendar-strip';
+import {useNavigation} from '@react-navigation/native';
 
 const Assignment = props => {
   const assignmentData = [
@@ -79,12 +87,7 @@ const Assignment = props => {
   ];
 
   const {screenWidth, screenHeight} = useScreenDimension();
-
-  const assignmentRenderItem = ({item, index}) => {
-    return (
-      <AssignmentCard detail={item.desc} time={item.time} date={item.date} />
-    );
-  };
+  const navigation = useNavigation();
 
   const customDatesStylesFunc = date => {
     if (date.isoWeekday() === 5) {
@@ -98,9 +101,16 @@ const Assignment = props => {
 
   return (
     <SafeView {...props}>
-      <View style={[css.px5, css.f1, css.py4]}>
-        <TitleTxt title={'All Assignments'} />
-        <View style={[css.row, css.aic, css.mt4, css.jcsb]}>
+      <View style={styles.headerContainer}>
+        <TitleTxt title={'Session Details'} />
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.goBack()}>
+          <Txt style={styles.btnTxt}>Back</Txt>
+        </TouchableOpacity>
+      </View>
+      <View style={[css.px5, css.f1]}>
+        <View style={[css.row, css.aic, css.jcsb]}>
           <View style={[css.row, css.aic]}>
             <View style={[styles.calenderArea]}>
               <CalendarStrip
@@ -141,9 +151,34 @@ const Assignment = props => {
   );
 };
 
+const assignmentRenderItem = ({item, index}) => {
+  return (
+    <AssignmentCard detail={item.desc} time={item.time} date={item.date} />
+  );
+};
+
 export default Assignment;
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: normalize(8),
+  },
+  btn: {
+    backgroundColor: colors.primary,
+    borderRadius: normalize(4),
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: normalize(16),
+    paddingHorizontal: normalize(10),
+  },
+  btnTxt: {
+    color: colors.white,
+    fontSize: 22,
+    fontWeight: '500',
+  },
   dayTxt: {
     fontFamily: fonts.Bold,
     fontSize: 22,

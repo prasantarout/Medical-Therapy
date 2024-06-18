@@ -426,7 +426,7 @@ const InternalListBlock = ({title, value}) => {
     <View style={[css.w33, css.mb1]}>
       <Txt style={[css.fs16, css.medium]}>{title}</Txt>
       <Txt style={[css.fs15, css.regular, styles.detailsStyle]}>
-        {value || '-/-'}
+        {value || 'N/A'}
       </Txt>
     </View>
   );

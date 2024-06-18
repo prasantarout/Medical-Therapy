@@ -48,6 +48,8 @@ const PatientSession = props => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const PatientReducer = useSelector(state => state.PatientReducer);
+  const [pageNo, setPageNo] = useState(1);
+  const [sessionData, setSessionData] = useState([]);
   const [selectedCalenderOption, setSelectedCalenderOption] = useState(
     calenderOptions[0],
   );
@@ -89,17 +91,19 @@ const PatientSession = props => {
   useEffect(() => {
     if (isFocused && !global.patientSessionFocus) {
       selectDateType(calenderOptions[0]);
-      fetchData();
+      setPageNo(1);
+      fetchData(0);
     }
   }, [isFocused]);
 
-  const fetchData = () => {
+  const fetchData = pageNumber => {
     connectionrequest()
       .then(res => {
         dispatch(
           getPatientSessionReq({
             start_date: getFormattedDate(startDate, 'YYYY-MM-DD'),
             end_date: getFormattedDate(endDate, 'YYYY-MM-DD'),
+            page_no: pageNumber,
           }),
         );
       })
@@ -212,6 +216,14 @@ const PatientSession = props => {
         break;
       case 'PATIENT/getPatientSessionSuccess':
         getPatientSessionStatus = PatientReducer.status;
+        if (pageNo === 1) {
+          setSessionData(PatientReducer?.getPatientSessionResponse?.data);
+        } else {
+          setSessionData([
+            ...sessionData,
+            ...PatientReducer?.getPatientSessionResponse?.data,
+          ]);
+        }
         break;
       case 'PATIENT/getPatientSessionFailure':
         getPatientSessionStatus = PatientReducer.status;
@@ -248,8 +260,7 @@ const PatientSession = props => {
               </TouchableOpacity>
             </View>
 
-            {PatientReducer?.getPatientSessionResponse?.data?.data?.length >
-            0 ? (
+            {sessionData?.length > 0 ? (
               <View
                 style={[
                   css.jcc,
@@ -258,9 +269,13 @@ const PatientSession = props => {
                   {height: height - normalize(130)},
                 ]}>
                 <FlatList
-                  data={PatientReducer?.getPatientSessionResponse?.data?.data}
+                  data={sessionData}
                   renderItem={renderAssignments}
                   showsVerticalScrollIndicator={false}
+                  onEndReached={() => {
+                    fetchData(pageNo);
+                    setPageNo(pageNo + 1);
+                  }}
                 />
               </View>
             ) : (
@@ -293,7 +308,8 @@ const PatientSession = props => {
             <TouchableOpacity
               style={styles.doneBtn}
               onPress={() => {
-                fetchData();
+                setPageNo(1);
+                fetchData(0);
                 setDatePickerVisibility(false);
               }}>
               <Text style={styles.doneBtnText}>Done</Text>

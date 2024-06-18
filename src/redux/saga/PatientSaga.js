@@ -84,11 +84,107 @@ export function* getPatientSessionDetailsSaga(action) {
       action?.payload,
       header,
     );
+
+    console.log('response?.data?.data', response?.data?.data);
+    const formattedData = {
+      sessions: {
+        clinical_metrics: response?.data?.data?.sessions?.clinical_metrics
+          ? JSON.parse(response?.data?.data?.sessions?.clinical_metrics)
+          : {},
+        created_at: response?.data?.data?.sessions?.created_at || '',
+        deleted_at: response?.data?.data?.sessions?.deleted_at || '',
+        description: response?.data?.data?.sessions?.description || '',
+        device: response?.data?.data?.sessions?.device
+          ? JSON.parse(response?.data?.data?.sessions?.device)
+          : '',
+        device_id: response?.data?.data?.sessions?.device_id
+          ? JSON.parse(response?.data?.data?.sessions?.device_id)
+          : '',
+        device_mode: response?.data?.data?.sessions?.device_mode || '',
+        device_serialNo: response?.data?.data?.sessions?.device_serialNo || '',
+        device_type: response?.data?.data?.sessions?.device_type || '',
+        device_type_desc:
+          response?.data?.data?.sessions?.device_type_desc || '',
+        id: response?.data?.data?.sessions?.id || '',
+        mask_off: response?.data?.data?.sessions?.mask_off
+          ? JSON.parse(response?.data?.data?.sessions?.mask_off)
+          : '',
+        mask_on: response?.data?.data?.sessions?.mask_on
+          ? JSON.parse(response?.data?.data?.sessions?.mask_on)
+          : '',
+        patientInterface: response?.data?.data?.sessions?.patientInterface
+          ? JSON.parse(response?.data?.data?.sessions?.patientInterface)
+          : '',
+        patient_data: response?.data?.data?.sessions?.patient_data
+          ? JSON.parse(response?.data?.data?.sessions?.patient_data)
+          : '',
+        patient_id: response?.data?.data?.sessions?.patient_id || '',
+        receipt_time: response?.data?.data?.sessions?.receipt_time || '',
+        respEvents: response?.data?.data?.sessions?.respEvents
+          ? JSON.parse(response?.data?.data?.sessions?.respEvents)
+          : '',
+        session_data: response?.data?.data?.sessions?.session_data
+          ? JSON.parse(response?.data?.data?.sessions?.session_data)
+          : '',
+        session_date: response?.data?.data?.sessions?.session_date || '',
+        set: response?.data?.data?.sessions?.set
+          ? JSON.parse(response?.data?.data?.sessions?.set)
+          : '',
+        spontCycledBreaths:
+          response?.data?.data?.sessions?.spontCycledBreaths || '',
+        spontTriggBreaths:
+          response?.data?.data?.sessions?.spontTriggBreaths || '',
+        total_usage_hours_on_device:
+          response?.data?.data?.sessions?.total_usage_hours_on_device || '',
+        updated_at: response?.data?.data?.sessions?.updated_at || '',
+        usage: response?.data?.data?.sessions?.usage
+          ? JSON.parse(response?.data?.data?.sessions?.usage)
+          : '',
+        usage_duration: response?.data?.data?.sessions?.usage_duration || '',
+        therapist_name: response?.data?.data?.sessions?.therapist_name || '',
+      },
+      patient: {
+        clinicalUser:
+          response?.data?.data?.sessions?.patient?.clinicalUser || '',
+        device_serial_no:
+          response?.data?.data?.sessions?.patient?.device_serial_no || '',
+        device_type: response?.data?.data?.sessions?.patient?.device_type || '',
+        device_type_desc:
+          response?.data?.data?.sessions?.patient?.device_type_desc || '',
+        dob: response?.data?.data?.sessions?.patient?.dob || '',
+        first_name: response?.data?.data?.sessions?.patient?.first_name || '',
+        full_name: response?.data?.data?.sessions?.patient?.full_name || '',
+        id: response?.data?.data?.sessions?.patient?.id || '',
+        last_name: response?.data?.data?.sessions?.patient?.last_name || '',
+        location: response?.data?.data?.sessions?.patient?.location || '',
+        locationID: response?.data?.data?.sessions?.patient?.locationID || '',
+        mask_size: response?.data?.data?.sessions?.patient?.mask_size || '',
+        mask_type: response?.data?.data?.sessions?.patient?.mask_type || '',
+        module_serial_no:
+          response?.data?.data?.sessions?.patient?.module_serial_no || '',
+        org_id: response?.data?.data?.sessions?.patient?.org_id || '',
+        org_name: response?.data?.data?.sessions?.patient?.org_name || '',
+        patient_id: response?.data?.data?.sessions?.patient?.patient_id || '',
+        payorId: response?.data?.data?.sessions?.patient?.payorId || '',
+        prescription: response?.data?.data?.sessions?.patient?.prescription
+          ? JSON.parse(response?.data?.data?.sessions?.patient?.prescription)
+          : '',
+        profile_photo_url:
+          response?.data?.data?.sessions?.patient?.profile_photo_url || '',
+        setupDate: response?.data?.data?.sessions?.patient?.setupDate || '',
+        status: response?.data?.data?.sessions?.patient?.status || '',
+        therapist_id:
+          response?.data?.data?.sessions?.patient?.therapist_id || '',
+        thresholds_leak:
+          response?.data?.data?.sessions?.patient?.thresholds_leak || '',
+        updated_at: response?.data?.data?.sessions?.patient?.updated_at || '',
+      },
+    };
+
     if (response?.data?.status == 200) {
-      yield put(getPatientSessionDetailsSuccess(response?.data?.data));
+      yield put(getPatientSessionDetailsSuccess(formattedData));
     } else {
-      yield put(getPatientSessionDetailsFailure(response?.data?.data));
-      // Toast(response?.data?.message);
+      yield put(getPatientSessionDetailsFailure(formattedData));
     }
   } catch (error) {
     yield put(getPatientSessionDetailsFailure(error?.response));

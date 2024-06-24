@@ -15,10 +15,15 @@ import {images} from '../../themes/images';
 import {fonts} from '../../themes/fonts';
 import normalize from '../../utils/normalize';
 
-const CustomModal = props => {
-  const {isVisible, style, onCloseRequest, children, icon, title, subtitle} =
-    props;
-
+const CustomModal = ({
+  isVisible = false,
+  style = {},
+  onCloseRequest = () => {},
+  children = <></>,
+  icon = '',
+  title = '',
+  subtitle = '',
+}) => {
   return (
     <Modal isVisible={isVisible}>
       <View style={[css.f1, css.center]}>
@@ -34,10 +39,14 @@ const CustomModal = props => {
           </TouchableOpacity>
           {children}
           <View style={[styles.panel, css.px4]}>
-            <Image source={icon} style={[styles.emailLinkStyle, css.asc]} />
+            {icon && (
+              <Image source={icon} style={[styles.emailLinkStyle, css.asc]} />
+            )}
             <View style={[css.mt2]}>
-              <Txt style={[styles.headerText, css.tac]}>{title}</Txt>
-              <Txt style={[styles.subHeaderText, css.tac]}>{subtitle}</Txt>
+              {title && <Txt style={[styles.headerText, css.tac]}>{title}</Txt>}
+              {subtitle && (
+                <Txt style={[styles.subHeaderText, css.tac]}>{subtitle}</Txt>
+              )}
             </View>
           </View>
         </ImageBackground>

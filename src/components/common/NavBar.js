@@ -145,7 +145,7 @@ const NavBar = props => {
               <Image
                 style={[styles.iconRoundStyle, iconRoundStyle]}
                 source={{
-                  uri: AuthReducer.ProfileResponse?.data?.profile_photo_url,
+                  uri: AuthReducer.ProfileResponse?.data?.user_photo,
                 }}
               />
               <Txt

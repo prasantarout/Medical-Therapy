@@ -26,15 +26,6 @@ const EvaluationResult = props => {
   let lorem =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,";
 
-  const InputResult = ({title, subTitle}) => {
-    return (
-      <View style={[css.mb3]}>
-        <Txt style={[css.medium, css.fs23]}>{title}</Txt>
-        <Txt style={[css.regular, css.fs17, css.textLighte]}>{subTitle}</Txt>
-      </View>
-    );
-  };
-
   return (
     <>
       <SafeView {...props}>
@@ -121,21 +112,21 @@ const EvaluationResult = props => {
                   therapist?
                 </Txt>
                 <View style={[css.row, css.mt1]}>
-                    {renderScoreCheck.map((item, index) => {
-                      return (
-                        <View style={[css.mr1, css.aic]}>
-                          <RadioButton
-                            isChecked={index <= scoreCheck ? true : false}
-                            // onPress={() => setScoreCheck(index)}
-                          />
-                          {index == 0 ? (
-                            <Txt style={[css.medium, css.mt1]}>Worst</Txt>
-                          ) : index == 9 ? (
-                            <Txt style={[css.medium, css.mt1]}>Best</Txt>
-                          ) : null}
-                        </View>
-                      );
-                    })}
+                  {renderScoreCheck.map((item, index) => {
+                    return (
+                      <View style={[css.mr1, css.aic]}>
+                        <RadioButton
+                          isChecked={index <= scoreCheck ? true : false}
+                          // onPress={() => setScoreCheck(index)}
+                        />
+                        {index == 0 ? (
+                          <Txt style={[css.medium, css.mt1]}>Worst</Txt>
+                        ) : index == 9 ? (
+                          <Txt style={[css.medium, css.mt1]}>Best</Txt>
+                        ) : null}
+                      </View>
+                    );
+                  })}
                 </View>
               </View>
               <View style={[css.w100]}>
@@ -166,6 +157,15 @@ const EvaluationResult = props => {
         subtitle="Thank you for your valuable feedback"
       />
     </>
+  );
+};
+
+const InputResult = ({title, subTitle}) => {
+  return (
+    <View style={[css.mb3]}>
+      <Txt style={[css.medium, css.fs23]}>{title}</Txt>
+      <Txt style={[css.regular, css.fs17, css.textLighte]}>{subTitle}</Txt>
+    </View>
   );
 };
 

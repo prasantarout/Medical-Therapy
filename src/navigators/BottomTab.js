@@ -15,6 +15,8 @@ import CompletedEvaulation from '../screens/general/Home/CompletedEvaulation';
 import CurrentMonthSessionData from '../screens/general/Home/CurrentMonthSessionData';
 import InactivePatients from '../screens/general/Home/InactivePatients';
 import PendingEvaulation from '../screens/general/Home/PendingEvaulation';
+import ActivePatientsSession from '../screens/general/Home/ActivePatientsSession';
+import PatientSessionDetails from '../screens/general/Assignments/PatientSessionDetails';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +55,10 @@ const DashboardNavigator = () => {
       <DashboardStack.Screen name="Home" component={Home} />
       <DashboardStack.Screen name="ActivePatients" component={ActivePatients} />
       <DashboardStack.Screen
+        name="ActivePatientsSession"
+        component={ActivePatientsSession}
+      />
+      <DashboardStack.Screen
         name="CompletedEvaulation"
         component={CompletedEvaulation}
       />
@@ -67,6 +73,10 @@ const DashboardNavigator = () => {
       <DashboardStack.Screen
         name="PendingEvaulation"
         component={PendingEvaulation}
+      />
+      <DashboardStack.Screen
+        name="ActivePatientSessionDetails"
+        component={PatientSessionDetails}
       />
     </DashboardStack.Navigator>
   );

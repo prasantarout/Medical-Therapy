@@ -5,6 +5,7 @@ const initialState = {
   error: {},
   getPatientResponse: {},
   getPatientSessionResponse: {},
+  getPatientSessionDetailsResponse: {},
   storeServiceEnrolmentRes: {},
   getListOfTherapiesRes: {},
 };
@@ -36,6 +37,19 @@ const PATIENTSlice = createSlice({
       state.status = action.type;
     },
     getPatientSessionFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    // Patient Session Details
+    getPatientSessionDetailsReq(state, action) {
+      state.status = action.type;
+    },
+    getPatientSessionDetailsSuccess(state, action) {
+      state.getPatientSessionDetailsResponse = action?.payload;
+      state.status = action.type;
+    },
+    getPatientSessionDetailsFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -76,6 +90,10 @@ export const {
   getPatientSessionReq,
   getPatientSessionSuccess,
   getPatientSessionFailure,
+
+  getPatientSessionDetailsReq,
+  getPatientSessionDetailsSuccess,
+  getPatientSessionDetailsFailure,
 
   storeServiceEnrolmentReq,
   storeServiceEnrolmentSuccess,

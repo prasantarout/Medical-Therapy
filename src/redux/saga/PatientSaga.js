@@ -17,6 +17,11 @@ import {
   getListOfTherapiesFailure,
   getPatientSessionDetailsFailure,
   getPatientSessionDetailsSuccess,
+  getListOfSatisfactionSuccess,
+  getListOfSatisfactionFailure,
+  satisfactionQuestionListSuccess,
+  satisfactionQuestionListFailure,
+  clearQuestionListSuccess,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -247,6 +252,69 @@ export function* getListOfTherapiesSaga(action) {
   }
 }
 
+export function* getListOfSatisfactionSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+  try {
+    let response = yield call(
+      getApi,
+      'evaluation-question-type',
+      // action?.payload,
+      header,
+    );
+    if (response?.data?.status == 200) {
+      yield put(getListOfSatisfactionSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(getListOfSatisfactionFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(getListOfSatisfactionFailure(error?.response));
+    CustomToast(error?.response?.message);
+  }
+}
+
+export function* satisfactionQuestionSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${item?.token}`,
+  };
+  try {
+    let response = yield call(
+      postApi,
+      'evaluation-question-list',
+      action?.payload,
+      header,
+    );
+    // console.log(response,">>>>>>??>>>>")
+    if (response?.data?.status == 200) {
+      yield put(satisfactionQuestionListSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(satisfactionQuestionListFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(satisfactionQuestionListFailure(error?.response));
+    CustomToast(error?.response?.message);
+  }
+}
+
+export function* clearSatisfactionSaga(action) {
+  try {
+    yield put(clearQuestionListSuccess(action.payload));
+  } catch (error) {
+    // console.log('clearProductDetailsSaga>>', error);
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('PATIENT/getPatientReq', getPatientSaga);
@@ -265,6 +333,21 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('PATIENT/getListOfTherapiesReq', getListOfTherapiesSaga);
+  })(),
+  (function* () {
+    yield takeLatest(
+      'PATIENT/getListOfSatisfactionReq',
+      getListOfSatisfactionSaga,
+    );
+  })(),
+  (function* () {
+    yield takeLatest(
+      'PATIENT/satisfactionQuestionListReq',
+      satisfactionQuestionSaga,
+    );
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/clearQuestionListReq', clearSatisfactionSaga);
   })(),
 ];
 

@@ -8,6 +8,8 @@ const initialState = {
   getPatientSessionDetailsResponse: {},
   storeServiceEnrolmentRes: {},
   getListOfTherapiesRes: {},
+  getListOfSatisfactionRes: {},
+  questionListRes: {},
 };
 
 const PATIENTSlice = createSlice({
@@ -79,10 +81,47 @@ const PATIENTSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
+
+    //Satisfaction Session
+    getListOfSatisfactionReq(state, action) {
+      state.status = action.type;
+    },
+    getListOfSatisfactionSuccess(state, action) {
+      state.getListOfSatisfactionRes = action?.payload;
+      state.status = action.type;
+    },
+    getListOfSatisfactionFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //Satisfaction Session
+    satisfactionQuestionListReq(state, action) {
+      state.status = action.type;
+    },
+    satisfactionQuestionListSuccess(state, action) {
+      state.questionListRes = action?.payload;
+      state.status = action.type;
+    },
+    satisfactionQuestionListFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    clearQuestionListReq(state, action) {
+      state.status = action.type;
+    },
+    clearQuestionListSuccess(state, action) {
+      state.questionListRes = action?.payload;
+      state.status = action.type;
+    },
   },
 });
 
 export const {
+  clearQuestionListReq,
+  clearQuestionListSuccess,
+
   getPatientReq,
   getPatientSuccess,
   getPatientFailure,
@@ -102,6 +141,14 @@ export const {
   getListOfTherapiesReq,
   getListOfTherapiesSuccess,
   getListOfTherapiesFailure,
+
+  getListOfSatisfactionReq,
+  getListOfSatisfactionSuccess,
+  getListOfSatisfactionFailure,
+
+  satisfactionQuestionListReq,
+  satisfactionQuestionListSuccess,
+  satisfactionQuestionListFailure,
 } = PATIENTSlice.actions;
 
 export default PATIENTSlice.reducer;

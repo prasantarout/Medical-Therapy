@@ -28,7 +28,10 @@ import {widthToDp as wp} from '../../../utils/responsive';
 import Button from '../../../components/buttons/Button';
 import Divider from '../../../components/micro/Divider';
 import {useDispatch, useSelector} from 'react-redux';
-import {getPatientReq} from '../../../redux/reducer/PatientReducer';
+import {
+  clearQuestionListReq,
+  getPatientReq,
+} from '../../../redux/reducer/PatientReducer';
 import CustomToast from '../../../utils/Toast';
 import BounceText from '../../../components/micro/BounceText';
 import Loader from '../../../utils/Loader';
@@ -36,7 +39,6 @@ import moment from 'moment';
 import {myPatient} from '../../../utils/dumpAPI';
 
 let getPatientStatus = '';
-
 const width = Dimensions.get('window').width;
 
 const MyPatient = props => {
@@ -68,6 +70,8 @@ const MyPatient = props => {
   //   console.log("myPatientt-sortedData", sortedData)
   // }, [patientInfo])
 
+  // console.log(patientInfo, '>>>>>>>???Des');
+
   useEffect(() => {
     dispatch(getPatientReq());
   }, []);
@@ -96,7 +100,6 @@ const MyPatient = props => {
     }
   };
   // console.log(PatientReducer.getPatientResponse?.data?.data,">>>>>>>?????")
-
 
   if (getPatientStatus === '' || PatientReducer.status !== getPatientStatus) {
     switch (PatientReducer.status) {
@@ -150,12 +153,12 @@ const MyPatient = props => {
   // Repeated012
   const sortFunction = value => {
     if (value === 'New') {
-      const sortedPatients = [...patientInfo].sort(
+      const sortedPatients = [...patientInfo]?.sort(
         (a, b) => new Date(b.setupDate) - new Date(a.setupDate),
       );
       setPatientInfo(sortedPatients);
     } else if (value === 'Repeated') {
-      const sortedPatients = [...patientInfo].sort(
+      const sortedPatients = [...patientInfo]?.sort(
         (a, b) => new Date(a.setupDate) - new Date(b.setupDate),
       );
       setPatientInfo(sortedPatients);
@@ -174,7 +177,11 @@ const MyPatient = props => {
         date={item.setupDate}
         image={item.profile_photo_url}
         Button={true}
-        navigateTo={() => navigation.navigate('ServiceEnrollment')}
+        navigateTo={() => {
+          navigation.navigate('ServiceEnrollment', {data: item}),
+            dispatch(clearQuestionListReq({}));
+        }}
+        navigateTo1={() => navigation.navigate('Assignment', {data: item})}
         style={{
           width: orientation == 'LANDSCAPE' ? width / 4 - 18 : width / 3 - 23,
           marginLeft:
@@ -337,6 +344,16 @@ const MyPatient = props => {
                   style={[css.mt2, css.w100]}
                   onPress={() => {
                     setModalVisible(false), navigation.navigate('Assignment');
+                  }}
+                />
+                <Button
+                  title="Submit Evaluation"
+                  style={[css.mt2, css.w100]}
+                  onPress={() => {
+                    setModalVisible(false),
+                      navigation.navigate('ServiceEnrollment', {
+                        data: modalInfo,
+                      });
                   }}
                 />
               </View>

@@ -38,6 +38,7 @@ const PatientCard = props => {
     onPress,
     navigateTo,
     style,
+    navigateTo1
   } = props;
   return (
     <TouchableOpacity
@@ -78,8 +79,13 @@ const PatientCard = props => {
         </View>
       ) : null}
       {Button && (
+        <TouchableOpacity onPress={navigateTo1} style={[styles.btn]}>
+          <Txt style={[styles.btnTxt]}>View Session</Txt>
+        </TouchableOpacity>
+      )}
+      {Button && (
         <TouchableOpacity onPress={navigateTo} style={[styles.btn]}>
-          <Txt style={[styles.btnTxt]}>View Enrolment</Txt>
+          <Txt style={[styles.btnTxt]}>Submit Evaluation</Txt>
         </TouchableOpacity>
       )}
     </TouchableOpacity>

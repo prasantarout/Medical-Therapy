@@ -15,20 +15,14 @@ import SimpleInput from '../../../components/inputs/SimpleInput';
 import connectionrequest from '../../../utils/NetInfo';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  getListOfSatisfactionReq,
   getListOfTherapiesReq,
-  satisfactionQuestionListReq,
   storeServiceEnrolmentReq,
 } from '../../../redux/reducer/PatientReducer';
 import CustomToast from '../../../utils/Toast';
 import {useIsFocused} from '@react-navigation/native';
-import {Dropdown} from 'react-native-element-dropdown';
+import {MultiSelect} from 'react-native-element-dropdown';
 import Loader from '../../../utils/Loader';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import {CustomRadioButton} from '../../../components/common/customRadioButton';
-import QuestionComponent from '../../../components/common/QuestionComponent';
-import RadioQuestionComponent from '../../../components/common/RadioQuestionComponent';
-import TextInputComponent from '../../../components/common/TextInputComponent';
+
 const ServiceEnrollment = props => {
   let status = '';
   const [date, setDate] = useState('');
@@ -40,13 +34,10 @@ const ServiceEnrollment = props => {
   const isFocused = useIsFocused();
   const [isFocus, setIsFocus] = useState(false);
   const [categoryItem, setCategoryItem] = useState([]);
-  const [selectedValues, setSelectedValues] = useState({});
-
   const PatientReducer = useSelector(state => state.PatientReducer);
   const AuthReducer = useSelector(state => state.AuthReducer);
-  // console.log(PatientReducer?.questionListRes, '?????>>>>denmak');
-  const data = props?.route?.params?.data;
-  // console.log(data,"??????>>>ress")
+
+
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -113,27 +104,12 @@ const ServiceEnrollment = props => {
     connectionrequest()
       .then(res => {
         dispatch(getListOfTherapiesReq());
-        dispatch(getListOfSatisfactionReq());
       })
       .catch(err => {
         console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   }, [isFocused]);
-
-  const handleSelect = (questionId, value) => {
-    setSelectedValues(prevValues => ({
-      ...prevValues,
-      [questionId]: value,
-    }));
-  };
-
-  const handleRadioSelect = (questionId, value) => {
-    setSelectedValues(prevState => ({
-      ...prevState,
-      [questionId]: value,
-    }));
-  };
 
   useEffect(() => {
     if (status == '' || PatientReducer.status != status) {
@@ -151,13 +127,6 @@ const ServiceEnrollment = props => {
       }
     }
   }, [PatientReducer?.status]);
-
-  const questionListData = PatientReducer?.questionListRes?.data || [];
-  const sortedQuestions = questionListData
-    ? questionListData
-        .filter(q => q?.type === 'number_rating')
-        .concat(questionListData.filter(q => q?.type !== 'number_rating'))
-    : [];
 
   const ValueField = props => {
     return (
@@ -186,7 +155,7 @@ const ServiceEnrollment = props => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Text style={styles.selectedTextStyle}>{item?.title}</Text>
+          <Text style={styles.selectedTextStyle}>{item?.name}</Text>
         </View>
         {isSelected && (
           <Image source={icons?.CircleCheck} style={{height: 20, width: 20}} />
@@ -201,99 +170,81 @@ const ServiceEnrollment = props => {
         <Loader
           visible={PatientReducer?.status == 'PATIENT/storeServiceEnrolmentReq'}
         />
-        <TitleTxt title={'Evaluation Form'} />
+        <TitleTxt title={'Service Enrolment'} />
         <View style={styles.container}>
           <View style={[css.row, css.jcsb]}>
-            <ValueField title={'First Name'} value={data?.first_name} />
-            <ValueField title={'Last Name'} value={data?.last_name} />
-          </View>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'Setup Date'} value={data?.setupDate} />
             <ValueField
-              title={'Device'}
-              value={'22151082639 - AirSense 10 CPAP'}
+              title={'Date'}
+              icon={icons.Calendar}
+              value={date === '' ? 'select date' : date}
+              onPress={() => showDatePicker()}
+              style={{
+                height: normalize(11),
+                width: normalize(11),
+                resizeMode: 'contain',
+                marginRight: normalize(5),
+                tintColor: colors.primary,
+              }}
+            />
+            <ValueField
+              title={'Time'}
+              onPress={() => showTimePicker()}
+              icon={icons.down}
+              value={time}
             />
           </View>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'Therapist Name'} value={'Therapist user'} />
-            <ValueField title={'Location'} value={data?.location} />
-          </View>
           <View style={[css.row, css.px5]}>
-            <View style={[css.w50, css.mt5]}>
-              <Txt style={[css.fs20]}>{'About Satisfaction'}</Txt>
-              <Dropdown
+            <View style={[css.w50, css.mt10]}>
+              <Txt style={[css.fs20]}>{'services'}</Txt>
+              <MultiSelect
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={
-                  PatientReducer?.getListOfSatisfactionRes?.data?.length > 0
-                    ? PatientReducer?.getListOfSatisfactionRes?.data
+                  PatientReducer?.getListOfTherapiesRes?.data?.length > 0
+                    ? PatientReducer?.getListOfTherapiesRes?.data
                     : []
                 }
-                labelField="title"
+                labelField="name"
                 valueField="id"
                 placeholder="Services"
                 value={categoryItem}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
-                  connectionrequest()
-                    .then(() => {
-                      dispatch(
-                        satisfactionQuestionListReq({
-                          parent_question_id: item?.id,
-                        }),
-                      );
-                    })
-                    .catch(error => {
-                      console.log(error);
-                    });
                   setCategoryItem(item);
                   setIsFocus(false);
                 }}
+                renderItem={renderItem}
+                renderSelectedItem={(item, unSelect) => (
+                  <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                    <View style={styles.selectedStyle}>
+                      <Text style={styles.textSelectedStyle}>{item?.name}</Text>
+                      <Image
+                        source={icons?.delete}
+                        style={{height: normalize(15), width: normalize(15)}}
+                        tintColor="black"
+                        resizeMode="contain"
+                        aspectRatio={16 / 9}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+            <View style={[css.w50, css.mt10, css.ml2]}>
+              <SimpleInput
+                title="Remark"
+                style={[css.ml2]}
+                value={remark}
+                placeholder="Input"
+                onChangeText={val => setRemark(val)}
               />
             </View>
           </View>
-          <View style={styles.container}>
-            {categoryItem &&
-              sortedQuestions?.length > 0 &&
-              sortedQuestions.map(question => {
-                switch (question.type) {
-                  case 'number_rating':
-                    return (
-                      <QuestionComponent
-                        key={question.id}
-                        question={question}
-                        selectedValue={selectedValues[question.id]}
-                        onSelect={handleSelect}
-                      />
-                    );
-                  case 'radio_rating':
-                    return (
-                      <RadioQuestionComponent
-                        key={question.id}
-                        question={question}
-                        selectedValue={selectedValues[question.id]}
-                        onSelect={handleRadioSelect}
-                      />
-                    );
-                  case 'input_text':
-                    return (
-                      <TextInputComponent
-                        key={question.id}
-                        question={question}
-                        onChangeText={text =>
-                          handleTextChange(question.id, text)
-                        }
-                      />
-                    );
-                  default:
-                    return null;
-                }
-              })}
-          </View>
+
           <TouchableOpacity style={styles.btn} onPress={handleEnroll}>
             <Txt style={styles.btnTxt}>Enroll</Txt>
           </TouchableOpacity>
@@ -395,11 +346,11 @@ const styles = StyleSheet.create({
     height: normalize(16),
   },
   placeholderStyle: {
-    fontSize: normalize(6),
+    fontSize: normalize(14),
     color: colors?.searchPlaceholder,
   },
   selectedTextStyle: {
-    fontSize: normalize(7),
+    fontSize: normalize(14),
     color: '#808080',
   },
   iconStyle: {

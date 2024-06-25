@@ -17,6 +17,8 @@ import InactivePatients from '../screens/general/Home/InactivePatients';
 import PendingEvaulation from '../screens/general/Home/PendingEvaulation';
 import ActivePatientsSession from '../screens/general/Home/ActivePatientsSession';
 import PatientSessionDetails from '../screens/general/Assignments/PatientSessionDetails';
+import {clearQuestionListReq} from '../redux/reducer/PatientReducer';
+import {useDispatch} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +37,7 @@ const BottomTab = props => {
       })}>
       <Tab.Screen name="Dashboard" component={DashboardNavigator} />
       <Tab.Screen name="Patients Session" component={PatientSessionTab} />
-      <Tab.Screen name="Patients Queue" component={PatientTab} />
+      <Tab.Screen name="My Patients" component={PatientTab} />
       <Tab.Screen name="Help & Support" component={HelpnSupport} />
       <Tab.Screen name="My Profile" component={MyProfile} />
     </Tab.Navigator>
@@ -83,6 +85,7 @@ const DashboardNavigator = () => {
 };
 
 const TabIcon = ({focused, route}) => {
+  const dispatch = useDispatch();
   let iconName;
   let iconColor = focused ? colors.secondary : colors.white;
 
@@ -90,8 +93,9 @@ const TabIcon = ({focused, route}) => {
     iconName = icons.navHome;
   } else if (route.name === 'Patients Session') {
     iconName = icons.navAssignment;
-  } else if (route.name === 'Patients Queue') {
+  } else if (route.name === 'My Patients') {
     iconName = icons.navPatient;
+    dispatch(clearQuestionListReq({}));
   } else if (route.name === 'Help & Support') {
     iconName = icons.navHelp;
   } else if (route.name === 'My Profile') {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import AddPatient from '../screens/general/Patient/AddPatient';
@@ -6,11 +6,26 @@ import Assignment from '../screens/general/Patient/Assignment';
 import EnrolmentQueue from '../screens/general/Patient/EnrolmentQueue';
 import MyPatient from '../screens/general/Patient/MyPatient';
 import ServiceEnrollment from '../screens/general/Patient/ServiceEnrollment';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Stack = createStackNavigator();
-export default function PatientTab() {
+export default function PatientTab({navigation}) {
+  const resetNavigation = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'MyPatient'}],
+    });
+  };
+  useFocusEffect(
+    React.useCallback(() => {
+      resetNavigation();
+    }, [navigation]),
+  );
+
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName="MyPatients">
       <Stack.Screen name="MyPatient" component={MyPatient} />
       <Stack.Screen name="AddPatient" component={AddPatient} />
       <Stack.Screen name="Assignment" component={Assignment} />

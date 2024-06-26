@@ -41,7 +41,7 @@ export function* getDashboardSaga(action) {
     }
   } catch (error) {
     yield put(getDashboardFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -55,7 +55,7 @@ export function* patientEnrolmentSaga(action) {
 
   try {
     let response = yield call(getApi, 'barchat-data', header);
-    console.log(response.data, '>>>>>>?????Sss>>>>>>');
+    // console.log(response.data, '>>>>>>?????Sss>>>>>>');
     if (response?.data?.status == 200) {
       yield put(patientEnrolmentSuccess(response?.data));
     } else {
@@ -64,7 +64,7 @@ export function* patientEnrolmentSaga(action) {
     }
   } catch (error) {
     yield put(patientEnrolmentFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -85,7 +85,7 @@ export function* getActivePatientSaga(action) {
     }
   } catch (error) {
     yield put(getActivePatientFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -111,7 +111,7 @@ export function* getActivePatientSessionSaga(action) {
     }
   } catch (error) {
     yield put(getActivePatientSessionFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -136,7 +136,7 @@ export function* getInactivePatientSaga(action) {
     }
   } catch (error) {
     yield put(getInactivePatientFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -157,7 +157,7 @@ export function* getPendingEvaulationSaga(action) {
     }
   } catch (error) {
     yield put(getPendingEvaulationFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -182,7 +182,7 @@ export function* getCompletedEvaulationSaga(action) {
     }
   } catch (error) {
     yield put(getCompletedEvaulationFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -193,11 +193,11 @@ export function* EvaluationEnrolmentSaga(action) {
     contenttype: 'application/json',
     accessToken: `Bearer ${item?.token}`,
   };
-  console.log(header, '>>>>>>????');
+  // console.log(header, '>>>>>>????');
 
   try {
     let response = yield call(getApi, 'graph-data', header);
-    console.log(response.data, '>>>>>>?????Sss>>>>>> evaluation');
+    // console.log(response.data, '>>>>>>?????Sss>>>>>> evaluation');
     if (response?.data?.status == 200) {
       yield put(EvaluationEnrolmentSuccess(response?.data));
     } else {
@@ -206,7 +206,7 @@ export function* EvaluationEnrolmentSaga(action) {
     }
   } catch (error) {
     yield put(EvaluationEnrolmentFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 

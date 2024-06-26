@@ -104,7 +104,7 @@ const CompletedEvaulation = () => {
         <CustomTable
           actionButtonText={'View'}
           onPressActionButton={(value, index) => {
-            console.log(value, index);
+            // console.log(value, index);
           }}
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}

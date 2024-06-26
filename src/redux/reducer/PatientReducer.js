@@ -10,12 +10,12 @@ const initialState = {
   getListOfTherapiesRes: {},
   getListOfSatisfactionRes: {},
   questionListRes: {},
+  submitEvaluationRes: {},
 };
 
 const PATIENTSlice = createSlice({
   name: 'PATIENT',
   initialState,
-
   reducers: {
     //getPatientReq
     getPatientReq(state, action) {
@@ -108,6 +108,19 @@ const PATIENTSlice = createSlice({
       state.status = action.type;
     },
 
+    //Submit evaluation
+    submitEvaluationReq(state, action) {
+      state.status = action.type;
+    },
+    submitEvaluationSuccess(state, action) {
+      state.submitEvaluationRes = action?.payload;
+      state.status = action.type;
+    },
+    submitEvaluationFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
     clearQuestionListReq(state, action) {
       state.status = action.type;
     },
@@ -149,6 +162,11 @@ export const {
   satisfactionQuestionListReq,
   satisfactionQuestionListSuccess,
   satisfactionQuestionListFailure,
+
+
+  submitEvaluationReq,
+  submitEvaluationSuccess,
+  submitEvaluationFailure,
 } = PATIENTSlice.actions;
 
 export default PATIENTSlice.reducer;

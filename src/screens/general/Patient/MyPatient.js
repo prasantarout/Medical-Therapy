@@ -17,7 +17,11 @@ import {colors} from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
 import {images} from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
-import {useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import {icons} from '../../../themes/icons';
 import Txt from '../../../components/micro/Txt';
@@ -45,32 +49,18 @@ const MyPatient = props => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState([]);
-  const [patientInfo, setPatientInfo] = useState();
+  const [patientInfo, setPatientInfo] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useState('');
   const [filterBy, setFilterBy] = useState('');
   const [sortBy, setSortBy] = useState('');
+  const isFocused = useIsFocused();
 
   const PatientReducer = useSelector(state => state?.PatientReducer);
-  // const width = useScreenDimension();
   const {screenHeight} = useScreenDimension();
   const orientation = useOrientation();
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const sortedData = patientInfo?.sort((a, b) => {
-  //     const dateA = new Date(a.setupDate);
-  //     const dateB = new Date(b.setupDate);
-  //     if (dateA.getTime() === dateB.getTime()) {
-  //         return a.id - b.id;
-  //     }
-  //     return dateA - dateB;
-  // });
-  //   console.log("myPatientt-sortedData", sortedData)
-  // }, [patientInfo])
-
-  // console.log(patientInfo, '>>>>>>>???Des');
 
   useEffect(() => {
     dispatch(getPatientReq());
@@ -99,34 +89,31 @@ const MyPatient = props => {
       setPatientInfo(filteredPatients);
     }
   };
-  // console.log(PatientReducer.getPatientResponse?.data?.data,">>>>>>>?????")
-
-  if (getPatientStatus === '' || PatientReducer.status !== getPatientStatus) {
-    switch (PatientReducer.status) {
-      case 'PATIENT/getPatientReq':
-        getPatientStatus = PatientReducer.status;
-        setIsLoading(true);
-        break;
-      case 'PATIENT/getPatientSuccess':
-        getPatientStatus = PatientReducer.status;
-        // console.log(
-        //   'getPatientSuccess',
-        //   PatientReducer.getPatientResponse?.data?.data,
-        // );
-        // setTimeout(() => {
-        //   setPatientInfo(PatientReducer.getPatientResponse?.data?.data)
-        //   setIsLoading(false)
-        // })
-        setPatientInfo(PatientReducer?.getPatientResponse?.data?.data);
-        setIsLoading(false);
-        // CustomToast("Profile Updated Successfully")
-        break;
-      case 'PATIENT/getPatientFailure':
-        getPatientStatus = PatientReducer.status;
-        setIsLoading(false);
-        break;
-    }
-  }
+  useFocusEffect(
+    React.useCallback(() => {
+      if (
+        getPatientStatus === '' ||
+        PatientReducer.status !== getPatientStatus
+      ) {
+        switch (PatientReducer.status) {
+          case 'PATIENT/getPatientReq':
+            getPatientStatus = PatientReducer.status;
+            setIsLoading(true);
+            break;
+          case 'PATIENT/getPatientSuccess':
+            getPatientStatus = PatientReducer.status;
+            setPatientInfo(PatientReducer?.getPatientResponse?.data?.data);
+            setIsLoading(false);
+            // console.log('hellow world', patientInfo);
+            break;
+          case 'PATIENT/getPatientFailure':
+            getPatientStatus = PatientReducer.status;
+            setIsLoading(false);
+            break;
+        }
+      }
+    }, [PatientReducer.status, isFocused, patientInfo]),
+  );
 
   const renderEmptyComponent = () => {
     return (

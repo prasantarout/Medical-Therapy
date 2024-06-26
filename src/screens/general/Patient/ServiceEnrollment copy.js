@@ -95,7 +95,7 @@ const ServiceEnrollment = props => {
         dispatch(storeServiceEnrolmentReq(obj));
       })
       .catch(err => {
-        console.log(err, 'err');
+        // console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   };
@@ -106,7 +106,7 @@ const ServiceEnrollment = props => {
         dispatch(getListOfTherapiesReq());
       })
       .catch(err => {
-        console.log(err, 'err');
+        // console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   }, [isFocused]);

@@ -64,7 +64,8 @@ const MultiSelectDropdown = props => {
         onBlur={() => setIsFocus(false)}
         onChange={(res) => {
           onChange
-          setCategory(res), console.log(res, '??>>>>>>');
+          setCategory(res)
+          //  console.log(res, '??>>>>>>');
         }}
         renderItem={renderItem}
       />

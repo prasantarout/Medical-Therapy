@@ -20,7 +20,9 @@ const SafeView = props => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[css.fg1]}
           stickyHeaderIndices={props.sticky}
-          bounces={false}>
+          keyboardShouldPersistTaps="always"
+          bounces={false}
+          >
           <View style={[styles.avoidStatusBar]}>{props.children}</View>
         </ScrollView>
       </SafeAreaView>

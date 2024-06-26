@@ -13,6 +13,7 @@ const RadioQuestionComponent = ({question, selectedValue, onSelect}) => {
     const selectedOptions = options.slice(0, selectedOptionIndex + 1);
     onSelect(questionId, selectedOptions);
   };
+  const selectedOptions = Array.isArray(selectedValue) ? selectedValue : [];
 
   return (
     <View style={styles.questionContainer}>

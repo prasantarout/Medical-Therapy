@@ -33,13 +33,13 @@ const OTPScreen = props => {
 
   const handleFocus = index => {
     setIsFocused(index);
-    console.log('index:', index);
+    // console.log('index:', index);
   };
 
   // verifyOtpRequest,
   // verifyOtpSuccess,
   // verifyOtpFailure,
-  console.log('asasas', otp.join(''));
+  // console.log('asasas', otp.join(''));
 
   const handleOTPVerification = () => {
     dispatch(

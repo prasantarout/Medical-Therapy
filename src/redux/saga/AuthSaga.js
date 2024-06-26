@@ -64,7 +64,7 @@ export function* signUpSaga(action) {
     }
   } catch (error) {
     yield put(signUpFailure(error?.response));
-    console.log(error,">>>>>>>>>????????")
+    // console.log(error,">>>>>>>>>????????")
     CustomToast(error?.response?.data?.message);
   }
 }

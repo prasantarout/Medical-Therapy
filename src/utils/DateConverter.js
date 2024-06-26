@@ -5,7 +5,7 @@ export const getFormattedDate = (date, format) => {
   let formattedDate = '';
   if (date) {
     let newDate = new Date(date);
-    console.log('newDate', newDate, date);
+    // console.log('newDate', newDate, date);
     switch (format) {
       case 'YYYY-MM-DD': {
         let year = newDate?.getFullYear().toString();

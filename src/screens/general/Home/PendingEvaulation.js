@@ -104,7 +104,7 @@ const PendingEvaulation = () => {
         <CustomTable
           actionButtonText={'View Details'}
           onPressActionButton={(value, index) => {
-            console.log(value, index);
+            // console.log(value, index);
           }}
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}

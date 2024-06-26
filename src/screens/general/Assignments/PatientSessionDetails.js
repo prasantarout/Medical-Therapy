@@ -19,13 +19,15 @@ import moment from 'moment';
 let dashboardStatus = '';
 
 const PatientSessionDetails = props => {
-  console.log('props?.route?.params', props?.route?.params);
+  // console.log('props?.route?.params', props?.route?.params);
   const [item, setItem] = useState(props?.route?.params?.item);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const PatientReducer = useSelector(state => state.PatientReducer);
 
   const isFocused = useIsFocused();
+
+
   useEffect(() => {
     if (isFocused) {
       dispatch(
@@ -46,12 +48,12 @@ const PatientSessionDetails = props => {
         dashboardStatus = PatientReducer.status;
         break;
       case 'PATIENT/getPatientSessionDetailsSuccess':
-        console.log('came to here');
+        // console.log('came to here');
         dashboardStatus = PatientReducer.status;
-        console.log(
-          'PatientReducer?.getPatientSessionDetailsResponse',
-          PatientReducer?.getPatientSessionDetailsResponse,
-        );
+        // console.log(
+        //   'PatientReducer?.getPatientSessionDetailsResponse',
+        //   PatientReducer?.getPatientSessionDetailsResponse,
+        // );
         setItem(PatientReducer?.getPatientSessionDetailsResponse);
         break;
       case 'PATIENT/getPatientSessionDetailsFailure':
@@ -60,7 +62,7 @@ const PatientSessionDetails = props => {
     }
   }
 
-  console.log('item', item);
+  // console.log('item', item);
 
   return (
     <SafeView {...props}>

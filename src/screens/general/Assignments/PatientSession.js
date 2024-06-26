@@ -108,7 +108,7 @@ const PatientSession = props => {
         );
       })
       .catch(err => {
-        console.log(err, 'err');
+        // console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   };

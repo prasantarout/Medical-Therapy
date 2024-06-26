@@ -117,7 +117,7 @@ const CurrentMonthSessionData = () => {
         <CustomTable
           actionButtonText={'View'}
           onPressActionButton={(value, index) => {
-            console.log('came', value, index);
+            // console.log('came', value, index);
           }}
           tableHeaderDataArr={headerDataArr}
           tableBodyDataArr={bodyDataArr}

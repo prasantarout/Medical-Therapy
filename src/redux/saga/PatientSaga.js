@@ -22,6 +22,8 @@ import {
   satisfactionQuestionListSuccess,
   satisfactionQuestionListFailure,
   clearQuestionListSuccess,
+  submitEvaluationSuccess,
+  submitEvaluationFailure,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
 
@@ -45,7 +47,7 @@ export function* getPatientSaga(action) {
     }
   } catch (error) {
     yield put(getPatientFailure(error?.response));
-    console.log('error: ', error);
+    // console.log('error: ', error);
   }
 }
 
@@ -90,7 +92,7 @@ export function* getPatientSessionDetailsSaga(action) {
       header,
     );
 
-    console.log('response?.data?.data', response?.data?.data);
+    // console.log('response?.data?.data', response?.data?.data);
     const formattedData = {
       sessions: {
         clinical_metrics: response?.data?.data?.sessions?.clinical_metrics
@@ -307,6 +309,35 @@ export function* satisfactionQuestionSaga(action) {
   }
 }
 
+export function* getEvaluationFormSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${item?.token}`,
+  };
+
+  try {
+    let response = yield call(
+      postApi,
+      'submit-evaluation',
+      action.payload,
+      header,
+    );
+    console.log(response,">>>>>>>>>?response")
+    if (response?.data?.status == 200) {
+      yield put(submitEvaluationSuccess(response?.data));
+      CustomToast(response.data.data)
+    } else {
+      yield put(submitEvaluationFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(submitEvaluationFailure(error?.response));
+    // console.log('error: ', error);
+  }
+}
+
 export function* clearSatisfactionSaga(action) {
   try {
     yield put(clearQuestionListSuccess(action.payload));
@@ -348,6 +379,9 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('PATIENT/clearQuestionListReq', clearSatisfactionSaga);
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/submitEvaluationReq', getEvaluationFormSaga);
   })(),
 ];
 

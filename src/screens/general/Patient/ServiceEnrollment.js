@@ -1,5 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import TitleTxt from '../../../components/common/TitleTxt';
@@ -19,13 +26,13 @@ import {
   getListOfTherapiesReq,
   satisfactionQuestionListReq,
   storeServiceEnrolmentReq,
+  submitEvaluationReq,
 } from '../../../redux/reducer/PatientReducer';
 import CustomToast from '../../../utils/Toast';
 import {useIsFocused} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
 import Loader from '../../../utils/Loader';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import {CustomRadioButton} from '../../../components/common/customRadioButton';
 import QuestionComponent from '../../../components/common/QuestionComponent';
 import RadioQuestionComponent from '../../../components/common/RadioQuestionComponent';
 import TextInputComponent from '../../../components/common/TextInputComponent';
@@ -40,8 +47,13 @@ const ServiceEnrollment = props => {
   const isFocused = useIsFocused();
   const [isFocus, setIsFocus] = useState(false);
   const [categoryItem, setCategoryItem] = useState([]);
-  const [selectedValues, setSelectedValues] = useState({});
+  const [sortedQuestions, setSortedQuestions] = useState([]);
+  const [numberRatingValues, setNumberRatingValues] = useState({});
+  const [radioRatingValues, setRadioRatingValues] = useState({});
+  const [radioRatingValues1, setRadioRatingValues1] = useState({});
+  const [textInputValues, setTextInputValues] = useState({});
 
+  const [errors, setErrors] = useState({});
   const PatientReducer = useSelector(state => state.PatientReducer);
   const AuthReducer = useSelector(state => state.AuthReducer);
   // console.log(PatientReducer?.questionListRes, '?????>>>>denmak');
@@ -75,33 +87,48 @@ const ServiceEnrollment = props => {
   };
 
   const handleEnroll = () => {
-    const requiredFields = [
-      {field: date, message: 'Date is required'},
-      {field: time, message: 'Time is required'},
-      {field: categoryItem, message: 'Services is required'},
-      {
-        field: remark,
-        message: 'Remark is required',
-      },
-    ];
-    for (let item of requiredFields) {
-      if (item.field === '') {
-        CustomToast(item.message);
-        return;
+    const requiredFields = sortedQuestions.filter(
+      question =>
+        question.type === 'number_rating' ||
+        question.type === 'radio_rating' ||
+        question.type === 'input_text',
+    );
+    let valid = true;
+    let newErrors = {};
+
+    requiredFields.forEach(question => {
+      const value =
+        question.type === 'number_rating'
+          ? numberRatingValues[question.id]
+          : question.type === 'radio_rating'
+          ? radioRatingValues1[question.id]
+          : textInputValues[question.id];
+      if (!value) {
+        newErrors[question.id] = `${question.title} is required`;
+        valid = false;
       }
+    });
+    setErrors(newErrors);
+    if (!valid) {
+      setErrors(newErrors);
+      CustomToast('Please fill all required fields');
+      return;
     }
-    let obj = {
-      patient_id: AuthReducer?.ProfileResponse?.data?.id,
-      date: date,
-      time: time,
-      service: categoryItem,
-      remark: remark,
-      short_description: null,
-      long_description: null,
+    const formattedAnswers = {
+      ...numberRatingValues,
+      ...radioRatingValues1,
+      ...textInputValues,
+    };
+    const obj = {
+      parent_question_id: sortedQuestions[0]?.parent_id,
+      patient_id: data?.id,
+      answers: Object?.entries(formattedAnswers)?.map(([key, value]) => ({
+        [key]: value,
+      })),
     };
     connectionrequest()
       .then(res => {
-        dispatch(storeServiceEnrolmentReq(obj));
+        dispatch(submitEvaluationReq(obj));
       })
       .catch(err => {
         console.log(err, 'err');
@@ -116,22 +143,33 @@ const ServiceEnrollment = props => {
         dispatch(getListOfSatisfactionReq());
       })
       .catch(err => {
-        console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   }, [isFocused]);
 
   const handleSelect = (questionId, value) => {
-    setSelectedValues(prevValues => ({
+    setNumberRatingValues(prevValues => ({
       ...prevValues,
       [questionId]: value,
     }));
   };
 
   const handleRadioSelect = (questionId, value) => {
-    setSelectedValues(prevState => ({
+    setRadioRatingValues(prevState => ({
       ...prevState,
       [questionId]: value,
+    }));
+
+    setRadioRatingValues1(prevState => ({
+      ...prevState,
+      [questionId]: Math.max(...value),
+    }));
+  };
+
+  const handleTextChange = (questionId, text) => {
+    setTextInputValues(prevState => ({
+      ...prevState,
+      [questionId]: text,
     }));
   };
 
@@ -148,16 +186,40 @@ const ServiceEnrollment = props => {
         case 'PATIENT/storeServiceEnrolmentFailure':
           status = PatientReducer.status;
           break;
+
+        case 'PATIENT/satisfactionQuestionListReq':
+          status = PatientReducer.status;
+          break;
+        case 'PATIENT/satisfactionQuestionListSuccess':
+          status = PatientReducer.status;
+          const questionListData = PatientReducer?.questionListRes?.data || [];
+          setSortedQuestions(
+            questionListData
+              ? questionListData
+                  .filter(q => q?.type === 'number_rating')
+                  .concat(
+                    questionListData.filter(q => q?.type !== 'number_rating'),
+                  )
+              : [],
+          );
+          break;
+        case 'PATIENT/satisfactionQuestionListFailure':
+          status = PatientReducer.status;
+          break;
+
+        case 'PATIENT/submitEvaluationReq':
+          status = PatientReducer.status;
+          break;
+        case 'PATIENT/submitEvaluationSuccess':
+          status = PatientReducer.status;
+          props?.navigation?.goBack('');
+          break;
+        case 'PATIENT/submitEvaluationFailure':
+          status = PatientReducer.status;
+          break;
       }
     }
   }, [PatientReducer?.status]);
-
-  const questionListData = PatientReducer?.questionListRes?.data || [];
-  const sortedQuestions = questionListData
-    ? questionListData
-        .filter(q => q?.type === 'number_rating')
-        .concat(questionListData.filter(q => q?.type !== 'number_rating'))
-    : [];
 
   const ValueField = props => {
     return (
@@ -196,122 +258,129 @@ const ServiceEnrollment = props => {
   };
 
   return (
-    <SafeView {...props}>
-      <View style={[css.px5, css.f1, css.py4]}>
-        <Loader
-          visible={PatientReducer?.status == 'PATIENT/storeServiceEnrolmentReq'}
-        />
-        <TitleTxt title={'Evaluation Form'} />
-        <View style={styles.container}>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'First Name'} value={data?.first_name} />
-            <ValueField title={'Last Name'} value={data?.last_name} />
-          </View>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'Setup Date'} value={data?.setupDate} />
-            <ValueField
-              title={'Device'}
-              value={'22151082639 - AirSense 10 CPAP'}
-            />
-          </View>
-          <View style={[css.row, css.jcsb]}>
-            <ValueField title={'Therapist Name'} value={'Therapist user'} />
-            <ValueField title={'Location'} value={data?.location} />
-          </View>
-          <View style={[css.row, css.px5]}>
-            <View style={[css.w50, css.mt5]}>
-              <Txt style={[css.fs20]}>{'About Satisfaction'}</Txt>
-              <Dropdown
-                style={[styles.dropdown]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={
-                  PatientReducer?.getListOfSatisfactionRes?.data?.length > 0
-                    ? PatientReducer?.getListOfSatisfactionRes?.data
-                    : []
-                }
-                labelField="title"
-                valueField="id"
-                placeholder="Services"
-                value={categoryItem}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  connectionrequest()
-                    .then(() => {
-                      dispatch(
-                        satisfactionQuestionListReq({
-                          parent_question_id: item?.id,
-                        }),
-                      );
-                    })
-                    .catch(error => {
-                      console.log(error);
-                    });
-                  setCategoryItem(item);
-                  setIsFocus(false);
-                }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+      style={{flex: 1}}>
+      <SafeView {...props}>
+        <View style={[css.px5, css.f1, css.py4]}>
+          <Loader
+            visible={
+              PatientReducer?.status == 'PATIENT/storeServiceEnrolmentReq' ||
+              PatientReducer?.status == 'PATIENT/submitEvaluationReq'
+            }
+          />
+          <TitleTxt title={'Evaluation Form'} />
+          <View style={styles.container}>
+            <View style={[css.row, css.jcsb]}>
+              <ValueField title={'First Name'} value={data?.first_name} />
+              <ValueField title={'Last Name'} value={data?.last_name} />
+            </View>
+            <View style={[css.row, css.jcsb]}>
+              <ValueField title={'Setup Date'} value={data?.setupDate} />
+              <ValueField
+                title={'Device'}
+                value={'22151082639 - AirSense 10 CPAP'}
               />
             </View>
+            <View style={[css.row, css.jcsb]}>
+              <ValueField title={'Therapist Name'} value={'Therapist user'} />
+              <ValueField title={'Location'} value={data?.location} />
+            </View>
+            <View style={[css.row, css.px5]}>
+              <View style={[css.w50, css.mt5]}>
+                <Txt style={[css.fs20]}>{'About Satisfaction'}</Txt>
+                <Dropdown
+                  style={[styles.dropdown]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={
+                    PatientReducer?.getListOfSatisfactionRes?.data?.length > 0
+                      ? PatientReducer?.getListOfSatisfactionRes?.data
+                      : []
+                  }
+                  labelField="title"
+                  valueField="id"
+                  placeholder="Services"
+                  value={categoryItem}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    connectionrequest()
+                      .then(() => {
+                        dispatch(
+                          satisfactionQuestionListReq({
+                            parent_question_id: item?.id,
+                          }),
+                        );
+                      })
+                      .catch(error => {
+                        // console.log(error);
+                      });
+                    setCategoryItem(item);
+                    setIsFocus(false);
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.container}>
+              {categoryItem &&
+                sortedQuestions?.length > 0 &&
+                sortedQuestions.map(question => {
+                  switch (question.type) {
+                    case 'number_rating':
+                      return (
+                        <QuestionComponent
+                          key={question.id}
+                          question={question}
+                          selectedValue={numberRatingValues[question.id]}
+                          onSelect={handleSelect}
+                        />
+                      );
+                    case 'radio_rating':
+                      return (
+                        <RadioQuestionComponent
+                          key={question.id}
+                          question={question}
+                          selectedValue={radioRatingValues[question.id]}
+                          onSelect={handleRadioSelect}
+                        />
+                      );
+                    case 'input_text':
+                      return (
+                        <TextInputComponent
+                          key={question.id}
+                          question={question}
+                          onChangeText={text =>
+                            handleTextChange(question.id, text)
+                          }
+                        />
+                      );
+                    default:
+                      return null;
+                  }
+                })}
+            </View>
+            <TouchableOpacity style={styles.btn} onPress={handleEnroll}>
+              <Txt style={styles.btnTxt}>Submit</Txt>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+            <DateTimePickerModal
+              isVisible={isTimePickerVisible}
+              mode="time"
+              onConfirm={handleTimeConfirm}
+              onCancel={hideTimePicker}
+            />
           </View>
-          <View style={styles.container}>
-            {categoryItem &&
-              sortedQuestions?.length > 0 &&
-              sortedQuestions.map(question => {
-                switch (question.type) {
-                  case 'number_rating':
-                    return (
-                      <QuestionComponent
-                        key={question.id}
-                        question={question}
-                        selectedValue={selectedValues[question.id]}
-                        onSelect={handleSelect}
-                      />
-                    );
-                  case 'radio_rating':
-                    return (
-                      <RadioQuestionComponent
-                        key={question.id}
-                        question={question}
-                        selectedValue={selectedValues[question.id]}
-                        onSelect={handleRadioSelect}
-                      />
-                    );
-                  case 'input_text':
-                    return (
-                      <TextInputComponent
-                        key={question.id}
-                        question={question}
-                        onChangeText={text =>
-                          handleTextChange(question.id, text)
-                        }
-                      />
-                    );
-                  default:
-                    return null;
-                }
-              })}
-          </View>
-          <TouchableOpacity style={styles.btn} onPress={handleEnroll}>
-            <Txt style={styles.btnTxt}>Enroll</Txt>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-          />
-          <DateTimePickerModal
-            isVisible={isTimePickerVisible}
-            mode="time"
-            onConfirm={handleTimeConfirm}
-            onCancel={hideTimePicker}
-          />
         </View>
-      </View>
-    </SafeView>
+      </SafeView>
+    </KeyboardAvoidingView>
   );
 };
 

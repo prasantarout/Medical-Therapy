@@ -82,7 +82,6 @@ const AssignmentChart = ({dataItem}) => {
             maxValue={100}
           />
           <Divider />
-
           <View style={[css.row, css.aic, css.asc, css.mt3]}>
             <RenderTitles title="Total Evaluation" backgroundColor="#28328C" />
             <RenderTitles

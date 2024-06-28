@@ -84,6 +84,7 @@ const CustomTable = ({
               </View>
             )}
           </View>
+          {/* {console.log(tableBodyDataArr,"??????reddd")} */}
           <View style={[styles.tableBodyContainer, tableBodyContainerStyle]}>
             {tableBodyDataArr.length > 0 ? (
               <FlatList

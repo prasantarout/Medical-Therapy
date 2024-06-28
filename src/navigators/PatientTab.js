@@ -7,6 +7,9 @@ import EnrolmentQueue from '../screens/general/Patient/EnrolmentQueue';
 import MyPatient from '../screens/general/Patient/MyPatient';
 import ServiceEnrollment from '../screens/general/Patient/ServiceEnrollment';
 import {useFocusEffect} from '@react-navigation/native';
+import PatientSession from '../screens/general/Assignments/PatientSession';
+import ActivePatientsSession from '../screens/general/Home/ActivePatientsSession';
+import ActivePatientsSessions1 from '../screens/general/Home/ActivePatientsSessions1';
 
 const Stack = createStackNavigator();
 export default function PatientTab({navigation}) {
@@ -31,6 +34,10 @@ export default function PatientTab({navigation}) {
       <Stack.Screen name="Assignment" component={Assignment} />
       <Stack.Screen name="EnrolmentQueue" component={EnrolmentQueue} />
       <Stack.Screen name="ServiceEnrollment" component={ServiceEnrollment} />
+      <Stack.Screen
+        name="ActivePatientsSessions1"
+        component={ActivePatientsSessions1}
+      />
     </Stack.Navigator>
   );
 }

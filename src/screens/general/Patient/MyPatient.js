@@ -56,6 +56,7 @@ const MyPatient = props => {
   const [filterBy, setFilterBy] = useState('');
   const [sortBy, setSortBy] = useState('');
   const isFocused = useIsFocused();
+  const [selectIndex, setSelectIndex] = useState(0);
 
   const PatientReducer = useSelector(state => state?.PatientReducer);
   const {screenHeight} = useScreenDimension();
@@ -168,7 +169,12 @@ const MyPatient = props => {
           navigation.navigate('ServiceEnrollment', {data: item}),
             dispatch(clearQuestionListReq({}));
         }}
-        navigateTo1={() => navigation.navigate('Assignment', {data: item})}
+        navigateTo1={() =>
+          navigation.navigate('ActivePatientsSession', {
+            ecn: item?.ecn,
+            full_name: item?.full_name,
+          })
+        }
         style={{
           width: orientation == 'LANDSCAPE' ? width / 4 - 18 : width / 3 - 23,
           marginLeft:
@@ -183,6 +189,8 @@ const MyPatient = props => {
       />
     );
   };
+
+  // console.log(patientInfo, '???????????>>>>>>>>');
 
   return (
     <>
@@ -330,7 +338,12 @@ const MyPatient = props => {
                   title="View Session"
                   style={[css.mt2, css.w100]}
                   onPress={() => {
-                    setModalVisible(false), navigation.navigate('Assignment');
+                    setModalVisible(false),
+                      navigation.navigate('ActivePatientsSession', {
+                        ecn: patientInfo[selectIndex]?.ecn,
+                        full_name: patientInfo[selectIndex]?.full_name,
+                      });
+                    // navigation.navigate('Assignment');
                   }}
                 />
                 <Button

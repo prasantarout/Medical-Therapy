@@ -10,7 +10,7 @@ import useScreenDimension from '../../utils/useScreenDimension';
 
 const AuthHeader = props => {
   const {screenWidth, screenHeight} = useScreenDimension();
-
+  
   return (
     <View style={[css.aic, css.jcc]}>
       <View
@@ -21,7 +21,8 @@ const AuthHeader = props => {
             width: screenWidth / 3.6,
             maxHeight: 120,
           },
-        ]}>
+        ]}
+        >
         <Image style={[styles.logo]} source={images.logo} />
       </View>
       <Txt style={styles.headerText}>{props?.headerText}</Txt>

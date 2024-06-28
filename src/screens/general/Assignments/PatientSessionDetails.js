@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getPatientSessionDetailsReq} from '../../../redux/reducer/PatientReducer';
 import {getFormattedDate} from '../../../utils/DateConverter';
 import moment from 'moment';
+import {images} from '../../../themes/images';
 
 let dashboardStatus = '';
 
@@ -26,7 +27,6 @@ const PatientSessionDetails = props => {
   const PatientReducer = useSelector(state => state.PatientReducer);
 
   const isFocused = useIsFocused();
-
 
   useEffect(() => {
     if (isFocused) {
@@ -79,7 +79,11 @@ const PatientSessionDetails = props => {
           <View style={[css.rowBetween]}>
             <View style={[css.w60]}>
               <Txt style={[css.fs18, css.semiBold]}>
-                {item?.sessions?.discription}
+                {item?.sessions?.discription !== null &&
+                item?.sessions?.discription !== undefined &&
+                item?.sessions?.discription !== null
+                  ? item?.sessions?.discription
+                  : 'N/A'}
               </Txt>
             </View>
             <Image
@@ -91,16 +95,25 @@ const PatientSessionDetails = props => {
               }
             />
           </View>
-
           <View style={[css.mt2, css.w60, css.fw]}>
             <View style={[css.row, css.aic, styles.iconTextContainer]}>
               <Image
-                source={{uri: item?.patient?.profile_photo_url}}
+                source={
+                  item?.patient?.profile_photo_url !== '' &&
+                  item?.patient?.profile_photo_url !== undefined &&
+                  item?.patient?.profile_photo_url !== null
+                    ? {uri: item?.patient?.profile_photo_url}
+                    : images.noProfile
+                }
                 style={[styles.userIconStyle]}
               />
               <View>
                 <Txt style={[css.fs18, css.semiBold, css.ml1]}>
-                  {item?.patient?.full_name}
+                  {item?.patient?.full_name !== null &&
+                  item?.patient?.full_name !== undefined &&
+                  item?.patient?.full_name !== ''
+                    ? item?.patient?.full_name
+                    :  'N/A'}
                 </Txt>
                 <View
                   style={[css.row, css.aic, styles.iconTextContainer, css.ml1]}>
@@ -109,31 +122,52 @@ const PatientSessionDetails = props => {
                     style={[styles.cardIconStyle]}
                   />
                   <Txt style={[css.fs18, css.ml1]}>
-                    {item?.patient?.location}
+                    {item?.patient?.location !== undefined &&
+                    item?.patient?.location !== '' &&
+                    item?.patient?.location !== null
+                      ? item?.patient?.location
+                      : 'N/A'}
                   </Txt>
                 </View>
               </View>
             </View>
           </View>
-
           <View style={[css.mb5, css.mt2]}>
             <IconTextBlock
               icon={icons.device}
               title="Device :"
-              value={`${item?.sessions?.device?.deviceTypeDesc || ''} ${
-                item?.sessions?.device?.deviceType || ''
-              } - ${item?.sessions?.device?.serialNo || ''}`}
+              value={
+                item?.sessions?.device?.deviceTypeDesc ||
+                item?.sessions?.device?.deviceType ||
+                item?.sessions?.device?.serialNo
+                  ? `${item?.sessions?.device?.deviceTypeDesc || ''}-${
+                      item?.sessions?.device?.deviceType || ''
+                    } - ${item?.sessions?.device?.serialNo || ''}`
+                  : 'N/A'
+              }
             />
             <IconTextBlock
               icon={icons.mask}
               title="Therapist :"
-              value={`${item?.sessions?.therapist_name}`}
+              value={
+                item?.sessions?.therapist_name !== undefined &&
+                item?.sessions?.therapist_name !== '' &&
+                item?.sessions?.therapist_name !== null
+                  ? `${item?.sessions?.therapist_name}`
+                  : 'N/A'
+              }
               valueStyle={[css.capitalization]}
             />
             <IconTextBlock
               icon={icons.office}
               title="Organisation :"
-              value={`${item?.patient?.org_name}`}
+              value={
+                item?.patient?.org_name !== undefined &&
+                item?.patient?.org_name !== '' &&
+                item?.patient?.org_name !== null
+                  ? `${item?.patient?.org_name}`
+                  : 'N/A'
+              }
               valueStyle={[css.capitalization]}
             />
           </View>
@@ -517,7 +551,8 @@ const styles = StyleSheet.create({
   userIconStyle: {
     width: 80,
     height: 80,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    borderRadius: normalize(50),
   },
   subHeading: {
     paddingLeft: 80,

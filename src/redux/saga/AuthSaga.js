@@ -22,6 +22,8 @@ import {
   EnableDisableNotificationListFailure,
   changePasswordSuccess,
   changePasswordFailure,
+  LogoutSuccess,
+  LogoutFailure,
 } from '../reducer/AuthReducer';
 
 import {getApi, postApi} from '../../utils/ApiRequest';
@@ -106,15 +108,17 @@ export function* signInSaga(action) {
   };
   try {
     let response = yield call(postApi, 'login', action.payload, header);
+   console.log(response?.data?.token,"?????>>>>response")
+   
     if (response?.status == 200) {
       yield put(signInSuccess(response?.data));
-      CustomToast(response?.data?.message);
       yield put(getTokenSuccess(response?.data?.token));
       yield call(
         AsyncStorage.setItem,
         constants.APP_TOKEN,
         response?.data?.token,
       );
+      CustomToast(response?.data?.message);
     } else {
       yield put(signInFailure(response?.data));
     }
@@ -160,14 +164,39 @@ export function* forgotPasswordSaga(action) {
 }
 
 ///////////////////// logout /////////////////////////
-export function* logoutsaga(action) {
+// export function* logoutsaga(action) {
+//   try {
+//     // yield call(AsyncStorage.removeItem, constants.APP_TOKEN);
+//     yield put(getTokenSuccess(null));
+//     yield put(logoutSuccess('Logout Successfully'));
+//     CustomToast('Logout successfully');
+//   } catch (error) {
+//     yield put(logoutFailure(error));
+//   }
+// }
+
+export function* LogoutSaga(action) {
+  // let items = yield select(getItem);
+  const getToken = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: getToken,
+  };
   try {
-    yield call(AsyncStorage.removeItem, constants.APP_TOKEN);
-    yield put(getTokenSuccess(null));
-    yield put(logoutSuccess('Logout Successfully'));
-    CustomToast('Logout successfully');
+    let response = yield call(getApi, `logout`, header);
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(LogoutSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(LogoutFailure(response?.data));
+    }
   } catch (error) {
-    yield put(logoutFailure(error));
+    // CustomToast(error?.response);
+    yield put(LogoutFailure(error?.response));
+    // CustomToast(error?.response?.data?.message);
   }
 }
 
@@ -314,9 +343,9 @@ const watchFunction = [
   (function* () {
     yield takeLatest('Auth/verifyOtpRequest', verifyOtpsaga);
   })(),
-  (function* () {
-    yield takeLatest('Auth/logoutRequest', logoutsaga);
-  })(),
+  // (function* () {
+  //   yield takeLatest('Auth/logoutRequest', logoutsaga);
+  // })(),
   (function* () {
     yield takeLatest('Auth/forgotPasswordRequest', forgotPasswordSaga);
   })(),
@@ -337,6 +366,9 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('Auth/changePasswordRequest', changePasswordSaga);
+  })(),
+  (function* () {
+    yield takeLatest('Auth/LogoutRequest', LogoutSaga);
   })(),
 ];
 

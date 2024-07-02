@@ -16,6 +16,7 @@ const initialState = {
   NotificationListRes: {},
   enableOrDisableNotificationRes: {},
   changePasswordRes: {},
+  logoutRes: {},
 };
 
 const AuthSlice = createSlice({
@@ -177,6 +178,18 @@ const AuthSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
+
+    LogoutRequest(state, action) {
+      state.status = action.type;
+    },
+    LogoutSuccess(state, action) {
+      state.logoutRes = action?.payload;
+      state.status = action.type;
+    },
+    LogoutFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
   },
 });
 
@@ -226,6 +239,10 @@ export const {
   changePasswordRequest,
   changePasswordSuccess,
   changePasswordFailure,
+
+  LogoutRequest,
+  LogoutSuccess,
+  LogoutFailure,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

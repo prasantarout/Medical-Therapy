@@ -22,6 +22,9 @@ import PatientEnrolmentChart from '../../../components/common/PatientEnrolmentCh
 import AssignmentChart from '../../../components/common/AssignmentChart';
 import CalenderView from '../../../components/common/CalenderView';
 import {colors} from '../../../themes/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getTokenSuccess} from '../../../redux/reducer/AuthReducer';
+import constants from '../../../utils/constants';
 
 let dashboardStatus = '';
 
@@ -32,7 +35,7 @@ const Home = props => {
   const isFocused = useIsFocused();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [sessionsData, setSessionsData] = useState([]);
-
+  const AuthReducer = useSelector(state => state?.AuthReducer);
   useEffect(() => {
     let obj = {
       date: moment(new Date()).format('YYYY-MM-DD').toString,
@@ -65,6 +68,30 @@ const Home = props => {
     }
   }
 
+ 
+  // useEffect(() => {
+  //   let profileStatus = '';
+  //   if (profileStatus === '' || AuthReducer.status !== profileStatus) {
+  //     switch (AuthReducer.status) {
+  //       case 'Auth/LogoutRequest':
+  //         profileStatus = AuthReducer.status;
+  //         break;
+  //       case 'Auth/LogoutSuccess':
+  //         profileStatus = AuthReducer.status;
+  //         AsyncStorage.removeItem(constants.APP_TOKEN);
+  //         getTokenSuccess(null);
+  //         if(AuthReducer.token){
+  //           navigation.navigate('Login');
+  //         }
+  //         break;
+  //       case 'Auth/LogoutFailure':
+  //         profileStatus = AuthReducer.status;
+  //         // navigation.navigate('Login');
+  //         break;
+  //     }
+  //   }
+  // }, [AuthReducer.status]);
+
   const onDateSelected = selectedDate => {
     const selected_Date = moment(selectedDate).format('YYYY-MM-DD');
     let obj = {
@@ -83,7 +110,10 @@ const Home = props => {
             title="Service Score"
             value={DashboardReducer?.getDashboardResponse?.data?.service_score}
           />
-          {console.log(DashboardReducer?.getDashboardResponse?.data,"??????>>>>sedd")}
+          {console.log(
+            DashboardReducer?.getDashboardResponse?.data,
+            '??????>>>>sedd',
+          )}
           <ScoreCard
             title="Evaluation Score"
             value={

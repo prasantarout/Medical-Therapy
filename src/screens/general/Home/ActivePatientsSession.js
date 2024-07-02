@@ -90,7 +90,11 @@ const ActivePatientsSession = () => {
         break;
       case 'Dashboard/getActivePatientSessionSuccess':
         dashboardStatus = DashboardReducer.status;
-        setTableBodyDataArr([...tableBodyDataArr, ...tableFormatConvert()]);
+        if (pageNo === 0) {
+          setTableBodyDataArr([...tableFormatConvert()]);
+        } else {
+          setTableBodyDataArr([...tableBodyDataArr, ...tableFormatConvert()]);
+        }
         break;
       case 'Dashboard/getActivePatientSessionFailure':
         dashboardStatus = DashboardReducer.status;

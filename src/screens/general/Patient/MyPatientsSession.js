@@ -88,7 +88,11 @@ const MyPatientsSession = () => {
         break;
       case 'PATIENT/getMyPatientSessionSuccess':
         dashboardStatus = PatientReducer.status;
-        setTableBodyDataArr([...tableBodyDataArr, ...tableFormatConvert()]);
+        if (pageNo === 0) {
+          setTableBodyDataArr(tableFormatConvert());
+        } else {
+          setTableBodyDataArr([...tableBodyDataArr, ...tableFormatConvert()]);
+        }
         break;
       case 'PATIENT/getMyPatientSessionFailure':
         dashboardStatus = PatientReducer.status;

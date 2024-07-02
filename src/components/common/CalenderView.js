@@ -1,4 +1,11 @@
-import {StyleSheet, FlatList, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState} from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
 import css, {width} from '../../themes/space';
@@ -39,7 +46,23 @@ const CalenderView = props => {
   return (
     <View style={[styles.patientEnrollment, css.mt4]}>
       <View style={[css.card]}>
-        <TitleTxt title="Sessions" />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <TitleTxt title="Sessions" />
+          <TouchableOpacity
+            onPress={() => {
+              props?.navigation.navigate('Patients Session');
+            }}>
+            <TitleTxt
+              title="See All"
+              style={{fontSize: normalize(8), color: colors.black}}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={[styles.calenderArea]}>
           <CalendarStrip
             customDatesStyles={customDatesStylesFunc}

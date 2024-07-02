@@ -219,12 +219,9 @@ const customStyles = ({paddingBottom}) =>
       fontFamily: fonts.Medium,
     },
     noDataFoundTextContainer: {
-      height: normalize(100),
-      // flex:0.1,
-      // flexDirection: 'row',
+      height: height - normalize(155) - paddingBottom,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: normalize(105),
     },
     noDataFoundText: {
       textTransform: 'capitalize',

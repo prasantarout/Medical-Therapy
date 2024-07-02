@@ -44,9 +44,14 @@ const CompletedEvaulation = () => {
   const dispatch = useDispatch();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+  const [actualData, setActualData] = useState([]);
 
   const tableFormatConvert = () => {
     let formattedData = [];
+    setActualData([
+      ...actualData,
+      ...DashboardReducer?.getCompletedEvaulationResponse?.data,
+    ]);
     DashboardReducer?.getCompletedEvaulationResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};

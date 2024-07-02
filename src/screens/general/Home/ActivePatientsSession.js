@@ -52,10 +52,15 @@ const ActivePatientsSession = () => {
   const route = useRoute();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+  const [actualData, setActualData] = useState([]);
   const [pageNo, setPageNo] = useState(0);
 
   const tableFormatConvert = () => {
     let formattedData = [];
+    setActualData([
+      ...actualData,
+      ...DashboardReducer?.getActivePatientSessionResponse?.data,
+    ]);
     DashboardReducer?.getActivePatientSessionResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};
@@ -69,8 +74,6 @@ const ActivePatientsSession = () => {
     );
     return formattedData;
   };
-
-  // console.log(route?.params?.ecn,">>>>??>>>")
 
   useEffect(() => {
     if (isFocused) {
@@ -98,7 +101,9 @@ const ActivePatientsSession = () => {
   return (
     <SafeView sticky={[1]}>
       <Loader
-        visible={DashboardReducer.status === 'Dashboard/getActivePatientReq'}
+        visible={
+          DashboardReducer.status === 'Dashboard/getActivePatientSessionReq'
+        }
       />
       <View style={styles.headerContainer}>
         <TitleTxt title={`Patient Sessions: ${route?.params?.full_name}`} />
@@ -114,7 +119,10 @@ const ActivePatientsSession = () => {
           tableBodyDataArr={tableBodyDataArr}
           actionButtonText={'View'}
           onPressActionButton={(value, index) => {
-            navigation.navigate('ActivePatientSessionDetails');
+            navigation.navigate('ActivePatientSessionDetails', {
+              ecn: actualData?.[index]?.ecn,
+              date: actualData?.[index]?.s_date,
+            });
           }}
           onBottomReach={() => {
             dispatch(

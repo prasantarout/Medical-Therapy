@@ -56,9 +56,14 @@ const ActivePatients = () => {
   const dispatch = useDispatch();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+  const [actualData, setActualData] = useState([]);
 
   const tableFormatConvert = () => {
     let formattedData = [];
+    setActualData([
+      ...actualData,
+      ...DashboardReducer?.getActivePatientResponse?.data,
+    ]);
     DashboardReducer?.getActivePatientResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};

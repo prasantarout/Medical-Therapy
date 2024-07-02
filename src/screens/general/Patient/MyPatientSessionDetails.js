@@ -12,15 +12,14 @@ import Divider from '../../../components/micro/Divider';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import normalize from '../../../utils/normalize';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMyPatientSessionDetailsReq} from '../../../redux/reducer/PatientReducer';
+import {getPatientSessionDetailsReq} from '../../../redux/reducer/PatientReducer';
 import {getFormattedDate} from '../../../utils/DateConverter';
 import moment from 'moment';
 import {images} from '../../../themes/images';
 
 let dashboardStatus = '';
 
-const PatientSessionDetails = props => {
-  // console.log('props?.route?.params', props?.route?.params);
+const MyPatientSessionDetails = props => {
   const [item, setItem] = useState({});
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -31,7 +30,7 @@ const PatientSessionDetails = props => {
   useEffect(() => {
     if (isFocused) {
       dispatch(
-        getMyPatientSessionDetailsReq({
+        getPatientSessionDetailsReq({
           ecn: props?.route?.params?.ecn,
           session_date: getFormattedDate(
             props?.route?.params?.date,
@@ -44,21 +43,18 @@ const PatientSessionDetails = props => {
 
   if (dashboardStatus === '' || PatientReducer.status !== dashboardStatus) {
     switch (PatientReducer.status) {
-      case 'PATIENT/getMyPatientSessionDetailsReq':
+      case 'PATIENT/getPatientSessionDetailsReq':
         dashboardStatus = PatientReducer.status;
         break;
-      case 'PATIENT/getMyPatientSessionDetailsSuccess':
-        // console.log('came to here');
+      case 'PATIENT/getPatientSessionDetailsSuccess':
         dashboardStatus = PatientReducer.status;
-        setItem(PatientReducer?.getMyPatientSessionDetailsResponse);
+        setItem(PatientReducer?.getPatientSessionDetailsResponse);
         break;
-      case 'PATIENT/getMyPatientSessionDetailsFailure':
+      case 'PATIENT/getPatientSessionDetailsFailure':
         dashboardStatus = PatientReducer.status;
         break;
     }
   }
-
-  // console.log('item', item);
 
   return (
     <SafeView {...props}>
@@ -79,7 +75,7 @@ const PatientSessionDetails = props => {
                 item?.sessions?.discription !== undefined &&
                 item?.sessions?.discription !== null
                   ? item?.sessions?.discription
-                  : ''}
+                  : 'N/A'}
               </Txt>
             </View>
             <Image
@@ -497,7 +493,7 @@ const IconTextBlock = ({icon, title, value, valueStyle}) => {
   );
 };
 
-export default PatientSessionDetails;
+export default MyPatientSessionDetails;
 
 const styles = StyleSheet.create({
   headerContainer: {

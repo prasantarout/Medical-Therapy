@@ -84,7 +84,6 @@ const CustomTable = ({
               </View>
             )}
           </View>
-          {/* {console.log(tableBodyDataArr,"??????reddd")} */}
           <View style={[styles.tableBodyContainer, tableBodyContainerStyle]}>
             {tableBodyDataArr.length > 0 ? (
               <FlatList
@@ -202,7 +201,7 @@ const customStyles = ({paddingBottom}) =>
       tintColor: colors.primaryTextColor,
     },
     tableBodyContainer: {
-      maxHeight: height - normalize(155) - paddingBottom,
+      height: height - normalize(155) - paddingBottom,
     },
     tableBodyRowContainer: {
       flexDirection: 'row',

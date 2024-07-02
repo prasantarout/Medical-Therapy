@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {useFocusEffect} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../../screens/general/Home';
 import ActivePatients from '../../screens/general/Home/ActivePatients';
@@ -12,18 +10,7 @@ import PendingEvaulation from '../../screens/general/Home/PendingEvaulation';
 import PatientSessionDetails from '../../screens/general/Assignments/PatientSessionDetails';
 
 const DashboardStack = createStackNavigator();
-const DashboardNavigator = ({navigation}) => {
-  const resetNavigation = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Home'}],
-    });
-  };
-  useFocusEffect(
-    React.useCallback(() => {
-      resetNavigation();
-    }, [navigation]),
-  );
+const DashboardNavigator = () => {
   return (
     <DashboardStack.Navigator
       initialRouteName="Home"

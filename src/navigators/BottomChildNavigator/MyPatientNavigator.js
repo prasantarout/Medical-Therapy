@@ -1,28 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {useFocusEffect} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import MyPatient from '../../screens/general/Patient/MyPatient';
 import AddPatient from '../../screens/general/Patient/AddPatient';
 import Assignment from '../../screens/general/Patient/Assignment';
 import EnrolmentQueue from '../../screens/general/Patient/EnrolmentQueue';
 import ServiceEnrollment from '../../screens/general/Patient/ServiceEnrollment';
-import ActivePatientsSessions1 from '../../screens/general/Home/ActivePatientsSessions1';
+import MyPatientSessionDetails from '../../screens/general/Patient/MyPatientSessionDetails';
+import MyPatientsSession from '../../screens/general/Patient/MyPatientsSession';
 
 const MyPatientStack = createStackNavigator();
-const MyPatientNavigator = ({navigation}) => {
-  const resetNavigation = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'MyPatient'}],
-    });
-  };
-  useFocusEffect(
-    React.useCallback(() => {
-      resetNavigation();
-    }, [navigation]),
-  );
-
+const MyPatientNavigator = () => {
   return (
     <MyPatientStack.Navigator
       screenOptions={{headerShown: false}}
@@ -36,8 +23,12 @@ const MyPatientNavigator = ({navigation}) => {
         component={ServiceEnrollment}
       />
       <MyPatientStack.Screen
-        name="ActivePatientsSessions1"
-        component={ActivePatientsSessions1}
+        name="MyPatientsSession"
+        component={MyPatientsSession}
+      />
+      <MyPatientStack.Screen
+        name="MyPatientSessionDetails"
+        component={MyPatientSessionDetails}
       />
     </MyPatientStack.Navigator>
   );

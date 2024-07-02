@@ -1,21 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Dimensions,
   FlatList,
   Image,
   ImageBackground,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TitleTxt from '../../../components/common/TitleTxt';
 import css, {height} from '../../../themes/space';
 import SearchInput from '../../../components/inputs/SearchInput';
 import normalize from '../../../utils/normalize';
 import {colors} from '../../../themes/colors';
 import SafeView from '../../../components/common/SafeView';
-import {images} from '../../../themes/images';
 import PatientCard from '../../../components/common/PatientCard';
 import {
   useFocusEffect,
@@ -26,7 +25,6 @@ import Modal from 'react-native-modal';
 import {icons} from '../../../themes/icons';
 import Txt from '../../../components/micro/Txt';
 import {fonts} from '../../../themes/fonts';
-import useScreenDimension from '../../../utils/useScreenDimension';
 import useOrientation from '../../../utils/useOrientation';
 import {widthToDp as wp} from '../../../utils/responsive';
 import Button from '../../../components/buttons/Button';
@@ -34,13 +32,11 @@ import Divider from '../../../components/micro/Divider';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   clearQuestionListReq,
-  getPatientReq,
+  getMyPatientReq,
 } from '../../../redux/reducer/PatientReducer';
-import CustomToast from '../../../utils/Toast';
 import BounceText from '../../../components/micro/BounceText';
 import Loader from '../../../utils/Loader';
 import moment from 'moment';
-import {myPatient} from '../../../utils/dumpAPI';
 
 let getPatientStatus = '';
 const width = Dimensions.get('window').width;
@@ -56,15 +52,13 @@ const MyPatient = props => {
   const [filterBy, setFilterBy] = useState('');
   const [sortBy, setSortBy] = useState('');
   const isFocused = useIsFocused();
-  const [selectIndex, setSelectIndex] = useState(0);
 
   const PatientReducer = useSelector(state => state?.PatientReducer);
-  const {screenHeight} = useScreenDimension();
   const orientation = useOrientation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPatientReq());
+    dispatch(getMyPatientReq());
   }, []);
 
   const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
@@ -81,10 +75,10 @@ const MyPatient = props => {
   const handleSearch = text => {
     setSearchData(text.toLowerCase());
     if (text === '') {
-      setPatientInfo(PatientReducer.getPatientResponse?.data?.data);
+      setPatientInfo(PatientReducer.getMyPatientResponse?.data?.data);
     } else {
       const filteredPatients =
-        PatientReducer.getPatientResponse?.data?.data.filter(patient =>
+        PatientReducer.getMyPatientResponse?.data?.data.filter(patient =>
           patient.full_name.toLowerCase().includes(text.toLowerCase()),
         );
       setPatientInfo(filteredPatients);
@@ -97,17 +91,16 @@ const MyPatient = props => {
         PatientReducer.status !== getPatientStatus
       ) {
         switch (PatientReducer.status) {
-          case 'PATIENT/getPatientReq':
+          case 'PATIENT/getMyPatientReq':
             getPatientStatus = PatientReducer.status;
             setIsLoading(true);
             break;
-          case 'PATIENT/getPatientSuccess':
+          case 'PATIENT/getMyPatientSuccess':
             getPatientStatus = PatientReducer.status;
-            setPatientInfo(PatientReducer?.getPatientResponse?.data?.data);
+            setPatientInfo(PatientReducer?.getMyPatientResponse?.data?.data);
             setIsLoading(false);
-            // console.log('hellow world', patientInfo);
             break;
-          case 'PATIENT/getPatientFailure':
+          case 'PATIENT/getMyPatientFailure':
             getPatientStatus = PatientReducer.status;
             setIsLoading(false);
             break;
@@ -162,15 +155,15 @@ const MyPatient = props => {
         }}
         name={item.full_name}
         location={item.location}
-        date={item.setupDate}
-        image={item.profile_photo_url}
+        date={item?.setupDate}
+        image={item?.profile_photo_url}
         Button={true}
         navigateTo={() => {
           navigation.navigate('ServiceEnrollment', {data: item}),
             dispatch(clearQuestionListReq({}));
         }}
         navigateTo1={() =>
-          navigation.navigate('ActivePatientsSession', {
+          navigation.navigate('MyPatientsSession', {
             ecn: item?.ecn,
             full_name: item?.full_name,
           })
@@ -189,8 +182,6 @@ const MyPatient = props => {
       />
     );
   };
-
-  // console.log(patientInfo, '???????????>>>>>>>>');
 
   return (
     <>
@@ -280,6 +271,7 @@ const MyPatient = props => {
               </View>
             ) : null}
           </View>
+          {console.log('patientInfo', patientInfo)}
           <FlatList
             numColumns={numColumns}
             key={numColumns}
@@ -332,28 +324,28 @@ const MyPatient = props => {
                       width: 250,
                       height: 250,
                     },
-                  ]}></ImageBackground>
+                  ]}
+                />
 
                 <Button
                   title="View Session"
                   style={[css.mt2, css.w100]}
                   onPress={() => {
-                    setModalVisible(false),
-                      navigation.navigate('ActivePatientsSession', {
-                        ecn: patientInfo[selectIndex]?.ecn,
-                        full_name: patientInfo[selectIndex]?.full_name,
-                      });
-                    // navigation.navigate('Assignment');
+                    setModalVisible(false);
+                    navigation.navigate('MyPatientsSession', {
+                      ecn: modalInfo?.ecn,
+                      full_name: modalInfo?.full_name,
+                    });
                   }}
                 />
                 <Button
                   title="Submit Evaluation"
                   style={[css.mt2, css.w100]}
                   onPress={() => {
-                    setModalVisible(false),
-                      navigation.navigate('ServiceEnrollment', {
-                        data: modalInfo,
-                      });
+                    setModalVisible(false);
+                    navigation.navigate('ServiceEnrollment', {
+                      data: modalInfo,
+                    });
                   }}
                 />
               </View>

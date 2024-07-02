@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {useFocusEffect} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PatientSession from '../../screens/general/Assignments/PatientSession';
 import PatientSessionDetails from '../../screens/general/Assignments/PatientSessionDetails';
@@ -9,18 +7,7 @@ import EvaluationResult from '../../screens/general/Assignments/EvaluationResult
 
 const PatientSessionStack = createStackNavigator();
 
-const PatientSessionNavigator = ({navigation}) => {
-  const resetNavigation = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'PatientSession'}],
-    });
-  };
-  useFocusEffect(
-    React.useCallback(() => {
-      resetNavigation();
-    }, [navigation]),
-  );
+const PatientSessionNavigator = () => {
   return (
     <PatientSessionStack.Navigator
       initialRouteName="PatientSession"

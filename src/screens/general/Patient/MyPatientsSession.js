@@ -13,9 +13,9 @@ import CustomTable from '../../../components/common/CustomTable';
 import {fonts} from '../../../themes/fonts';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../utils/Loader';
-import {getPatientReq} from '../../../redux/reducer/PatientReducer';
+import {getMyPatientSessionReq} from '../../../redux/reducer/PatientReducer';
 
-let patientStatus = '';
+let dashboardStatus = '';
 
 const headerDataArr = [
   {
@@ -45,18 +45,23 @@ const headerDataArr = [
 
 // const bodyDataArr = [['Test Tester', '2', '3', '4', '5', '6']];
 
-const ActivePatientsSessions1 = () => {
+const MyPatientsSession = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const route = useRoute();
-  const PatientReducer = useSelector(state => state?.PatientReducer);
+  const PatientReducer = useSelector(state => state.PatientReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+  const [actualData, setActualData] = useState([]);
   const [pageNo, setPageNo] = useState(0);
 
   const tableFormatConvert = () => {
     let formattedData = [];
-    PatientReducer?.getPatientResponse?.data?.data.map(
+    setActualData([
+      ...actualData,
+      ...PatientReducer?.getMyPatientSessionResponse?.data,
+    ]);
+    PatientReducer?.getMyPatientSessionResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};
         row[headerDataArr[0].label] = bodyDataRow?.session_date || 'N/A';
@@ -70,32 +75,32 @@ const ActivePatientsSessions1 = () => {
     return formattedData;
   };
 
-  console.log(PatientReducer?.getPatientResponse?.data.data, '>>>>patient');
-
   useEffect(() => {
     if (isFocused) {
-      dispatch(getPatientReq({page_no: 0, ecn: route?.params?.ecn}));
+      dispatch(getMyPatientSessionReq({page_no: 0, ecn: route?.params?.ecn}));
     }
   }, [isFocused]);
 
-  if (patientStatus === '' || PatientReducer.status !== patientStatus) {
+  if (dashboardStatus === '' || PatientReducer.status !== dashboardStatus) {
     switch (PatientReducer.status) {
-      case 'PATIENT/getPatientReq':
-        patientStatus = PatientReducer.status;
+      case 'PATIENT/getMyPatientSessionReq':
+        dashboardStatus = PatientReducer.status;
         break;
-      case 'PATIENT/getPatientSuccess':
-        patientStatus = PatientReducer.status;
+      case 'PATIENT/getMyPatientSessionSuccess':
+        dashboardStatus = PatientReducer.status;
         setTableBodyDataArr([...tableBodyDataArr, ...tableFormatConvert()]);
         break;
-      case 'PATIENT/getPatientFailure':
-        patientStatus = PatientReducer.status;
+      case 'PATIENT/getMyPatientSessionFailure':
+        dashboardStatus = PatientReducer.status;
         break;
     }
   }
 
   return (
     <SafeView sticky={[1]}>
-      <Loader visible={PatientReducer.status === 'PATIENT/getPatientReq'} />
+      <Loader
+        visible={PatientReducer.status === 'PATIENT/getMyPatientSessionReq'}
+      />
       <View style={styles.headerContainer}>
         <TitleTxt title={`Patient Sessions: ${route?.params?.full_name}`} />
         <TouchableOpacity
@@ -110,11 +115,14 @@ const ActivePatientsSessions1 = () => {
           tableBodyDataArr={tableBodyDataArr}
           actionButtonText={'View'}
           onPressActionButton={(value, index) => {
-            navigation.navigate('ActivePatientSessionDetails');
+            navigation.navigate('MyPatientSessionDetails', {
+              ecn: actualData?.[index]?.ecn,
+              date: actualData?.[index]?.s_date,
+            });
           }}
           onBottomReach={() => {
             dispatch(
-              getPatientReq({
+              getMyPatientSessionReq({
                 page_no: pageNo + 1,
                 ecn: route?.params?.ecn,
               }),
@@ -127,7 +135,7 @@ const ActivePatientsSessions1 = () => {
   );
 };
 
-export default ActivePatientsSessions1;
+export default MyPatientsSession;
 
 const styles = StyleSheet.create({
   headerContainer: {

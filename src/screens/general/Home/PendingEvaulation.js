@@ -109,13 +109,12 @@ const PendingEvaulation = () => {
         <CustomTable
           actionButtonText={'View Details'}
           onPressActionButton={(value, index) => {
-            console.log(value, index);
+            navigation.navigate('EvaluationReview');
           }}
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}
           tableBodyDataArr={tableBodyDataArr}
         />
-        {/* {console.log(tableBodyDataArr,">>>>>?>>>")} */}
       </View>
     </SafeView>
   );

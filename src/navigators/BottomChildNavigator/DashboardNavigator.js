@@ -8,6 +8,7 @@ import CurrentMonthSessionData from '../../screens/general/Home/CurrentMonthSess
 import InactivePatients from '../../screens/general/Home/InactivePatients';
 import PendingEvaulation from '../../screens/general/Home/PendingEvaulation';
 import PatientSessionDetails from '../../screens/general/Assignments/PatientSessionDetails';
+import EvaluationReview from '../../screens/general/Home/EvaluationReview';
 
 const DashboardStack = createStackNavigator();
 const DashboardNavigator = () => {
@@ -44,6 +45,10 @@ const DashboardNavigator = () => {
       <DashboardStack.Screen
         name="ActivePatientSessionDetails"
         component={PatientSessionDetails}
+      />
+      <DashboardStack.Screen
+        name="EvaluationReview"
+        component={EvaluationReview}
       />
     </DashboardStack.Navigator>
   );

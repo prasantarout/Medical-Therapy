@@ -67,9 +67,9 @@ const AssignmentChart = ({dataItem}) => {
             color1={color1}
             color2={color2}
             color3={color3}
-            textColor1="transparent"
-            textColor2="transparent"
-            textColor3="transparent"
+            textColor1="black"
+            textColor2="black"
+            textColor3="black"
             dataPointsHeight={6}
             dataPointsWidth={6}
             dataPointsColor1={color1}
@@ -84,12 +84,13 @@ const AssignmentChart = ({dataItem}) => {
           <Divider />
           <View style={[css.row, css.aic, css.asc, css.mt3]}>
             <RenderTitles title="Total Evaluation" backgroundColor="#28328C" />
+
             <RenderTitles
-              title="Pending Evaluation"
+              title="Complete Evaluation"
               backgroundColor="#3ABEF0"
             />
             <RenderTitles
-              title="Complete Evaluation"
+              title="Pending Evaluation"
               backgroundColor="#FF9A6C"
             />
           </View>

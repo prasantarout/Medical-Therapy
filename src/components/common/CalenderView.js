@@ -83,9 +83,10 @@ const CalenderView = props => {
             iconContainer={{flex: 0.1}}
           />
         </View>
+        {console.log(props.data, '???????data')}
         <View style={[css.f1, css.row, css.fw]}>
-          {props.data ? (
-            props.data?.map((item, index) => {
+          {props?.data?.length > 0 ? (
+            props?.data?.map((item, index) => {
               let borderLeftColor =
                 orientation == 'LANDSCAPE'
                   ? index % 3 === 0

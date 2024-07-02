@@ -35,6 +35,7 @@ let getItem = state => state.AuthReducer;
 export function* getTokenSaga() {
   try {
     const response = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+    console.log(response, '>>>>>>>???>>>');
     if (response != null) {
       yield put(getTokenSuccess(response));
       // console.log('UserToken', response);
@@ -72,10 +73,11 @@ export function* signUpSaga(action) {
 //verifyOtpsaga
 export function* verifyOtpsaga(action) {
   let items = yield select(getItem);
+  const getToken = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
   let header = {
     accept: 'application/json',
     contenttype: 'application/json',
-    accessToken: items?.token,
+    Authorization: getToken,
   };
 
   try {
@@ -334,10 +336,7 @@ const watchFunction = [
     );
   })(),
   (function* () {
-    yield takeLatest(
-      'Auth/changePasswordRequest',
-      changePasswordSaga,
-    );
+    yield takeLatest('Auth/changePasswordRequest', changePasswordSaga);
   })(),
 ];
 

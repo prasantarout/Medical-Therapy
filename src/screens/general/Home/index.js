@@ -83,6 +83,7 @@ const Home = props => {
             title="Service Score"
             value={DashboardReducer?.getDashboardResponse?.data?.service_score}
           />
+          {console.log(DashboardReducer?.getDashboardResponse?.data,"??????>>>>sedd")}
           <ScoreCard
             title="Evaluation Score"
             value={
@@ -152,7 +153,7 @@ const Home = props => {
                 }
                 title="Pending Evaulation"
                 color="#28328C"
-                icon={icons.assignment}
+                icon={icons.pendingAssignment}
                 containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {

@@ -48,6 +48,7 @@ const Signup = props => {
     first_name: '',
     last_name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
   });
@@ -55,6 +56,8 @@ const Signup = props => {
   const validEmail = isValidEmail(signUpInfo.email);
   const validPhoneNumber = isValidPhoneNumber(signUpInfo.phone);
   const isValidPass = isValidPassword(signUpInfo.password);
+  
+  
 
   const handleSignup = () => {
     if (signUpInfo?.first_name == '') {
@@ -63,6 +66,8 @@ const Signup = props => {
       CustomToast('Please enter your last name');
     } else if (signUpInfo?.email == '') {
       CustomToast('Please enter email');
+    } else if (signUpInfo?.phone == '') {
+      CustomToast('Please enter phone');
     } else if (signUpInfo?.password == '') {
       CustomToast('Please enter password');
     } else if (signUpInfo?.confirmPassword == '') {
@@ -71,6 +76,8 @@ const Signup = props => {
       CustomToast("Password dosen't match");
     } else if (!validEmail) {
       CustomToast('Please enter valid email');
+    } else if (!validPhoneNumber) {
+      CustomToast('Please enter valid phone');
     } else if (!isValidPass) {
       CustomToast(
         'The passwords should contain at least one number, one capital letter, and one special character',
@@ -157,10 +164,8 @@ const Signup = props => {
                 style={[css.mb3]}
                 autoCapitalize="none"
                 keyboardType="phone-pad"
-                // value={signUpInfo.email}
-                // onChangeText={text =>
-                //   handleInputChange('email', text.trim())
-                // }
+                value={signUpInfo.phone}
+                onChangeText={text => handleInputChange('phone', text)}
               />
               <Input
                 title="Enter Password"

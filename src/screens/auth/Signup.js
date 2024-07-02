@@ -123,7 +123,7 @@ const Signup = props => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthHeader
-              headerText="Sign Up"
+              headerText="Therapist Sign Up"
               subHeaderText="Please fill up this form to create your account."
             />
             <View style={[css.f1, css.py5, css.px16]}>

@@ -69,7 +69,8 @@ const MyPatient = props => {
 
   const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
 
-  const Modalinfo = ({title, value}) => {
+
+ const Modalinfo = ({title, value}) => {
     return (
       <View style={[css.row, css.aic]}>
         <Txt style={styles.title}>{title}</Txt>
@@ -90,6 +91,8 @@ const MyPatient = props => {
       setPatientInfo(filteredPatients);
     }
   };
+
+
   useFocusEffect(
     React.useCallback(() => {
       if (

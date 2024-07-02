@@ -110,6 +110,7 @@ const PendingEvaulation = () => {
           // tableBodyDataArr={bodyDataArr}
           tableBodyDataArr={tableBodyDataArr}
         />
+        {/* {console.log(tableBodyDataArr,">>>>>?>>>")} */}
       </View>
     </SafeView>
   );

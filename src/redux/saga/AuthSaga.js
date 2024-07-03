@@ -24,6 +24,10 @@ import {
   changePasswordFailure,
   LogoutSuccess,
   LogoutFailure,
+  ResendOtpSuccess,
+  ResendOtpFailure,
+  ResetPasswordSuccess,
+  ResetPasswordFailure,
 } from '../reducer/AuthReducer';
 
 import {getApi, postApi} from '../../utils/ApiRequest';
@@ -37,7 +41,7 @@ let getItem = state => state.AuthReducer;
 export function* getTokenSaga() {
   try {
     const response = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
-    console.log(response, '>>>>>>>???>>>');
+    // console.log(response, '>>>>>>>???>>>');
     if (response != null) {
       yield put(getTokenSuccess(response));
       // console.log('UserToken', response);
@@ -58,7 +62,7 @@ export function* signUpSaga(action) {
   try {
     let response = yield call(postApi, 'register', action.payload, header);
 
-    if (response?.status == '201') {
+    if (response?.status == '200') {
       yield put(signUpSucces(response?.data));
       CustomToast(response?.data?.message);
     } else {
@@ -75,11 +79,10 @@ export function* signUpSaga(action) {
 //verifyOtpsaga
 export function* verifyOtpsaga(action) {
   let items = yield select(getItem);
-  const getToken = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
   let header = {
     accept: 'application/json',
     contenttype: 'application/json',
-    Authorization: getToken,
+    // Authorization: getToken,
   };
 
   try {
@@ -93,7 +96,7 @@ export function* verifyOtpsaga(action) {
     }
   } catch (error) {
     console.log('Catch', error);
-    yield put(verifyOtpFailure(error?.response));
+    yield put(verifyOtpFailure(error?.response.data.data.message));
   }
 }
 
@@ -108,8 +111,8 @@ export function* signInSaga(action) {
   };
   try {
     let response = yield call(postApi, 'login', action.payload, header);
-   console.log(response?.data?.token,"?????>>>>response")
-   
+    //  console.log(response?.data?.token,"?????>>>>response")
+
     if (response?.status == 200) {
       yield put(signInSuccess(response?.data));
       yield put(getTokenSuccess(response?.data?.token));
@@ -145,14 +148,16 @@ export function* forgotPasswordSaga(action) {
       header,
     );
 
+    // console.log(response.data.data.otp_token, '>>>>>>>>???forgot');
+
     if (response?.status == 200) {
       yield put(forgotPasswordSuccess(response?.data));
       CustomToast(response?.data?.message);
       yield put(getTokenSuccess(response?.data?.token));
       yield call(
         AsyncStorage.setItem,
-        constants.APP_TOKEN,
-        response?.data?.token,
+        constants.FORGOT_TOKEN,
+        response.data.data.otp_token,
       );
     } else {
       yield put(forgotPasswordFailure(response?.data));
@@ -329,6 +334,59 @@ export function* changePasswordSaga(action) {
   }
 }
 
+export function* ResendOtpSaga(action) {
+  const getToken = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: getToken,
+  };
+  try {
+    let response = yield call(postApi, `resend-otp`, action.payload, header);
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(ResendOtpSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(ResendOtpFailure(response?.data));
+    }
+  } catch (error) {
+    // CustomToast(error?.response);
+    yield put(ResendOtpFailure(error?.response));
+    // CustomToast(error?.response?.data?.message);
+  }
+}
+
+export function* ResetPasswordSaga(action) {
+  // const getToken = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    // accessToken: getToken,
+  };
+  try {
+    let response = yield call(
+      postApi,
+      `reset-password`,
+      action.payload,
+      header,
+    );
+    // console.log(response,">??????????>>>")
+
+    if (response?.status == 200) {
+      yield put(ResetPasswordSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(ResetPasswordFailure(response?.data));
+    }
+  } catch (error) {
+    // CustomToast(error?.response);
+    yield put(ResetPasswordFailure(error?.response));
+    CustomToast(error?.response?.data?.message);
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('Auth/getTokenRequest', getTokenSaga);
@@ -369,6 +427,13 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('Auth/LogoutRequest', LogoutSaga);
+  })(),
+  (function* () {
+    yield takeLatest('Auth/ResendOtpRequest', ResendOtpSaga);
+  })(),
+
+  (function* () {
+    yield takeLatest('Auth/ResetPasswordRequest', ResetPasswordSaga);
   })(),
 ];
 

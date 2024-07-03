@@ -49,7 +49,7 @@ const ForgotPassword = (props) => {
   const closeModalRequest = () => {
     setIsModalVisible(false)
     setTimeout(() => {
-      props.navigation.navigate('OTPScreen', email)
+      props.navigation.navigate('OTPScreen',{email:email})
     }, 400)
   }
 

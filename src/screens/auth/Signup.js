@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import css, {height, width} from '../../themes/space';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/buttons/Button';
@@ -56,8 +56,6 @@ const Signup = props => {
   const validEmail = isValidEmail(signUpInfo.email);
   const validPhoneNumber = isValidPhoneNumber(signUpInfo.phone);
   const isValidPass = isValidPassword(signUpInfo.password);
-  
-  
 
   const handleSignup = () => {
     if (signUpInfo?.first_name == '') {
@@ -68,6 +66,8 @@ const Signup = props => {
       CustomToast('Please enter email');
     } else if (signUpInfo?.phone == '') {
       CustomToast('Please enter phone');
+    } else if (signUpInfo?.phone.length < 8 || signUpInfo?.phone.length > 16) {
+      CustomToast('Please enter valid phone');
     } else if (signUpInfo?.password == '') {
       CustomToast('Please enter password');
     } else if (signUpInfo?.confirmPassword == '') {
@@ -76,8 +76,6 @@ const Signup = props => {
       CustomToast("Password dosen't match");
     } else if (!validEmail) {
       CustomToast('Please enter valid email');
-    } else if (!validPhoneNumber) {
-      CustomToast('Please enter valid phone');
     } else if (!isValidPass) {
       CustomToast(
         'The passwords should contain at least one number, one capital letter, and one special character',
@@ -92,6 +90,8 @@ const Signup = props => {
     setSignUpInfo({...signUpInfo, [key]: value});
   };
 
+  
+  useEffect(()=>{
   if (signupStatus === '' || AuthReducer.status !== signupStatus) {
     switch (AuthReducer.status) {
       case 'Auth/signUpReq':
@@ -116,6 +116,7 @@ const Signup = props => {
         break;
     }
   }
+},[AuthReducer.status])
   const onModalHide = () => {
     // setTimeout(() => {
     //   props?.navigation.navigate("Login")

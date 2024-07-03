@@ -17,6 +17,8 @@ const initialState = {
   enableOrDisableNotificationRes: {},
   changePasswordRes: {},
   logoutRes: {},
+  resendOtpRes: {},
+  resetPasswordRes:{}
 };
 
 const AuthSlice = createSlice({
@@ -190,6 +192,30 @@ const AuthSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
+
+    ResendOtpRequest(state, action) {
+      state.status = action.type;
+    },
+    ResendOtpSuccess(state, action) {
+      state.resendOtpRes = action?.payload;
+      state.status = action.type;
+    },
+    ResendOtpFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    ResetPasswordRequest(state, action) {
+      state.status = action.type;
+    },
+    ResetPasswordSuccess(state, action) {
+      state.resetPasswordRes = action?.payload;
+      state.status = action.type;
+    },
+    ResetPasswordFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
   },
 });
 
@@ -243,6 +269,14 @@ export const {
   LogoutRequest,
   LogoutSuccess,
   LogoutFailure,
+
+  ResendOtpRequest,
+  ResendOtpSuccess,
+  ResendOtpFailure,
+
+  ResetPasswordRequest,
+  ResetPasswordSuccess,
+  ResetPasswordFailure,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

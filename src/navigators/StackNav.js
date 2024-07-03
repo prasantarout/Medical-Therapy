@@ -12,6 +12,7 @@ import Notification from '../screens/general/other/Notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../utils/constants';
 import {getTokenSuccess} from '../redux/reducer/AuthReducer';
+import ResetPassword from '../screens/auth/ResetPassword';
 
 const StackNav = ({props}) => {
   const Stack = createNativeStackNavigator();
@@ -26,6 +27,7 @@ const StackNav = ({props}) => {
           Signup: Signup,
           ForgotPassword: ForgotPassword,
           OTPScreen: OTPScreen,
+          ResetPassword:ResetPassword
         }
       : {
           BottomTab: BottomTab,
@@ -33,8 +35,7 @@ const StackNav = ({props}) => {
         };
 
   const initialRouteName = AuthReducer?.token == null ? 'Splash' : 'BottomTab';
-
-  useEffect(() => {
+   useEffect(() => {
     if (profileStatus === '' || AuthReducer.status !== profileStatus) {
       switch (AuthReducer.status) {
         case 'Auth/LogoutRequest':

@@ -1,5 +1,5 @@
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import css from '../../themes/space';
 import {colors} from '../../themes/colors';
 import AuthTemplate from '../../components/common/AuthTemplate';
@@ -7,10 +7,17 @@ import Button from '../../components/buttons/Button';
 import AuthHeader from '../../components/common/AuthHeader';
 import Txt from '../../components/micro/Txt';
 import {useDispatch, useSelector} from 'react-redux';
-import {verifyOtpRequest} from '../../redux/reducer/AuthReducer';
+import {
+  ResendOtpRequest,
+  verifyOtpRequest,
+} from '../../redux/reducer/AuthReducer';
 import normalize from '../../utils/normalize';
+import Loader from '../../utils/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import constants from '../../utils/constants';
 
 const OTPScreen = props => {
+  var emailField = props?.route?.params?.email ? props?.route?.params?.email:'';
   const [otp, setOtp] = useState(['', '', '', '']);
   const [isFocused, setIsFocused] = useState();
 
@@ -39,16 +46,56 @@ const OTPScreen = props => {
   // verifyOtpRequest,
   // verifyOtpSuccess,
   // verifyOtpFailure,
-  // console.log('asasas', otp.join(''));
 
-  const handleOTPVerification = () => {
-    dispatch(
-      verifyOtpRequest({
-        email: props?.route?.params,
+  const handleOTPVerification = async props => {
+    try {
+      const getToken = await AsyncStorage.getItem(constants.FORGOT_TOKEN);
+      let obj = {
+        email: emailField,
         otp: otp.join(''),
-      }),
-    );
+        token: getToken ? getToken : '',
+      };
+      dispatch(verifyOtpRequest(obj));
+    } catch (error) {
+      console.error('Error during OTP verification:', error);
+    }
   };
+
+  const handleResendOtp = async () => {
+    try {
+      const getToken = await AsyncStorage.getItem(constants.FORGOT_TOKEN);
+      let obj = {
+        email: emailField,
+        token: getToken ? getToken : '',
+      };
+      dispatch(ResendOtpRequest(obj));
+    } catch (error) {
+      console.error('Error during OTP verification:', error);
+    }
+  };
+
+  useEffect(() => {
+    let signupStatus = '';
+    if (signupStatus === '' || AuthReducer.status !== signupStatus) {
+      switch (AuthReducer.status) {
+        case 'Auth/verifyOtpRequest':
+          signupStatus = AuthReducer.status;
+          // console.log('initiated', AuthReducer.status);
+          // setIsLoading(true);
+          break;
+        case 'Auth/verifyOtpSuccess':
+          signupStatus = AuthReducer.status;
+          // console.log('initiated-success', AuthReducer.status);
+          props?.navigation.navigate('ResetPassword', emailField);
+          break;
+        case 'Auth/verifyOtpFailure':
+          signupStatus = AuthReducer.status;
+          // console.log('initiated-fail', AuthReducer.status);
+          // setIsLoading(false);
+          break;
+      }
+    }
+  }, [AuthReducer.status]);
 
   // Alert.alert('Verified')
   return (
@@ -56,6 +103,12 @@ const OTPScreen = props => {
       <AuthHeader
         headerText="Enter Verification Code"
         subHeaderText="Check Your Message: We've sent a verification code to your registered Email ID. Please enter the code below to verify your account. Thank you."
+      />
+      <Loader
+        visible={
+          AuthReducer.status === 'Auth/ResendOtpRequest' ||
+          AuthReducer.status === 'Auth/verifyOtpRequest'
+        }
       />
       <View style={[css.row, css.jcc]}>
         {otp.map((digit, index) => (
@@ -88,7 +141,7 @@ const OTPScreen = props => {
         <Txt style={[css.fs20, {color: colors.ternaryTextColor}]}>
           Didn't Receive OTP?
         </Txt>
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity activeOpacity={0.7} onPress={handleResendOtp}>
           <Txt
             style={[
               css.regular,

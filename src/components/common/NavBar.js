@@ -23,7 +23,9 @@ import useScreenDimension from '../../utils/useScreenDimension';
 import {widthToDp} from '../../utils/responsive';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {ProfileRequest, logoutRequest} from '../../redux/reducer/AuthReducer';
+import {LogoutRequest, ProfileRequest, getTokenSuccess} from '../../redux/reducer/AuthReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import constants from '../../utils/constants';
 
 let halfWidth = width / 2;
 let profileStatus = '';
@@ -66,25 +68,11 @@ const NavBar = props => {
   const handleLogout = () => {
     setLogoutModal(false);
     setTimeout(() => {
-      dispatch(logoutRequest());
+      dispatch(LogoutRequest());
     }, 500);
-    // logoutRequest
   };
 
-  if (profileStatus === '' || AuthReducer.status !== profileStatus) {
-    switch (AuthReducer.status) {
-      case 'Auth/ProfileRequest':
-        profileStatus = AuthReducer.status;
-        break;
-      case 'Auth/ProfileSuccess':
-        profileStatus = AuthReducer.status;
-        // console.log('ProfileInfo', AuthReducer.ProfileResponse?.data);
-        break;
-      case 'Auth/ProfileFailure':
-        profileStatus = AuthReducer.status;
-        break;
-    }
-  }
+
 
   return (
     <>

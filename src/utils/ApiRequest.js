@@ -33,6 +33,16 @@ export async function getApiWithParam(url, header, param) {
   });
 }
 
+export async function getApiWithUrlParam(url, header, param) {
+  return await axios.get(`${constants.BASE_URL}/${url}/${param}`, {
+    headers: {
+      Accept: header?.accept,
+      'Content-type': header?.contenttype,
+      Authorization: header?.accessToken,
+    },
+  });
+}
+
 export async function postApi(url, payload, header) {
   // console.log('url', url, payload, header);
   let response = await axios.post(`${constants.BASE_URL}/${url}`, payload, {

@@ -2,7 +2,6 @@ import {Dimensions, Platform, StatusBar, StyleSheet} from 'react-native';
 import normalize from '../utils/normalize';
 import {colors} from './colors';
 import {fonts} from './fonts';
-import useScreenDimension from '../utils/useScreenDimension';
 
 export const width = Dimensions.get('screen').width;
 export const height = Dimensions.get('screen').height;
@@ -33,10 +32,10 @@ const css = StyleSheet.create({
     backgroundColor: '#fff',
   },
   marginStatusBar: {
-    marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : null,
+    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : null,
   },
   paddingStatusBar: {
-    paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : null,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : null,
   },
   textLighte: {
     color: colors.ternaryTextColor,
@@ -479,6 +478,7 @@ const css = StyleSheet.create({
 
   w10: {width: '10%'},
   w20: {width: '20%'},
+  w25: {width: '25%'},
   w30: {width: '30%'},
   w33: {width: '33%'},
   w40: {width: '40%'},

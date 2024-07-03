@@ -111,6 +111,7 @@ const PendingEvaulation = () => {
           onPressActionButton={(value, index) => {
             navigation.navigate('EvaluationReview', {
               id: actualData?.[index]?.id,
+              status: actualData?.[index]?.status,
             });
           }}
           tableHeaderDataArr={headerDataArr}

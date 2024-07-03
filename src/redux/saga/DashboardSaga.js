@@ -1,5 +1,5 @@
 import {call, put, select, takeLatest} from 'redux-saga/effects';
-import {getApi, getApiWithParam, postApi} from '../../utils/ApiRequest';
+import {getApi, getApiWithUrlParam, postApi} from '../../utils/ApiRequest';
 
 import {
   getDashboardSuccess,
@@ -18,6 +18,8 @@ import {
   getPendingEvaulationFailure,
   getActivePatientSessionSuccess,
   getActivePatientSessionFailure,
+  getEvaluationReviewSuccess,
+  getEvaluationReviewFailure,
 } from '../reducer/DashboardReducer';
 
 let getItem = state => state.AuthReducer;
@@ -124,11 +126,7 @@ export function* getInactivePatientSaga(action) {
   };
 
   try {
-    let response = yield call(
-      getApiWithParam,
-      'dashboard-inactive-patients',
-      header,
-    );
+    let response = yield call(getApi, 'dashboard-inactive-patients', header);
     if (response?.data?.status == 200) {
       yield put(getInactivePatientSuccess(response?.data));
     } else {
@@ -210,6 +208,31 @@ export function* EvaluationEnrolmentSaga(action) {
   }
 }
 
+export function* getEvaluationReviewSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+
+  try {
+    let response = yield call(
+      getApiWithUrlParam,
+      'evaluation-list',
+      header,
+      action?.payload?.param,
+    );
+    if (response?.data?.status == 200) {
+      yield put(getEvaluationReviewSuccess(response?.data?.data));
+    } else {
+      yield put(getEvaluationReviewFailure(response?.data));
+    }
+  } catch (error) {
+    yield put(getEvaluationReviewFailure(error?.response));
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('Dashboard/getDashboardReq', getDashboardSaga);
@@ -245,6 +268,12 @@ const watchFunction = [
     yield takeLatest(
       'Dashboard/EvaluationEnrolmentReq',
       EvaluationEnrolmentSaga,
+    );
+  })(),
+  (function* () {
+    yield takeLatest(
+      'Dashboard/getEvaluationReviewReq',
+      getEvaluationReviewSaga,
     );
   })(),
 ];

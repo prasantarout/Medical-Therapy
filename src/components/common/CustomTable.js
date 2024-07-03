@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -32,7 +32,23 @@ const CustomTable = ({
   onBottomReach = () => {},
 }) => {
   const styles = customStyles({paddingBottom: paddingBottom});
-  const sortFunction = headerIndex => {};
+  const [sortLabel, setSortLabel] = useState(tableHeaderDataArr?.[0]?.label);
+  const [sortAssending, setSortAssending] = useState(false);
+
+  const sortDataFunction = () => {
+    let oldTableBodyDataArr = [...tableBodyDataArr];
+    oldTableBodyDataArr.sort((a, b) => {
+      return sortAssending
+        ? a?.[sortLabel].toLowerCase() > b?.[sortLabel].toLowerCase()
+          ? -1
+          : 1
+        : a?.[sortLabel].toLowerCase() < b?.[sortLabel].toLowerCase()
+        ? -1
+        : 1;
+    });
+    return oldTableBodyDataArr;
+  };
+
   return (
     <View style={styles.mainContainer}>
       <ScrollView
@@ -49,7 +65,12 @@ const CustomTable = ({
                     styles.tableHeaderTextContainer,
                     {width: Math.round(width / 12) * headerData.width},
                   ]}
-                  onPress={() => sortFunction(headerIndex)}
+                  onPress={() => {
+                    setSortLabel(headerData.label);
+                    setSortAssending(
+                      sortLabel === headerData?.label ? !sortAssending : true,
+                    );
+                  }}
                   key={headerIndex}>
                   <Text style={[styles.tableHeaderText, tableHeaderTextStyle]}>
                     {headerData.label}
@@ -87,7 +108,7 @@ const CustomTable = ({
           <View style={[styles.tableBodyContainer, tableBodyContainerStyle]}>
             {tableBodyDataArr.length > 0 ? (
               <FlatList
-                data={tableBodyDataArr}
+                data={sortDataFunction(tableBodyDataArr)}
                 renderItem={({item, index}) =>
                   TableRow(
                     item,

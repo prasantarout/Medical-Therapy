@@ -9,6 +9,7 @@ const initialState = {
   getActivePatientSessionResponse: [],
   getPendingEvaulationResponse: [],
   getCompletedEvaulationResponse: [],
+  getEvaluationReviewData: {},
   patientEnrolmentRes: {},
   evaluationRes: {},
 };
@@ -119,6 +120,18 @@ const DashboardSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
+
+    getEvaluationReviewReq(state, action) {
+      state.status = action.type;
+    },
+    getEvaluationReviewSuccess(state, action) {
+      state.getEvaluationReviewData = action?.payload;
+      state.status = action.type;
+    },
+    getEvaluationReviewFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
   },
 });
 
@@ -154,6 +167,10 @@ export const {
   EvaluationEnrolmentReq,
   EvaluationEnrolmentSuccess,
   EvaluationEnrolmentFailure,
+
+  getEvaluationReviewReq,
+  getEvaluationReviewSuccess,
+  getEvaluationReviewFailure,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

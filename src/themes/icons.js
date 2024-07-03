@@ -66,6 +66,8 @@ export const icons = {
   delete: require('../assets/icons/delete.png'),
   sortIcon: require('../assets/icons/sortIcon.png'),
   hourglass: require('../assets/icons/hourglass.png'),
+  radioActive: require('../assets/icons/radioActive.png'),
+  radioInactive: require('../assets/icons/radioInactive.png'),
   // Animations
   waves: require('../assets/json/waves.json'),
   heart: require('../assets/json/heart.json'),

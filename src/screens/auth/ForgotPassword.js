@@ -58,7 +58,9 @@ const ForgotPassword = (props) => {
       <SafeAreaView style={[css.f1, { backgroundColor: colors.bgColor }]}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} 
+          contentContainerStyle={{height:'100%'}}
+          >
             <AuthHeader
               headerText="Forgot password"
               subHeaderText="Please enter your email to reset your password."

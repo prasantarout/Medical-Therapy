@@ -6,6 +6,9 @@ const initialState = {
   getPatientResponse: {},
   getPatientSessionResponse: {},
   getPatientSessionDetailsResponse: {},
+  getMyPatientResponse: {},
+  getMyPatientSessionResponse: {},
+  getMyPatientSessionDetailsResponse: {},
   storeServiceEnrolmentRes: {},
   getListOfTherapiesRes: {},
   getListOfSatisfactionRes: {},
@@ -52,6 +55,45 @@ const PATIENTSlice = createSlice({
       state.status = action.type;
     },
     getPatientSessionDetailsFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    //My Patient
+    getMyPatientReq(state, action) {
+      state.status = action.type;
+    },
+    getMyPatientSuccess(state, action) {
+      state.getMyPatientResponse = action?.payload;
+      state.status = action.type;
+    },
+    getMyPatientFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    // My Patient Session
+    getMyPatientSessionReq(state, action) {
+      state.status = action.type;
+    },
+    getMyPatientSessionSuccess(state, action) {
+      state.getMyPatientSessionResponse = action?.payload;
+      state.status = action.type;
+    },
+    getMyPatientSessionFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    // My Patient Session Details
+    getMyPatientSessionDetailsReq(state, action) {
+      state.status = action.type;
+    },
+    getMyPatientSessionDetailsSuccess(state, action) {
+      state.getMyPatientSessionDetailsResponse = action?.payload;
+      state.status = action.type;
+    },
+    getMyPatientSessionDetailsFailure(state, action) {
       state.error = action.error;
       state.status = action.type;
     },
@@ -135,6 +177,18 @@ export const {
   clearQuestionListReq,
   clearQuestionListSuccess,
 
+  getMyPatientReq,
+  getMyPatientSuccess,
+  getMyPatientFailure,
+
+  getMyPatientSessionReq,
+  getMyPatientSessionSuccess,
+  getMyPatientSessionFailure,
+
+  getMyPatientSessionDetailsReq,
+  getMyPatientSessionDetailsSuccess,
+  getMyPatientSessionDetailsFailure,
+
   getPatientReq,
   getPatientSuccess,
   getPatientFailure,
@@ -162,7 +216,6 @@ export const {
   satisfactionQuestionListReq,
   satisfactionQuestionListSuccess,
   satisfactionQuestionListFailure,
-
 
   submitEvaluationReq,
   submitEvaluationSuccess,

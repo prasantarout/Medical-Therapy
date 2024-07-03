@@ -129,7 +129,9 @@ const Signup = props => {
       <SafeAreaView style={[css.f1, {backgroundColor: colors.bgColor}]}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} 
+          contentContainerStyle={{height:'100%'}}
+          >
             <AuthHeader
               headerText="Therapist Sign Up"
               subHeaderText="Please fill up this form to create your account."

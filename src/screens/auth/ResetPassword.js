@@ -25,7 +25,7 @@ import {isValidPassword} from '../../utils/Validation';
 import Loader from '../../utils/Loader';
 
 const ResetPassword = props => {
-  var emailField = props.route.params ? props.route.params:'';
+  var emailField = props.route.params ? props.route.params : '';
   const AuthReducer = useSelector(state => state.AuthReducer);
   const dispatch = useDispatch();
   const [isSecureConfrmPass, setIsSecureConfrmPass] = useState(true);
@@ -37,7 +37,7 @@ const ResetPassword = props => {
     confirmPassword: '',
   });
 
-  console.log(signUpInfo,"?????????>>>>")
+  //   console.log(signUpInfo,"?????????>>>>")
 
   const handleInputChange = (key, value) => {
     setSignUpInfo({...signUpInfo, [key]: value});
@@ -112,7 +112,7 @@ const ResetPassword = props => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{height:'100%'}}>
+            contentContainerStyle={{height: '100%'}}>
             <AuthHeader
               headerText="Reset Password"
               //   subHeaderText="Please fill up this form to create your account."
@@ -129,7 +129,6 @@ const ResetPassword = props => {
                 value={signUpInfo.password}
                 onChangeText={text => handleInputChange('password', text)}
               />
-
               <Input
                 title="Confirm Password"
                 placeholder="**************"

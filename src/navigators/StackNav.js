@@ -35,7 +35,9 @@ const StackNav = ({props}) => {
         };
 
   const initialRouteName = AuthReducer?.token == null ? 'Splash' : 'BottomTab';
-   useEffect(() => {
+  
+  
+  useEffect(() => {
     if (profileStatus === '' || AuthReducer.status !== profileStatus) {
       switch (AuthReducer.status) {
         case 'Auth/LogoutRequest':
@@ -60,6 +62,7 @@ const StackNav = ({props}) => {
       props?.navigation.navigate('Login');
     }
   }, [AuthReducer.token, profileStatus]);
+
 
   if (AuthReducer?.isLoading) {
     return <Splash />;

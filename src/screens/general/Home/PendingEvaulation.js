@@ -44,9 +44,14 @@ const PendingEvaulation = () => {
   const dispatch = useDispatch();
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [tableBodyDataArr, setTableBodyDataArr] = useState([]);
+  const [actualData, setActualData] = useState([]);
 
   const tableFormatConvert = () => {
     let formattedData = [];
+    setActualData([
+      ...actualData,
+      ...DashboardReducer?.getPendingEvaulationResponse?.data,
+    ]);
     DashboardReducer?.getPendingEvaulationResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};
@@ -104,13 +109,15 @@ const PendingEvaulation = () => {
         <CustomTable
           actionButtonText={'View Details'}
           onPressActionButton={(value, index) => {
-            // console.log(value, index);
+            navigation.navigate('EvaluationReview', {
+              id: actualData?.[index]?.id,
+              status: actualData?.[index]?.status,
+            });
           }}
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}
           tableBodyDataArr={tableBodyDataArr}
         />
-        {/* {console.log(tableBodyDataArr,">>>>>?>>>")} */}
       </View>
     </SafeView>
   );

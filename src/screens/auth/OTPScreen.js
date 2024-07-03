@@ -98,6 +98,9 @@ const OTPScreen = props => {
   }, [AuthReducer.status]);
 
   // Alert.alert('Verified')
+
+
+
   return (
     <View style={[css.f1, css.py11, css.px16]}>
       <AuthHeader

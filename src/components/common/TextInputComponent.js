@@ -16,6 +16,7 @@ const TextInputComponent = ({question, onChangeText}) => {
         style={styles.input}
         onChangeText={onChangeText}
         placeholder="Type..."
+        placeholderTextColor={colors.secondaryTextColor}
       />
     </View>
   );
@@ -35,11 +36,12 @@ const styles = StyleSheet.create({
   },
   input: {
     borderColor: '#ccc',
-    borderRadius: 5,
+    // borderRadius: 5,
     padding: normalize(7),
     marginBottom: 10,
     borderBottomWidth: 1,
     fontSize: normalize(7),
+    color:colors.secondaryTextColor
   },
   messageBox: {
     borderColor: '#ccc',

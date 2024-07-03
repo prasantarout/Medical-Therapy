@@ -3,6 +3,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -266,7 +267,8 @@ const PatientSession = props => {
                   css.jcc,
                   css.aifs,
                   css.w100,
-                  {height: height - normalize(130)},
+                Platform.OS === 'ios'
+                  ? {height: height - normalize(130)}:0,
                 ]}>
                 <FlatList
                   data={sessionData}
@@ -276,6 +278,7 @@ const PatientSession = props => {
                     fetchData(pageNo);
                     setPageNo(pageNo + 1);
                   }}
+                  // contentContainerStyle={{paddingBottom: normalize(150),flex:1}}
                 />
               </View>
             ) : (

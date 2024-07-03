@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     bottom: -normalize(12),
   },
   radioIconContainer: {
-    width: normalize(20),
+    width: normalize(24),
     marginBottom: normalize(10),
     justifyContent: 'center',
     alignItems: 'center',

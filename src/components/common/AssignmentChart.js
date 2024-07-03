@@ -10,6 +10,7 @@ import Txt from '../micro/Txt';
 import {LineChart} from 'react-native-gifted-charts';
 import useOrientation from '../../utils/useOrientation';
 import {Text} from 'react-native-svg';
+import { colors } from '../../themes/colors';
 
 const AssignmentChart = ({dataItem}) => {
   const [lineChartData, setLineChartData] = useState([]);
@@ -77,6 +78,11 @@ const AssignmentChart = ({dataItem}) => {
             dataPointsColor3={color3}
             textShiftY={-2}
             textShiftX={-5}
+            // xAxisThickness={1}
+            // yAxisThickness={0}
+            yAxisTextStyle={[css.textPrimary]}
+            xAxisLabelTextStyle={{color:colors.ternaryTextColor}}
+
             textFontSize={13}
             rulesType="solid"
             maxValue={100}

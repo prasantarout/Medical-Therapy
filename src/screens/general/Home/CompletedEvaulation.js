@@ -114,7 +114,7 @@ const CompletedEvaulation = () => {
           tableHeaderDataArr={headerDataArr}
           // tableBodyDataArr={bodyDataArr}
           tableBodyDataArr={tableBodyDataArr}
-          paddingBottom={100}
+          paddingBottom={normalize(100)}
         />
       </View>
     </SafeView>

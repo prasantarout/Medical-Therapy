@@ -294,6 +294,8 @@ const ServiceEnrollment = props => {
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
                   inputSearchStyle={styles.inputSearchStyle}
+                  itemTextStyle={styles.itemTextStyle}
+
                   iconStyle={styles.iconStyle}
                   data={
                     PatientReducer?.getListOfSatisfactionRes?.data?.length > 0
@@ -478,5 +480,9 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: normalize(40),
     fontSize: normalize(14),
+    color:'red'
   },
+  itemTextStyle:{
+    color:colors.ternaryTextColor
+  }
 });

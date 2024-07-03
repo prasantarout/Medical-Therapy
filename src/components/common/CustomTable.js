@@ -222,7 +222,7 @@ const customStyles = ({paddingBottom}) =>
       tintColor: colors.primaryTextColor,
     },
     tableBodyContainer: {
-      height: height - normalize(155) - paddingBottom,
+      height: height - normalize(155) - paddingBottom-20,
     },
     tableBodyRowContainer: {
       flexDirection: 'row',

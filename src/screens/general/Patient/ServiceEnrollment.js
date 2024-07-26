@@ -56,9 +56,8 @@ const ServiceEnrollment = props => {
   const [errors, setErrors] = useState({});
   const PatientReducer = useSelector(state => state.PatientReducer);
   const AuthReducer = useSelector(state => state.AuthReducer);
-  // console.log(PatientReducer?.questionListRes, '?????>>>>denmak');
   const data = props?.route?.params?.data;
-  // console.log(data,"??????>>>ress")
+  const tags = ['Satisfied', 'Need Improvement', 'Not Satisfied', 'Great'];
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -221,6 +220,9 @@ const ServiceEnrollment = props => {
     }
   }, [PatientReducer?.status]);
 
+  const hasNumberRatingQuestions =
+    sortedQuestions?.length > 0 &&
+    sortedQuestions.some(question => question.type === 'number_rating');
   const ValueField = props => {
     return (
       <View style={styles.ValueField}>
@@ -295,7 +297,6 @@ const ServiceEnrollment = props => {
                   selectedTextStyle={styles.selectedTextStyle}
                   inputSearchStyle={styles.inputSearchStyle}
                   itemTextStyle={styles.itemTextStyle}
-
                   iconStyle={styles.iconStyle}
                   data={
                     PatientReducer?.getListOfSatisfactionRes?.data?.length > 0
@@ -327,6 +328,15 @@ const ServiceEnrollment = props => {
               </View>
             </View>
             <View style={styles.container}>
+              {hasNumberRatingQuestions && (
+                <View style={styles.tagsContainer}>
+                  {tags.map((tag, index) => (
+                    <Text key={index} style={styles.tag}>
+                      {tag}
+                    </Text>
+                  ))}
+                </View>
+              )}
               {categoryItem &&
                 sortedQuestions?.length > 0 &&
                 sortedQuestions.map(question => {
@@ -480,9 +490,22 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: normalize(40),
     fontSize: normalize(14),
-    color:'red'
+    color: 'red',
   },
-  itemTextStyle:{
-    color:colors.ternaryTextColor
-  }
+  itemTextStyle: {
+    color: colors.ternaryTextColor,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    marginBottom: normalize(5),
+    justifyContent: 'flex-end',
+    // gap:normalize(28)
+  },
+  tag: {
+    fontSize: normalize(5),
+    fontFamily: fonts.Regular,
+    color: '#000000',
+    textAlign: 'center',
+    marginHorizontal: normalize(6),
+  },
 });

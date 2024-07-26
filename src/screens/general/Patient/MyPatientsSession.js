@@ -57,10 +57,12 @@ const MyPatientsSession = () => {
 
   const tableFormatConvert = () => {
     let formattedData = [];
-    setActualData([
-      ...actualData,
-      ...PatientReducer?.getMyPatientSessionResponse?.data,
-    ]);
+
+    // setActualData([
+    //   ...actualData,
+    //   ...PatientReducer?.getMyPatientSessionResponse?.data,
+    // ]);
+
     PatientReducer?.getMyPatientSessionResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};
@@ -68,7 +70,6 @@ const MyPatientsSession = () => {
         row[headerDataArr[1].label] = bodyDataRow?.receipt_time || 'N/A';
         row[headerDataArr[2].label] = bodyDataRow?.device || 'N/A';
         row[headerDataArr[3].label] = bodyDataRow?.duration || 'N/A';
-
         formattedData.push(row);
       },
     );
@@ -77,6 +78,7 @@ const MyPatientsSession = () => {
 
   useEffect(() => {
     if (isFocused) {
+      setPageNo(0);
       dispatch(getMyPatientSessionReq({page_no: 0, ecn: route?.params?.ecn}));
     }
   }, [isFocused]);

@@ -108,16 +108,16 @@ const Home = props => {
         <View style={[css.row, css.jcse]}>
           <ScoreCard
             title="Service Score"
-            value={DashboardReducer?.getDashboardResponse?.data?.service_score}
+            value={0}
           />
-          {console.log(
+          {/* {console.log(
             DashboardReducer?.getDashboardResponse?.data,
             '??????>>>>sedd',
-          )}
+          )} */}
           <ScoreCard
             title="Evaluation Score"
             value={
-              DashboardReducer?.getDashboardResponse?.data?.evaluation_score
+              0
             }
             strokeColor="#14BEF0"
           />

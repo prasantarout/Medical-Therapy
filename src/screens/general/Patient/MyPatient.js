@@ -165,6 +165,10 @@ const MyPatient = props => {
           navigation.navigate('ServiceEnrollment', {data: item}),
             dispatch(clearQuestionListReq({}));
         }}
+        // navigateTo={() => {
+        //   navigation.navigate('FlatListView')
+        //     // dispatch(clearQuestionListReq({}));
+        // }}
         navigateTo1={() =>
           navigation.navigate('MyPatientsSession', {
             ecn: item?.ecn,
@@ -274,7 +278,7 @@ const MyPatient = props => {
               </View>
             ) : null}
           </View>
-          {console.log('patientInfo', patientInfo)}
+          {/* {console.log('patientInfo', patientInfo)} */}
           <FlatList
             numColumns={numColumns}
             key={numColumns}

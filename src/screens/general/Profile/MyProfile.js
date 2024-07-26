@@ -66,6 +66,9 @@ const MyProfile = props => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
 
+
+  // console.log(AuthReducer.ProfileResponse,">>>>>>>>????>>>>")
+
   useEffect(() => {
     setIsEditable(false);
     dispatch(ProfileRequest());
@@ -240,7 +243,9 @@ const MyProfile = props => {
         break;
     }
   }
-  return (
+
+
+ return (
     <>
       <SafeView {...props}>
         <KeyboardAvoidingView

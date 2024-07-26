@@ -1,12 +1,15 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import normalize from '../../utils/normalize';
 
 const CustomRadioButton = ({selected}) => {
   return (
-    <View style={[styles.radioButton, selected && styles.selectedRadioButton]}>
-      {selected && <View style={styles.radioButtonInner} />}
-    </View>
+    <>
+      <View
+        style={[styles.radioButton, selected && styles.selectedRadioButton]}>
+        {selected && <View style={styles.radioButtonInner} />}
+      </View>
+    </>
   );
 };
 

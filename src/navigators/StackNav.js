@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../utils/constants';
 import {getTokenSuccess} from '../redux/reducer/AuthReducer';
 import ResetPassword from '../screens/auth/ResetPassword';
+import FlatList from '../screens/general/Home/FlatList';
 
 const StackNav = ({props}) => {
   const Stack = createNativeStackNavigator();
@@ -32,6 +33,8 @@ const StackNav = ({props}) => {
       : {
           BottomTab: BottomTab,
           Notification: Notification,
+          
+        
         };
 
   const initialRouteName = AuthReducer?.token == null ? 'Splash' : 'BottomTab';

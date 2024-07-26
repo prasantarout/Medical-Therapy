@@ -7,6 +7,7 @@ import CustomRadio from './CustomRadio';
 const RadioQuestionComponent = ({question, selectedValue, onSelect}) => {
   const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const isImportant = true;
+  const tags = ['Not Satisfied', 'Need Improvement', 'Satisfied', 'Great'];
 
   const handleRadioSelect = (questionId, option) => {
     const selectedOptionIndex = options.indexOf(option);
@@ -14,7 +15,7 @@ const RadioQuestionComponent = ({question, selectedValue, onSelect}) => {
     onSelect(questionId, selectedOptions);
   };
   const selectedOptions = Array.isArray(selectedValue) ? selectedValue : [];
-
+    
   return (
     <View style={styles.questionContainer}>
       <View style={styles.titleContainer}>
@@ -68,4 +69,5 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 5,
   },
+
 });

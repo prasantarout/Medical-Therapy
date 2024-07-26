@@ -117,6 +117,8 @@ const Login = props => {
   const handleInputChange = (key, value) => {
     setsignInInfo({...signInInfo, [key]: value});
   };
+ 
+ 
   return (
     <>
       {/* <LoaderAnimated isVisible={loading} /> */}

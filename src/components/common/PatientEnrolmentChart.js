@@ -17,7 +17,7 @@ const PatientEnrolmentChart = ({dataItem}) => {
     setBarChartData(getFormattedData(dataItem));
   }, [dataItem, selectedyear]);
 
-  console.log(barChartData,">>>>>>>>??>>>>barchart")
+  // console.log(barChartData,">>>>>>>>??>>>>barchart")
 
   return (
     <View style={[styles.patientEnrollment, css.mt4]}>

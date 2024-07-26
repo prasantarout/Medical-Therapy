@@ -117,7 +117,8 @@ const Signup = props => {
     }
   }
 },[AuthReducer.status])
-  const onModalHide = () => {
+
+const onModalHide = () => {
     // setTimeout(() => {
     //   props?.navigation.navigate("Login")
     // }, 900)

@@ -95,8 +95,9 @@ export function* verifyOtpsaga(action) {
       CustomToast(response?.data?.message);
     }
   } catch (error) {
-    console.log('Catch', error);
-    yield put(verifyOtpFailure(error?.response.data.data.message));
+    // console.log('Catch', error?.response.data);
+    yield put(verifyOtpFailure(error?.response));
+    CustomToast(error?.response?.data?.message);
   }
 }
 
@@ -164,7 +165,7 @@ export function* forgotPasswordSaga(action) {
     }
   } catch (error) {
     yield put(forgotPasswordFailure(error?.response));
-    CustomToast(error?.response?.data?.message);
+    CustomToast(error?.response?.data?.data?.message);
   }
 }
 

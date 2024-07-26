@@ -8,45 +8,58 @@ import {fonts} from '../../themes/fonts';
 const QuestionComponent = ({question, selectedValue, onSelect}) => {
   const options = ['1', '2', '3', '4'];
   const isImportant = true;
+  const tags = ['Not Satisfied', 'Need Improvement', 'Satisfied', 'Great'];
 
   return (
-    <View style={styles.questionContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{question.title}</Text>
-        {isImportant && <Text style={styles.importantMark}>*</Text>}
+    <>
+      <View style={styles.questionWrapper}>
+        <View style={styles.questionContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{question.title}</Text>
+            {isImportant && <Text style={styles.importantMark}>*</Text>}
+          </View>
+          <View style={styles.radioContainer}>
+            {options.map(option => (
+              <TouchableOpacity
+                key={option}
+                style={styles.radioButton}
+                onPress={() => onSelect(question.id, option)}>
+                <CustomRadioButton selected={selectedValue === option} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
       </View>
-      <View style={styles.radioContainer}>
-        {options.map(option => (
-          <TouchableOpacity
-            key={option}
-            style={styles.radioButton}
-            onPress={() => onSelect(question.id, option)}>
-            <CustomRadioButton selected={selectedValue === option} />
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
+    </>
   );
 };
 
 export default QuestionComponent;
 
 const styles = StyleSheet.create({
-  questionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  questionWrapper: {
     marginBottom: 20,
     padding: 10,
     borderBottomWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#f9f9f9',
   },
-  importantMark: {
-    fontSize: normalize(6),
-    color: 'red',
-    marginLeft: 5,
+  // tagsContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-around',
+  //   marginBottom: normalize(5),
+  // },
+  tag: {
+    fontSize: normalize(5),
+    fontFamily: fonts.Regular,
+    color: '#000000',
+    textAlign: 'center',
+    flex: 1,
   },
-
+  questionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   titleContainer: {
     flex: 2,
     flexDirection: 'row',
@@ -57,10 +70,15 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: fonts.SemiBold,
   },
+  importantMark: {
+    fontSize: normalize(6),
+    color: 'red',
+    marginLeft:5,
+  },
   radioContainer: {
-    flex: 2,
+    flex:2.5,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   radioButton: {
     flexDirection: 'row',

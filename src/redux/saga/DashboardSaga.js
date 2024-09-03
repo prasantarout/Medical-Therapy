@@ -54,7 +54,6 @@ export function* patientEnrolmentSaga(action) {
     contenttype: 'application/json',
     accessToken: `Bearer ${item?.token}`,
   };
-
   try {
     let response = yield call(getApi, 'barchat-data', header);
     // console.log(response.data, '>>>>>>?????Sss>>>>>>');

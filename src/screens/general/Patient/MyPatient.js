@@ -63,8 +63,7 @@ const MyPatient = props => {
 
   const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
 
-
- const Modalinfo = ({title, value}) => {
+  const Modalinfo = ({title, value}) => {
     return (
       <View style={[css.row, css.aic]}>
         <Txt style={styles.title}>{title}</Txt>
@@ -86,6 +85,10 @@ const MyPatient = props => {
     }
   };
 
+  console.log(
+    PatientReducer.getMyPatientResponse?.data?.data,
+    '>>>>>????>>>ss',
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -152,13 +155,21 @@ const MyPatient = props => {
   const PatientsRenderItem = ({item, index}) => {
     return (
       <PatientCard
-        onPress={() => {
-          setModalVisible(true);
-          setModalInfo(item);
-        }}
+        // onPress={() => {
+        //   setModalVisible(true);
+        //   setModalInfo(item);
+        // }}
         name={item.full_name}
-        location={item.location}
-        date={item?.setupDate}
+        medicalDevices={
+          item?.resmeduser?.device_serial_no +
+          '  ' +
+          item?.resmeduser?.device_type_desc
+        }
+        nextVisit={item?.next_visit_date}
+        complaints={item?.compliance_percentage}
+        PMDue={item?.pm_due_date}
+        location={item?.city_address?.slice(0, 20) + '...'}
+        date={moment(item?.dob).format('MM-DD-YYYY')}
         image={item?.profile_photo_url}
         Button={true}
         navigateTo={() => {
@@ -169,12 +180,10 @@ const MyPatient = props => {
         //   navigation.navigate('FlatListView')
         //     // dispatch(clearQuestionListReq({}));
         // }}
-        navigateTo1={() =>
-          navigation.navigate('MyPatientsSession', {
-            ecn: item?.ecn,
-            full_name: item?.full_name,
-          })
-        }
+        navigateTo1={() => {
+          setModalVisible(true);
+          setModalInfo(item);
+        }}
         style={{
           width: orientation == 'LANDSCAPE' ? width / 4 - 18 : width / 3 - 23,
           marginLeft:
@@ -356,7 +365,7 @@ const MyPatient = props => {
                   }}
                 />
               </View>
-
+              {/* {console.log(modalInfo, '>>>>>>>>>info')} */}
               <View style={[css.ml5, css.jcc]}>
                 <Modalinfo title="Name:" value={modalInfo?.full_name} />
                 <Divider style={[styles.dividerGap]} />
@@ -367,12 +376,103 @@ const MyPatient = props => {
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="Email Address:"
-                  value={modalInfo?.email ? modalInfo?.email : 'N/A'}
+                  value={
+                    modalInfo?.email_address ? modalInfo?.email_address : 'N/A'
+                  }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="Location:"
-                  value={modalInfo?.location ? modalInfo?.location : 'N/A'}
+                  value={
+                    modalInfo?.city_address
+                      ? modalInfo?.city_address.slice(0, 6)
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Devices:"
+                  value={
+                    modalInfo?.resmeduser?.device_type_desc
+                      ? modalInfo?.resmeduser?.device_type_desc
+                      : 'N/A'
+                  }
+                />
+
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Device Serial No:"
+                  value={
+                    modalInfo?.resmeduser?.device_serial_no
+                      ? modalInfo?.resmeduser?.device_serial_no
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Mask:"
+                  value={
+                    modalInfo?.resmeduser?.mask_size
+                      ? modalInfo?.resmeduser?.mask_size
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Setup Date:"
+                  value={
+                    modalInfo?.resmeduser?.setupDate
+                      ? modalInfo?.resmeduser?.setupDate
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Last Visit:"
+                  value={
+                    modalInfo?.resmeduser?.last_visit_date
+                      ? modalInfo?.resmeduser?.last_visit_date
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Next Visit Date:"
+                  value={
+                    modalInfo?.resmeduser?.next_visit_date
+                      ? modalInfo?.resmeduser?.next_visit_date
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="PM Due:"
+                  value={modalInfo?.pm_due ? modalInfo?.pm_due : 'N/A'}
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Compliance:"
+                  value={
+                    modalInfo?.compliance_percentage
+                      ? modalInfo?.compliance_percentage + '%'
+                      : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Total Sessions:"
+                  value={
+                    modalInfo?.total_session ? modalInfo?.total_session : 'N/A'
+                  }
+                />
+                <Divider style={[styles.dividerGap]} />
+                <Modalinfo
+                  title="Total Usage(min):"
+                  value={
+                    modalInfo?.total_usage_time
+                      ? modalInfo?.total_usage_time
+                      : 'N/A'
+                  }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo

@@ -5,7 +5,7 @@ import {fonts} from '../../themes/fonts';
 
 const Txt = props => {
   return (
-    <Text allowFontScaling={false} style={[styles.defaultStyle, props.style]}>
+    <Text allowFontScaling={false} style={[styles.defaultStyle, props.style]} >
       {props.children}
     </Text>
   );

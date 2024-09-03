@@ -38,12 +38,16 @@ const PatientCard = props => {
     onPress,
     navigateTo,
     style,
-    navigateTo1
+    navigateTo1,
+    nextVisit,
+    PMDue,
+    complaints,
+    medicalDevices
   } = props;
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={onPress}
+      // onPress={onPress}
       style={[styles.mainCard, style]}>
       {image ? (
         <ImageBackground
@@ -65,12 +69,29 @@ const PatientCard = props => {
         )}
       </View>
       <View style={[css.row, css.aic, css.mb1]}>
-        <Image source={icons.Location} style={styles.IconStyle} />
-        <Txt style={styles.subTxt}>{location}</Txt>
+        <Text style={styles.subTxt}>Next Visit:</Text>
+        <Txt style={styles.subTxt} >{nextVisit ? nextVisit:'N/A'}</Txt>
       </View>
       <View style={[css.row, css.aic, css.mb1]}>
-        <Image source={icons.Calendar} style={styles.IconStyle} />
-        <Txt style={styles.subTxt}>{date}</Txt>
+         <Text style={styles.subTxt}>PM Due:</Text>
+        <Txt style={styles.subTxt} >{PMDue ? PMDue:'N/A'}</Txt>
+      </View>
+      <View style={[css.row, css.aic, css.mb1]}>
+        <Image source={icons.Location} style={styles.IconStyle} />
+        <Txt style={styles.subTxt} >{location}</Txt>
+      </View>
+      <View style={[css.row, css.aic, css.mb1]}>
+        <Image source={icons.devices} style={styles.IconStyle} />
+        <Txt style={styles.subTxt}>{medicalDevices}</Txt>
+      </View>
+      <View style={[css.row, css.aic, css.mb1]}>
+        <Image source={icons.masks} style={styles.IconStyle} />
+        <Txt style={styles.subTxt}>{'N/A'}</Txt>
+      </View>
+      <View style={[css.row, css.aic, css.mb1]}>
+      <Text style={styles.subTxt}>Compliant : </Text>
+         <Image source={icons.close} style={styles.IconStyle}/>
+        <Txt style={styles.subTxt}>{complaints ? complaints:'0'} %</Txt>
       </View>
       {time ? (
         <View style={[css.row, css.aic]}>
@@ -80,7 +101,7 @@ const PatientCard = props => {
       ) : null}
       {Button && (
         <TouchableOpacity onPress={navigateTo1} style={[styles.btn]}>
-          <Txt style={[styles.btnTxt]}>View Session</Txt>
+          <Txt style={[styles.btnTxt]}>Patient Details</Txt>
         </TouchableOpacity>
       )}
       {Button && (
@@ -120,7 +141,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SemiBold,
   },
   IconStyle: {
-    height: 20,
+    height:20,
     width: 20,
     resizeMode: 'contain',
   },
@@ -128,6 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: normalize(4),
     color: '#444444',
+    
   },
   btn: {
     justifyContent: 'center',

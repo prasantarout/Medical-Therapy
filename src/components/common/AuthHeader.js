@@ -7,6 +7,7 @@ import css from '../../themes/space';
 import {images} from '../../themes/images';
 import Txt from '../micro/Txt';
 import useScreenDimension from '../../utils/useScreenDimension';
+import { icons } from '../../themes/icons';
 
 const AuthHeader = props => {
   const {screenWidth, screenHeight} = useScreenDimension();
@@ -23,7 +24,7 @@ const AuthHeader = props => {
           },
         ]}
         >
-        <Image style={[styles.logo]} source={images.logo} />
+        <Image style={[styles.logo]} source={icons.vyb} />
       </View>
       <Txt style={styles.headerText}>{props?.headerText}</Txt>
       <Txt style={[styles.subHeaderText]}>{props?.subHeaderText}</Txt>

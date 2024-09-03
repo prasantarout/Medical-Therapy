@@ -11,4 +11,5 @@ export const colors = {
   bgColor: '#F8FAFD',
   searchPlaceholder: '#8D97A5',
   borderColor: '#e5e5e5',
+  lightWhite:'#cacfd2'
 };

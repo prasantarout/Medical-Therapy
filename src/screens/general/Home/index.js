@@ -11,7 +11,7 @@ import {
   patientEnrolmentReq,
 } from '../../../redux/reducer/DashboardReducer';
 import TitleTxt from '../../../components/common/TitleTxt';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import ScoreCard from '../../../components/common/ScoreCard';
 import css, {width} from '../../../themes/space';
 import HeaderTitle from '../../../components/common/HeaderTitle';
@@ -25,6 +25,7 @@ import {colors} from '../../../themes/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getTokenSuccess} from '../../../redux/reducer/AuthReducer';
 import constants from '../../../utils/constants';
+import CalendarScreen from '../../../components/common/CalendarScreen';
 
 let dashboardStatus = '';
 
@@ -36,6 +37,7 @@ const Home = props => {
   const DashboardReducer = useSelector(state => state.DashboardReducer);
   const [sessionsData, setSessionsData] = useState([]);
   const AuthReducer = useSelector(state => state?.AuthReducer);
+
   useEffect(() => {
     let obj = {
       date: moment(new Date()).format('YYYY-MM-DD').toString,
@@ -45,6 +47,8 @@ const Home = props => {
     dispatch(patientEnrolmentReq());
     dispatch(EvaluationEnrolmentReq());
   }, [isFocused]);
+
+  // console.log(AuthReducer,">>>>>>>???>>>")
 
   let paddingLast = {paddingRight: orientation === 'PORTRAIT' ? 0 : 16};
   let paddingRight = {paddingRight: orientation === 'PORTRAIT' ? 16 : 0};
@@ -68,7 +72,19 @@ const Home = props => {
     }
   }
 
- 
+  useEffect(() => {
+    const setAndGetSessionValue = async () => {
+      try {
+        await AsyncStorage.setItem('sessionValue', JSON.stringify(true));
+        const sessionValue = await AsyncStorage.getItem('sessionValue');
+        // console.log(typeof sessionValue, '??????>>>>sss');
+      } catch (error) {
+        console.error('Error setting or getting session value', error);
+      }
+    };
+    setAndGetSessionValue();
+  }, []);
+
   // useEffect(() => {
   //   let profileStatus = '';
   //   if (profileStatus === '' || AuthReducer.status !== profileStatus) {
@@ -106,91 +122,16 @@ const Home = props => {
       <View style={[css.f1, css.p4]}>
         <HeaderTitle title="Dashboard" />
         <View style={[css.row, css.jcse]}>
-          <ScoreCard
-            title="Service Score"
-            value={0}
-          />
+          <ScoreCard title="Service Score" value={0} />
           {/* {console.log(
             DashboardReducer?.getDashboardResponse?.data,
             '??????>>>>sedd',
           )} */}
-          <ScoreCard
-            title="Evaluation Score"
-            value={
-              0
-            }
-            strokeColor="#14BEF0"
-          />
+          <ScoreCard title="Evaluation Score" value={0} strokeColor="#14BEF0" />
         </View>
         <View style={[styles.quickCounter, css.mt4]}>
           <TitleTxt title="Quick Counter" />
           <View style={[css.row, css.jcsb, css.fw, css.mt4, css.f1]}>
-            <View
-              style={[
-                styles.counterCardStyle,
-                styles.counterPadding,
-                counterCardWidth,
-              ]}>
-              <QuickCounter
-                value={
-                  DashboardReducer?.getDashboardResponse?.data?.total_session
-                }
-                title="Total Session Data"
-                color="#28328C"
-                icon={icons.assignment}
-                containerStyle={[styles.quickCounterStyle]}
-              />
-            </View>
-            <View
-              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
-              <QuickCounter
-                value={
-                  DashboardReducer?.getDashboardResponse?.data?.monthly_session
-                }
-                title="Current Month Session Data"
-                color="#FA9A6C"
-                icon={icons.pendingAssignment}
-                containerStyle={[styles.quickCounterStyle]}
-                pressable
-                onPress={() => {
-                  navigation.navigate('Patients Session');
-                }}
-              />
-            </View>
-            <View
-              style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
-              <QuickCounter
-                value={
-                  DashboardReducer?.getDashboardResponse?.data
-                    ?.complete_evaluation
-                }
-                title="Completed Evaulation"
-                color="#3ABEF0"
-                icon={icons.completeAssignment}
-                containerStyle={[styles.quickCounterStyle]}
-                pressable
-                onPress={() => {
-                  navigation.navigate('CompletedEvaulation');
-                }}
-              />
-            </View>
-            <View
-              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
-              <QuickCounter
-                value={
-                  DashboardReducer?.getDashboardResponse?.data
-                    ?.pending_evaluation
-                }
-                title="Pending Evaulation"
-                color="#28328C"
-                icon={icons.pendingAssignment}
-                containerStyle={[styles.quickCounterStyle]}
-                pressable
-                onPress={() => {
-                  navigation.navigate('PendingEvaulation');
-                }}
-              />
-            </View>
             <View
               style={[
                 styles.counterCardStyle,
@@ -207,27 +148,127 @@ const Home = props => {
                 containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
-                  navigation.navigate('ActivePatients');
+                  // navigation.navigate('ActivePatients');
+                  navigation.navigate('BottomTab', {screen: 'My Patients'});
+                }}
+              />
+            </View>
+            <View
+              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
+              <QuickCounter
+                value={
+                  DashboardReducer?.getDashboardResponse?.data?.monthly_session
+                }
+                title="Assessments Completed 
+                (Current Month)"
+                color="#FA9A6C"
+                icon={icons.pendingAssignment}
+                containerStyle={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  // navigation.navigate('MyPatient');
+                  // navigation.navigate('Patients Session');
+                }}
+              />
+            </View>
+            <View
+              style={[styles.counterCardStyle, paddingLast, counterCardWidth]}>
+              <QuickCounter
+                value={
+                  DashboardReducer?.getDashboardResponse?.data
+                    ?.new_patient_current_month
+                }
+                title={
+                  <>
+                    New Patients
+                    {'\n'}
+                    <Text style={{fontSize: 20}}>(Current Month)</Text>
+                  </>
+                }
+                color="#28328C"
+                icon={icons.pendingAssignment}
+                containerStyle={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('BottomTab', {screen: 'My Patients'});
+                  // navigation.navigate('PendingEvaulation');
+                }}
+              />
+            </View>
+            <View
+              style={[
+                styles.counterCardStyle,
+                styles.counterPadding,
+                counterCardWidth,
+              ]}>
+              <QuickCounter
+                value={
+                  DashboardReducer?.getDashboardResponse?.data
+                    ?.pending_pm_current_month
+                }
+                title={
+                  <>
+                    Pending PMs
+                    {'\n'}
+                    <Text style={{fontSize: 20}}>(Current Month)</Text>
+                  </>
+                }
+                color="#28328C"
+                icon={icons.assignment}
+                containerStyle={[styles.quickCounterStyle]}
+                pressable
+                onPress={() => {
+                  navigation.navigate('BottomTab', {screen: 'My Patients'});
+                }}
+              />
+            </View>
+            <View
+              style={[styles.counterCardStyle, paddingRight, counterCardWidth]}>
+              <QuickCounter
+                value={
+                  DashboardReducer?.getDashboardResponse?.data
+                    ?.complete_evaluation
+                }
+                title="Compliant Patients"
+                color="#3ABEF0"
+                icon={icons.completeAssignment}
+                containerStyle={[styles.quickCounterStyle]}
+                // pressable
+                onPress={() => {
+                  // navigation.navigate('MyPatient');
+                  // navigation.navigate('CompletedEvaulation');
                 }}
               />
             </View>
             <View style={[styles.counterCardStyle, counterCardWidth]}>
               <QuickCounter
                 value={
-                  DashboardReducer?.getDashboardResponse?.data?.inactive_patient
+                  DashboardReducer?.getDashboardResponse?.data?.pending_visit_current_month
                 }
-                title="Inactive Patients"
+                title={
+                  <>
+                    Pending Visits
+                    {'\n'}
+                    <Text style={{fontSize: 20}}>(Current Month)</Text>
+                  </>
+                }
                 color="#3ABEF0"
                 icon={icons.inactivePatient}
                 containerStyle={[styles.quickCounterStyle]}
                 pressable
                 onPress={() => {
-                  navigation.navigate('InactivePatients');
+                  navigation.navigate('BottomTab', {screen: 'My Patients'});
+                  // navigation.navigate('InactivePatients');
                 }}
               />
             </View>
           </View>
         </View>
+        <CalendarScreen
+          date={sessionsData?.[0]?.session_date}
+          data={sessionsData}
+          onDateSelected={onDateSelected}
+        />
 
         <View style={[css.mt4]}>
           <PatientEnrolmentChart
@@ -238,12 +279,12 @@ const Home = props => {
           <AssignmentChart dataItem={DashboardReducer?.evaluationRes?.data} />
         </View>
         <View style={[css.mt4]}>
-          <CalenderView
+          {/* <CalenderView
             {...props}
             date={sessionsData?.[0]?.session_date}
             data={sessionsData}
             onDateSelected={onDateSelected}
-          />
+          /> */}
         </View>
       </View>
     </SafeView>

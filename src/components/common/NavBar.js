@@ -23,7 +23,11 @@ import useScreenDimension from '../../utils/useScreenDimension';
 import {widthToDp} from '../../utils/responsive';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {LogoutRequest, ProfileRequest, getTokenSuccess} from '../../redux/reducer/AuthReducer';
+import {
+  LogoutRequest,
+  ProfileRequest,
+  getTokenSuccess,
+} from '../../redux/reducer/AuthReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
 
@@ -72,8 +76,6 @@ const NavBar = props => {
     }, 500);
   };
 
-
-
   return (
     <>
       <View style={[css.bgWhite, {zIndex: 4}]}>
@@ -96,7 +98,7 @@ const NavBar = props => {
                 height: screenWidth / 18,
               },
             ]}>
-            <Image source={images.logo} style={[styles.imgResponsive]} />
+            <Image source={icons.vyb} style={[styles.imgResponsive]} />
           </TouchableOpacity>
           <View
             style={[

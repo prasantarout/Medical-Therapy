@@ -73,4 +73,8 @@ export const icons = {
   heart: require('../assets/json/heart.json'),
   loader: require('../assets/json/loader.json'),
   celebrate: require('../assets/json/celebrate.json'),
+  devices:require('../assets/icons/devices.png'),
+  masks:require('../assets/icons/masks.png'),
+  close:require('../assets/icons/close.png'),
+  vyb:require('../assets/icons/vyb.png'),
 };

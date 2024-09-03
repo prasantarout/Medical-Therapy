@@ -113,6 +113,7 @@ const MyProfile = props => {
       case 'Auth/ProfileRequest':
         profileStatus = AuthReducer.status;
         break;
+       
       case 'Auth/ProfileSuccess':
         profileStatus = AuthReducer.status;
         setName(AuthReducer.ProfileResponse?.data?.full_name);
@@ -277,7 +278,7 @@ const MyProfile = props => {
                 switchLeftPx={2}
                 switchRightPx={2}
                 switchWidthMultiplier={2.4}
-                switchBorderRadius={30}
+                switchBorderRadius={30} 
               />
             </View>
           </View>

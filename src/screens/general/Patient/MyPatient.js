@@ -34,6 +34,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   clearQuestionListReq,
   getMyPatientReq,
+  getPatientReq,
 } from '../../../redux/reducer/PatientReducer';
 import BounceText from '../../../components/micro/BounceText';
 import Loader from '../../../utils/Loader';
@@ -318,6 +319,7 @@ const MyPatient = props => {
                 onChange={item => {
                   setSelectedDue(item.value);
                   setIsFocus(false);
+                  dispatch(getMyPatientReq(item.value))
                 }}
               />
               <Dropdown

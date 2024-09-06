@@ -8,7 +8,7 @@ import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
 
 const CustomCalendar = props => {
-  // console.log(props?.data, '>>>>>????');
+  // console.log(props, '>>>>>????');
 
   const [viewMode, setViewMode] = useState('month');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -59,6 +59,9 @@ const CustomCalendar = props => {
       };
     })
     ?.filter(event => event !== null);
+
+
+    // console.log(events,">>>>>>>>events")
 
     const handleEventPress = (event) => {
       const eventId = event.id; 
@@ -181,7 +184,6 @@ const CustomCalendar = props => {
           }}
           onPressEvent={handleEventPress}
           // renderCustomDateForMonth={true}
-
           showAdjacentMonths={true}
         />
       </View>

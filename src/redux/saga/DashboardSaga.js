@@ -34,7 +34,7 @@ export function* getDashboardSaga(action) {
 
   try {
     let response = yield call(postApi, 'dashboard', action.payload, header);
-    //  console.log(response.data,">>>>>>?????Sss")
+     console.log(response.data,">>>>>>?????Sss")
     if (response?.data?.status == 200) {
       yield put(getDashboardSuccess(response?.data));
     } else {

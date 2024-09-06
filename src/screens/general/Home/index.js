@@ -65,6 +65,7 @@ const Home = props => {
     dispatch(getDashboardReq(obj));
     dispatch(patientEnrolmentReq());
     dispatch(EvaluationEnrolmentReq());
+    // console.log('helloe');
   }, [isFocused]);
 
   // console.log(PatientReducer?.patientDetailsRes?.data, '>>>>>>>???>>>');
@@ -76,20 +77,22 @@ const Home = props => {
     width: orientation === 'PORTRAIT' ? '50%' : '33.2%',
   };
 
-  if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
-    switch (DashboardReducer.status) {
-      case 'Dashboard/getDashboardReq':
-        dashboardStatus = DashboardReducer.status;
-        break;
-      case 'Dashboard/getDashboardSuccess':
-        dashboardStatus = DashboardReducer.status;
-        setSessionsData(DashboardReducer?.getDashboardResponse?.data?.events);
-        break;
-      case 'Dashboard/getDashboardFailure':
-        dashboardStatus = DashboardReducer.status;
-        break;
+  useEffect(() => {
+    if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
+      switch (DashboardReducer.status) {
+        case 'Dashboard/getDashboardReq':
+          dashboardStatus = DashboardReducer.status;
+          break;
+        case 'Dashboard/getDashboardSuccess':
+          dashboardStatus = DashboardReducer.status;
+          setSessionsData(DashboardReducer?.getDashboardResponse?.data?.events);
+          break;
+        case 'Dashboard/getDashboardFailure':
+          dashboardStatus = DashboardReducer.status;
+          break;
+      }
     }
-  }
+  }, [DashboardReducer.status, sessionsData]);
 
   // console.log(DashboardReducer?.getDashboardResponse?.data, '>>>>>>??>????');
 
@@ -321,7 +324,7 @@ const Home = props => {
           </View>
           <CalendarScreen
             date={sessionsData?.[0]?.session_date}
-            data={sessionsData}
+            data={DashboardReducer?.getDashboardResponse?.data?.events}
             onDateSelected={onDateSelected}
             onPress={id => dispatch(patientDetailsReq(id))}
           />

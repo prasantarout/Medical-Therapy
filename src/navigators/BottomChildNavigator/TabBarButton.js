@@ -7,7 +7,6 @@ const TabBarButton = ({children, onPress, route}) => {
 
   const handlePress = () => {
     if (route.name === 'My Patients') {
-      // Reset navigation stack when 'My Patients' tab is pressed
       navigation.reset({
         index: 0,
         routes: [{name: 'My Patients'}],

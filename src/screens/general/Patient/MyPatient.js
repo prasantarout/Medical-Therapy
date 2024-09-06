@@ -5,6 +5,7 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -37,6 +38,7 @@ import {
 import BounceText from '../../../components/micro/BounceText';
 import Loader from '../../../utils/Loader';
 import moment from 'moment';
+import {Dropdown} from 'react-native-element-dropdown';
 
 let getPatientStatus = '';
 const width = Dimensions.get('window').width;
@@ -52,6 +54,12 @@ const MyPatient = props => {
   const [filterBy, setFilterBy] = useState('');
   const [sortBy, setSortBy] = useState('');
   const isFocused = useIsFocused();
+  const [isFocus, setIsFocus] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8); // Number of items to display per page
+  const [totalPages, setTotalPages] = useState(0);
+  const [selectedDue, setSelectedDue] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const PatientReducer = useSelector(state => state?.PatientReducer);
   const orientation = useOrientation();
@@ -61,7 +69,103 @@ const MyPatient = props => {
     dispatch(getMyPatientReq());
   }, []);
 
+  let firstDropdown = [
+    {
+      label: 'All',
+      value: 'all',
+    },
+    {
+      label: 'Active',
+      value: 'active',
+    },
+    {
+      label: 'Inactive',
+      value: 'inactive',
+    },
+  ];
+
+  let secondDropdown = [
+    {
+      label: 'None',
+      value: 'None',
+    },
+    {
+      label: 'PM Due',
+      value: 'PM Due',
+    },
+    {
+      label: 'Next Visit Date',
+      value: 'Next Visit Date',
+    },
+    {
+      value: 'Patient added on',
+      label: 'Patient added on',
+    },
+  ];
+
+  const handleChangeDue = text => {
+    setSelectedDue(text);
+  };
+
+  const handleChangeActive = text => {
+    setSelectedStatus(text);
+  };
+
+  const paginateData = data => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = page => {
+    console.log('Page change requested:', page); // Debugging log
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+      dispatch(getMyPatientReq(page));
+    }
+  };
+
   const numColumns = orientation == 'PORTRAIT' ? 3 : 4;
+
+  const PaginationControls = ({currentPage, totalPages, onPageChange}) => (
+    <View style={styles.paginationContainer}>
+      <TouchableOpacity
+        onPress={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}>
+        <Text
+          style={[
+            styles.paginationButton,
+            currentPage === 1 && styles.disabledButton,
+          ]}>
+          Previous
+        </Text>
+      </TouchableOpacity>
+      {Array.from({length: totalPages}, (_, index) => (
+        <TouchableOpacity
+          key={index + 1}
+          onPress={() => onPageChange(index + 1)}
+          style={[
+            styles.pageNumber,
+            currentPage === index + 1 && styles.activePage,
+          ]}>
+          <Text style={styles.pageNumberText}>{index + 1}</Text>
+        </TouchableOpacity>
+      ))}
+      <TouchableOpacity
+        onPress={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}>
+        <Text
+          style={[
+            styles.paginationButton,
+            currentPage === totalPages && styles.disabledButton,
+          ]}>
+          Next
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  // console.log(currentPage,totalPages)
 
   const Modalinfo = ({title, value}) => {
     return (
@@ -71,6 +175,8 @@ const MyPatient = props => {
       </View>
     );
   };
+
+  // console.log(modalInfo,">>>>>>>?<<<<")
 
   const handleSearch = text => {
     setSearchData(text.toLowerCase());
@@ -85,10 +191,17 @@ const MyPatient = props => {
     }
   };
 
-  console.log(
-    PatientReducer.getMyPatientResponse?.data?.data,
-    '>>>>>????>>>ss',
-  );
+  useEffect(() => {
+    if (PatientReducer.getMyPatientResponse?.data?.data) {
+      const total = PatientReducer.getMyPatientResponse?.data?.total;
+      setTotalPages(Math.ceil(total / itemsPerPage));
+      setPatientInfo(
+        paginateData(PatientReducer.getMyPatientResponse?.data?.data),
+      );
+    }
+  }, [currentPage, PatientReducer.getMyPatientResponse?.data?.data]);
+
+  // console.log(PatientReducer.getMyPatientResponse?.data,">>>>??>")
 
   useFocusEffect(
     React.useCallback(() => {
@@ -127,31 +240,6 @@ const MyPatient = props => {
     );
   };
 
-  const FilterButton = ({onPress, title, style, titleStyle}) => {
-    return (
-      <TouchableOpacity
-        onPress={onPress}
-        style={[style, styles.filterBtnStyle]}>
-        <Txt style={[titleStyle]}>{title}</Txt>
-      </TouchableOpacity>
-    );
-  };
-
-  // Repeated012
-  const sortFunction = value => {
-    if (value === 'New') {
-      const sortedPatients = [...patientInfo]?.sort(
-        (a, b) => new Date(b.setupDate) - new Date(a.setupDate),
-      );
-      setPatientInfo(sortedPatients);
-    } else if (value === 'Repeated') {
-      const sortedPatients = [...patientInfo]?.sort(
-        (a, b) => new Date(a.setupDate) - new Date(b.setupDate),
-      );
-      setPatientInfo(sortedPatients);
-    }
-  };
-
   const PatientsRenderItem = ({item, index}) => {
     return (
       <PatientCard
@@ -161,9 +249,11 @@ const MyPatient = props => {
         // }}
         name={item.full_name}
         medicalDevices={
-          item?.resmeduser?.device_serial_no +
-          '  ' +
-          item?.resmeduser?.device_type_desc
+          item?.resmeduser
+            ? item?.resmeduser?.device_serial_no +
+              '  ' +
+              item?.resmeduser?.device_type_desc
+            : ''
         }
         nextVisit={item?.next_visit_date}
         complaints={item?.compliance_percentage}
@@ -205,7 +295,52 @@ const MyPatient = props => {
         <View style={[css.px5, css.f1, css.py4]}>
           <TitleTxt title={'My Patients'} />
           <View style={[css.mt4]}>
-            <View style={[css.f1]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Dropdown
+                style={[styles.dropdown]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={styles.itemTextStyle}
+                iconStyle={styles.iconStyle}
+                data={secondDropdown?.length > 0 ? secondDropdown : []}
+                labelField="label"
+                valueField="value"
+                placeholder="None"
+                value={selectedDue}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setSelectedDue(item.value);
+                  setIsFocus(false);
+                }}
+              />
+              <Dropdown
+                style={[styles.dropdown]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={styles.itemTextStyle}
+                iconStyle={styles.iconStyle}
+                data={firstDropdown ? firstDropdown : []}
+                labelField="label"
+                valueField="value"
+                placeholder="All"
+                value={selectedStatus}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setSelectedStatus(item.value);
+                  setIsFocus(false);
+                }}
+              />
+            </View>
+            <View style={[css.f1, {marginTop: 20}]}>
               <SearchInput
                 style={[]}
                 placeholder="Search here..."
@@ -214,7 +349,7 @@ const MyPatient = props => {
                 onPressFilter={() => setShowFilter(!showFilter)}
               />
             </View>
-            {showFilter ? (
+            {/* {showFilter ? (
               <View style={[css.row, css.pt3, css.aic]}>
                 <View style={[css.f1, css.center, css.row]}>
                   <Txt style={[css.fs18, css.semiBold]}>Filter</Txt>
@@ -285,7 +420,7 @@ const MyPatient = props => {
                   </View>
                 </View>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
           {/* {console.log('patientInfo', patientInfo)} */}
           <FlatList
@@ -303,6 +438,11 @@ const MyPatient = props => {
           />
           {/* {console.log(patientInfo,">>>>>>>>?????sss")} */}
         </View>
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </SafeView>
       <Modal
         onBackdropPress={() => {
@@ -312,7 +452,7 @@ const MyPatient = props => {
         backdropOpacity={0}
         isVisible={modalVisible}
         deviceHeight={height}
-        deviceWidth={width}
+        // deviceWidth={width}
         style={[css.m0, css.p0]}
         statusBarTranslucent={true}>
         <View style={[css.f1, css.center, styles.backdrop]}>
@@ -332,7 +472,7 @@ const MyPatient = props => {
             <View style={[css.row, css.mt1]}>
               <View style={[css.jcc, css.aic]}>
                 <ImageBackground
-                  source={{uri: modalInfo?.profile_photo_url}}
+                  source={{uri: `${modalInfo?.profile_photo_url}&size=${200}`}}
                   resizeMode="cover"
                   style={[
                     styles.profileImage,
@@ -348,10 +488,12 @@ const MyPatient = props => {
                   style={[css.mt2, css.w100]}
                   onPress={() => {
                     setModalVisible(false);
-                    navigation.navigate('MyPatientsSession', {
-                      ecn: modalInfo?.ecn,
-                      full_name: modalInfo?.full_name,
-                    });
+                    setTimeout(() => {
+                      navigation.navigate('MyPatientsSession', {
+                        ecn: modalInfo?.ecn,
+                        full_name: modalInfo?.full_name,
+                      });
+                    }, 100);
                   }}
                 />
                 <Button
@@ -361,6 +503,7 @@ const MyPatient = props => {
                     setModalVisible(false);
                     navigation.navigate('ServiceEnrollment', {
                       data: modalInfo,
+                      isPatient: true,
                     });
                   }}
                 />
@@ -371,7 +514,9 @@ const MyPatient = props => {
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="Phone No.:"
-                  value={modalInfo?.phone ? modalInfo?.phone : 'N/A'}
+                  value={
+                    modalInfo?.phone_number ? modalInfo?.phone_number : 'N/A'
+                  }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
@@ -439,15 +584,17 @@ const MyPatient = props => {
                 <Modalinfo
                   title="Next Visit Date:"
                   value={
-                    modalInfo?.resmeduser?.next_visit_date
-                      ? modalInfo?.resmeduser?.next_visit_date
+                    modalInfo?.next_visit_date
+                      ? moment(modalInfo?.next_visit_date).format('MM/DD/YYYY')
                       : 'N/A'
                   }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="PM Due:"
-                  value={modalInfo?.pm_due ? modalInfo?.pm_due : 'N/A'}
+                  value={
+                    modalInfo?.pm_due_date ? modalInfo?.pm_due_date : 'N/A'
+                  }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
@@ -608,5 +755,65 @@ const styles = StyleSheet.create({
   },
   dividerGap: {
     marginVertical: 12,
+  },
+
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  paginationButton: {
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: colors.primaryTextColor,
+  },
+  disabledButton: {
+    color: '#d3d3d3',
+  },
+  pageNumber: {
+    marginHorizontal: 5,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: colors.primaryTextColor,
+  },
+  pageNumberText: {
+    color: colors.white,
+  },
+  activePage: {
+    backgroundColor: colors.primary,
+  },
+  dropdown: {
+    borderColor: colors?.lightGrey,
+    marginHorizontal: 10,
+    paddingHorizontal: normalize(2),
+    height: normalize(25),
+    width: normalize(80),
+    borderWidth: 0.4,
+    borderColor: colors.lightWhite,
+    borderRadius: normalize(3),
+  },
+  placeholderStyle: {
+    fontSize: normalize(6),
+    color: colors?.searchPlaceholder,
+    marginLeft: normalize(5),
+  },
+  selectedTextStyle: {
+    fontSize: normalize(7),
+    marginLeft: normalize(5),
+    color: colors?.searchPlaceholder,
+  },
+  iconStyle: {
+    width: normalize(20),
+    height: normalize(20),
+    // marginHorizontal: normalize(35),
+  },
+  inputSearchStyle: {
+    height: normalize(40),
+    fontSize: normalize(14),
+    color: 'red',
+  },
+  itemTextStyle: {
+    color: colors.ternaryTextColor,
   },
 });

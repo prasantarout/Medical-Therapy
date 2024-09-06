@@ -58,7 +58,6 @@ const PatientSessionDetails = props => {
     }
   }
 
-  // console.log('item', item);
 
   return (
     <SafeView {...props}>

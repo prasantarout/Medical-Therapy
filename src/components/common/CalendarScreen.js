@@ -8,7 +8,8 @@ import {colors} from '../../themes/colors';
 import {fonts} from '../../themes/fonts';
 
 const CustomCalendar = props => {
-  //   console.log(props, '>>>>>>>>??>>>events');
+  // console.log(props?.data, '>>>>>????');
+
   const [viewMode, setViewMode] = useState('month');
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -38,25 +39,37 @@ const CustomCalendar = props => {
     }
   };
 
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-  const events = [];
-  props?.data?.length > 0 &&
-    props?.data?.map(item => {
-      let obj = {
-        title: item?.title,
-        start: new Date(currentYear, currentMonth, item?.date, 9, 0),
-        end: new Date(currentYear, currentMonth, item?.date, 9, 30),
+  const events = props?.data?.patientData?.visitDue
+    ?.map(item => {
+      const startDate = new Date(item.start);
+      const endDate = item.end
+        ? new Date(item.end)
+        : new Date(startDate.getTime() + 30 * 60000);
+      if (isNaN(startDate.getTime())) {
+        console.error(`Invalid start date for item: ${JSON.stringify(item)}`);
+        return null;
+      }
+      return {
+        id: item.id,
+        title: item.title || 'No Title',
+        start: startDate,
+        end: isNaN(endDate.getTime())
+          ? new Date(startDate.getTime() + 30 * 60000)
+          : endDate,
       };
-      events.push(obj);
-    });
-  //   console.log(events,">>>>>?>>>>edd")
+    })
+    ?.filter(event => event !== null);
+
+    const handleEventPress = (event) => {
+      const eventId = event.id; 
+      props?.onPress(eventId); 
+      // ModalOpen(eventId);
+    };
+
 
   const renderEvent = (event, touchableOpacityProps) => (
     <TouchableOpacity {...touchableOpacityProps}>
-      <Text style={styles.eventText}>
-        {`My custom event: ${event.title} with a color`}
-      </Text>
+      <Text style={styles.eventText}>{event.title}</Text>
     </TouchableOpacity>
   );
 
@@ -152,13 +165,13 @@ const CustomCalendar = props => {
       <View style={{marginTop: normalize(10)}}>
         <Calendar
           renderEvent={renderEvent}
-          events={events}
+          events={events ? events : []}
           height={600}
           mode={viewMode}
           date={currentDate}
           theme={darkTheme}
           showTime={true}
-          weekStartsOn={1}
+          weekStartsOn={0}
           minHour={0} // Start at 12 AM
           maxHour={23}
           ampm
@@ -166,6 +179,10 @@ const CustomCalendar = props => {
             backgroundColor: '#fff',
             color: '#000',
           }}
+          onPressEvent={handleEventPress}
+          // renderCustomDateForMonth={true}
+
+          showAdjacentMonths={true}
         />
       </View>
     </View>

@@ -85,7 +85,7 @@ const AssignmentChart = ({dataItem}) => {
 
             textFontSize={13}
             rulesType="solid"
-            maxValue={100}
+            maxValue={25}
           />
           <Divider />
           <View style={[css.row, css.aic, css.asc, css.mt3]}>

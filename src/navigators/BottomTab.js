@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Pressable, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {icons} from '../themes/icons';
 import HelpnSupport from '../screens/general/HelpSupport/HelpnSupport';
@@ -11,6 +11,8 @@ import {useDispatch} from 'react-redux';
 import DashboardNavigator from './BottomChildNavigator/DashboardNavigator';
 import MyPatientNavigator from './BottomChildNavigator/MyPatientNavigator';
 import PatientSessionNavigator from './BottomChildNavigator/PatientSessionNavigator';
+import {useNavigation} from '@react-navigation/native';
+import TabBarButton from './BottomChildNavigator/TabBarButton';
 
 const Tab = createBottomTabNavigator();
 const BottomTab = props => {
@@ -25,6 +27,11 @@ const BottomTab = props => {
         tabBarInactiveTintColor: colors.white,
         tabBarStyle: {backgroundColor: colors.primary, height: 80},
         tabBarIcon: ({focused}) => TabIcon({focused: focused, route: route}),
+        tabBarButton: (props) => (
+          route.name === 'My Patients'
+            ? <TabBarButton {...props} route={route} />
+            : <Pressable {...props} />
+        ),
       })}>
       <Tab.Screen name="Dashboard" component={DashboardNavigator} />
       <Tab.Screen name="Patients Session" component={PatientSessionNavigator} />
@@ -36,22 +43,28 @@ const BottomTab = props => {
 };
 
 const TabIcon = ({focused, route}) => {
-  const dispatch = useDispatch();
   let iconName;
   let iconColor = focused ? colors.secondary : colors.white;
-
-  if (route.name === 'Dashboard') {
-    iconName = icons.navHome;
-  } else if (route.name === 'Patients Session') {
-    iconName = icons.navAssignment;
-  } else if (route.name === 'My Patients') {
-    iconName = icons.navPatient;
-    dispatch(clearQuestionListReq({}));
-  } else if (route.name === 'Help & Support') {
-    iconName = icons.navHelp;
-  } else if (route.name === 'My Profile') {
-    iconName = icons.navProfile;
+  switch (route.name) {
+    case 'Dashboard':
+      iconName = icons.navHome;
+      break;
+    case 'Patients Session':
+      iconName = icons.navAssignment;
+      break;
+    case 'My Patients':
+      iconName = icons.navPatient;
+      break;
+    case 'Help & Support':
+      iconName = icons.navHelp;
+      break;
+    case 'My Profile':
+      iconName = icons.navProfile;
+      break;
+    default:
+      iconName = icons.navHome;
   }
+
   return (
     <Image source={iconName} style={[{tintColor: iconColor}, styles.tabIcon]} />
   );

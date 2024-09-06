@@ -56,7 +56,11 @@ const ServiceEnrollment = props => {
   const [errors, setErrors] = useState({});
   const PatientReducer = useSelector(state => state.PatientReducer);
   const AuthReducer = useSelector(state => state.AuthReducer);
-  const data = props?.route?.params?.data;
+  const data =
+    props?.route?.params?.isPatient !== false
+      ? props?.route?.params?.data
+      : props?.route?.params?.data.data;
+  console.log(data, 'dataServiceEnrollment');
   const tags = ['Satisfied', 'Need Improvement', 'Not Satisfied', 'Great'];
 
   const showDatePicker = () => {
@@ -278,15 +282,18 @@ const ServiceEnrollment = props => {
               <ValueField title={'Last Name'} value={data?.last_name} />
             </View>
             <View style={[css.row, css.jcsb]}>
-              <ValueField title={'Setup Date'} value={data?.setupDate} />
+              <ValueField
+                title={'Setup Date'}
+                value={data?.resmeduser?.setupDate}
+              />
               <ValueField
                 title={'Device'}
-                value={'22151082639 - AirSense 10 CPAP'}
+                value={data?.resmeduser?.device_type_desc}
               />
             </View>
             <View style={[css.row, css.jcsb]}>
               <ValueField title={'Therapist Name'} value={'Therapist user'} />
-              <ValueField title={'Location'} value={data?.location} />
+              <ValueField title={'Location'} value={data?.city_address} />
             </View>
             <View style={[css.row, css.px5]}>
               <View style={[css.w50, css.mt5]}>

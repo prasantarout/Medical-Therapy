@@ -42,7 +42,7 @@ const PatientEnrolmentChart = ({dataItem}) => {
             yAxisThickness={0}
             yAxisTextStyle={[css.textPrimary]}
             activeOpacity={0.8}
-            maxValue={100}
+            maxValue={25}
             lineBehindBars={true}
             rulesType="solid"
           />

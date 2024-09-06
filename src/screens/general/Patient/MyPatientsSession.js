@@ -58,10 +58,10 @@ const MyPatientsSession = () => {
   const tableFormatConvert = () => {
     let formattedData = [];
 
-    // setActualData([
-    //   ...actualData,
-    //   ...PatientReducer?.getMyPatientSessionResponse?.data,
-    // ]);
+    setActualData([
+      ...actualData,
+      ...PatientReducer?.getMyPatientSessionResponse?.data,
+    ]);
 
     PatientReducer?.getMyPatientSessionResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
@@ -82,6 +82,8 @@ const MyPatientsSession = () => {
       dispatch(getMyPatientSessionReq({page_no: 0, ecn: route?.params?.ecn}));
     }
   }, [isFocused]);
+
+  console.log(route?.params?.ecn,">>>>>ecn")
 
   if (dashboardStatus === '' || PatientReducer.status !== dashboardStatus) {
     switch (PatientReducer.status) {

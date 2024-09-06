@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SafeView from '../../../components/common/SafeView';
 import css from '../../../themes/space';
@@ -24,7 +24,8 @@ const MyPatientSessionDetails = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const PatientReducer = useSelector(state => state.PatientReducer);
-
+  const dynamicSize = Math.min(screenWidth /2, 200);
+  const screenWidth = Dimensions.get('window').width;
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -55,6 +56,8 @@ const MyPatientSessionDetails = props => {
         break;
     }
   }
+
+  console.log(item, '>>>>>>>teee');
 
   return (
     <SafeView {...props}>
@@ -94,7 +97,9 @@ const MyPatientSessionDetails = props => {
                   item?.patient?.profile_photo_url !== '' &&
                   item?.patient?.profile_photo_url !== undefined &&
                   item?.patient?.profile_photo_url !== null
-                    ? {uri: item?.patient?.profile_photo_url}
+                    ? {
+                        uri:`${item?.patient?.profile_photo_url}&size=${200}`,
+                      }
                     : images.noProfile
                 }
                 style={[styles.userIconStyle]}
@@ -545,6 +550,8 @@ const styles = StyleSheet.create({
     height: 80,
     resizeMode: 'cover',
     borderRadius: normalize(50),
+    borderWidth:0.5,
+    borderColor:colors.lightWhite,
   },
   subHeading: {
     paddingLeft: 80,

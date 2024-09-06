@@ -2,6 +2,7 @@ import {call, put, select, takeLatest} from 'redux-saga/effects';
 import {
   getApi,
   getApiWithParam,
+  getApiWithUrlParam,
   postApi,
   postApiNew,
 } from '../../utils/ApiRequest';
@@ -30,21 +31,33 @@ import {
   clearQuestionListSuccess,
   submitEvaluationSuccess,
   submitEvaluationFailure,
+  patientDetailsSuccess,
+  patientDetailsFailure,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import constants from '../../utils/constants';
 
 let getItem = state => state.AuthReducer;
 
 export function* getMyPatientSaga(action) {
-  let item = yield select(getItem);
+  // console.log(action?.payload,">>>>>>>actions",item)
+  const token = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+  // console.log(token,">>>>>>edd")
   let header = {
     accept: 'application/json',
     contenttype: 'application/json',
-    Authorization: `Bearer ${item?.token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   try {
-    let response = yield call(postApi, 'my-patients', {}, header);
+    // const apiUrl = `my-patients?page=${action.payload}`;
+    let response = yield call(
+      postApi,
+      `my-patients?page=${action.payload}`,
+      null,
+      header,
+    );
     if (response?.data?.status == 200) {
       yield put(getMyPatientSuccess(response?.data));
     } else {
@@ -72,6 +85,7 @@ export function* getMyPatientSessionSaga(action) {
       action?.payload,
       header,
     );
+    console.log(response,">>>>>>????>>edd")
     if (response?.data?.status == 200) {
       yield put(getMyPatientSessionSuccess(response?.data));
     } else {
@@ -98,7 +112,7 @@ export function* getMyPatientSessionDetailsSaga(action) {
       header,
     );
 
-    // console.log('response?.data?.data', response?.data?.data);
+    console.log('response?.data?.data', response);
     const formattedData = {
       sessions: {
         clinical_metrics: response?.data?.data?.sessions?.clinical_metrics
@@ -474,7 +488,7 @@ export function* satisfactionQuestionSaga(action) {
     // console.log(response,">>>>>>??>>>>")
     if (response?.data?.status == 200) {
       yield put(satisfactionQuestionListSuccess(response?.data));
-      // CustomToast(response?.data?.message);
+      CustomToast(response?.data?.message);
     } else {
       yield put(satisfactionQuestionListFailure(response?.data));
       // Toast(response?.data?.message);
@@ -503,14 +517,44 @@ export function* getEvaluationFormSaga(action) {
     // console.log(response,">>>>>>>>>?response")
     if (response?.data?.status == 200) {
       yield put(submitEvaluationSuccess(response?.data));
-      CustomToast(response.data.data);
+      CustomToast(response.data.message);
     } else {
       yield put(submitEvaluationFailure(response?.data));
-      // Toast(response?.data?.message);
+      Toast(response?.data?.message);
     }
   } catch (error) {
     yield put(submitEvaluationFailure(error?.response));
     // console.log('error: ', error);
+  }
+}
+
+export function* patientDetailsSaga(action) {
+  const token = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${token}`,
+  };
+
+  try {
+    let response = yield call(
+      getApiWithParam,
+      `patient-details/${action.payload}`,
+      header,
+      null,
+     
+    );
+    // console.log(response,">>>>>>>>>?response")
+    if (response?.data?.status == 200) {
+      yield put(patientDetailsSuccess(response?.data));
+      CustomToast(response?.data?.message);
+    } else {
+      yield put(patientDetailsFailure(response?.data));
+      
+    }
+  } catch (error) {
+    yield put(patientDetailsFailure(error?.response));
+    console.log('error: ', error);
   }
 }
 
@@ -570,6 +614,9 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('PATIENT/submitEvaluationReq', getEvaluationFormSaga);
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/patientDetailsReq', patientDetailsSaga);
   })(),
 ];
 

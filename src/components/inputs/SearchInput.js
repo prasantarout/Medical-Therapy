@@ -29,9 +29,9 @@ const SearchInput = props => {
         />
         <Image source={icons.searchLens} style={styles.icon} />
       </View>
-      <TouchableOpacity onPress={onPressFilter} style={styles.iconContainer}>
+      {/* <TouchableOpacity onPress={onPressFilter} style={styles.iconContainer}>
         <Image source={icons.filter} style={styles.filterIC} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

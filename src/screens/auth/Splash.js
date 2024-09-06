@@ -5,6 +5,7 @@ import {images} from '../../themes/images';
 import normalize from '../../utils/normalize';
 import {colors} from '../../themes/colors';
 import { getTokenRequest } from '../../redux/reducer/AuthReducer';
+import { icons } from '../../themes/icons';
 
 const Splash = props => {
 
@@ -13,7 +14,7 @@ const Splash = props => {
   },[])
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <Image source={images.logo} style={styles.logo} />
+      <Image source={icons.vyb} style={styles.logo} />
     </SafeAreaView>
   );
 };

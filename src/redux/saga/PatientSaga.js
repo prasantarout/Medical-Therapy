@@ -41,7 +41,10 @@ import constants from '../../utils/constants';
 let getItem = state => state.AuthReducer;
 
 export function* getMyPatientSaga(action) {
-  // console.log(action?.payload,">>>>>>>actions",item)
+
+
+  const { currentPage,filters } = action.payload ?action.payload: {};
+  console.log(filters,">>>>>>>actions")
   const token = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
   // console.log(token,">>>>>>edd")
   let header = {
@@ -54,10 +57,13 @@ export function* getMyPatientSaga(action) {
     // const apiUrl = `my-patients?page=${action.payload}`;
     let response = yield call(
       postApi,
-      `my-patients?page=${action.payload}`,
-      null,
+      `my-patients?page=${action?.payload?.page}`,
+      action?.payload?.obj,
       header,
     );
+
+    console.log(response,">>>>>>response")
+   
     if (response?.data?.status == 200) {
       yield put(getMyPatientSuccess(response?.data));
     } else {
@@ -66,7 +72,7 @@ export function* getMyPatientSaga(action) {
     }
   } catch (error) {
     yield put(getMyPatientFailure(error?.response));
-    // console.log('error: ', error);
+    console.log('error: ', error);
   }
 }
 

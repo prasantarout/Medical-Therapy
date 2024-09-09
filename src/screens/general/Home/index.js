@@ -109,28 +109,7 @@ const Home = props => {
     setAndGetSessionValue();
   }, []);
 
-  // useEffect(() => {
-  //   let profileStatus = '';
-  //   if (profileStatus === '' || AuthReducer.status !== profileStatus) {
-  //     switch (AuthReducer.status) {
-  //       case 'Auth/LogoutRequest':
-  //         profileStatus = AuthReducer.status;
-  //         break;
-  //       case 'Auth/LogoutSuccess':
-  //         profileStatus = AuthReducer.status;
-  //         AsyncStorage.removeItem(constants.APP_TOKEN);
-  //         getTokenSuccess(null);
-  //         if(AuthReducer.token){
-  //           navigation.navigate('Login');
-  //         }
-  //         break;
-  //       case 'Auth/LogoutFailure':
-  //         profileStatus = AuthReducer.status;
-  //         // navigation.navigate('Login');
-  //         break;
-  //     }
-  //   }
-  // }, [AuthReducer.status]);
+ 
 
   const onDateSelected = selectedDate => {
     const selected_Date = moment(selectedDate).format('YYYY-MM-DD');

@@ -67,7 +67,12 @@ const MyPatient = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMyPatientReq());
+    dispatch(
+      getMyPatientReq({
+        page: 1,
+        obj: {},
+      }),
+    );
   }, []);
 
   let firstDropdown = [
@@ -119,10 +124,13 @@ const MyPatient = props => {
   };
 
   const handlePageChange = page => {
-    console.log('Page change requested:', page); // Debugging log
+    // console.log('Page change requested:', page); // Debugging log
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      dispatch(getMyPatientReq(page));
+      dispatch(getMyPatientReq({
+        page:page,
+        obj: {},
+      }));
     }
   };
 
@@ -229,6 +237,29 @@ const MyPatient = props => {
     }, [PatientReducer.status, isFocused, patientInfo]),
   );
 
+  const handleDropdownChange = setState => item => {
+    setState(item.value);
+    setIsFocus(false);
+  };
+
+  useEffect(() => {
+    if (selectedDue !== null || selectedStatus !== null) {
+      const filters = {
+        pm_due: selectedDue === 'PM Due' || selectedStatus === 'PM Due',
+        next_visit:
+          selectedDue === 'Next Visit Date' ||
+          selectedStatus === 'Next Visit Date',
+        patient_added_on:
+          selectedDue === 'Patient added on' ||
+          selectedStatus === 'Patient added on',
+        active: selectedDue === 'active' || selectedStatus === 'active',
+        inactive: selectedDue === 'inactive' || selectedStatus === 'inactive',
+      };
+
+      dispatch(getMyPatientReq({page: 1, obj: filters}));
+    }
+  }, [selectedDue, selectedStatus]);
+
   const renderEmptyComponent = () => {
     return (
       <View style={[css.center, css.f1]}>
@@ -319,7 +350,8 @@ const MyPatient = props => {
                 onChange={item => {
                   setSelectedDue(item.value);
                   setIsFocus(false);
-                  dispatch(getMyPatientReq(item.value))
+
+                  // dispatch(getMyPatientReq(obj));
                 }}
               />
               <Dropdown
@@ -339,6 +371,8 @@ const MyPatient = props => {
                 onChange={item => {
                   setSelectedStatus(item.value);
                   setIsFocus(false);
+
+                  // dispatch(getMyPatientReq(obj));
                 }}
               />
             </View>

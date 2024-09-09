@@ -185,6 +185,8 @@ const CustomCalendar = props => {
           onPressEvent={handleEventPress}
           // renderCustomDateForMonth={true}
           showAdjacentMonths={true}
+        
+    
         />
       </View>
     </View>

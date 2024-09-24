@@ -83,7 +83,7 @@ const CalenderView = props => {
             iconContainer={{flex: 0.1}}
           />
         </View>
-        {console.log(props.data, '???????data')}
+        {/* {console.log(props.data, '???????data')} */}
         <View style={[css.f1, css.row, css.fw]}>
           {props?.data?.length > 0 ? (
             props?.data?.map((item, index) => {

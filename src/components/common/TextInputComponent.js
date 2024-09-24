@@ -4,12 +4,12 @@ import normalize from '../../utils/normalize';
 import {fonts} from '../../themes/fonts';
 import {colors} from '../../themes/colors';
 
-const TextInputComponent = ({question, onChangeText}) => {
+const TextInputComponent = ({title, onChangeText}) => {
   const isImportant = true;
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{question.title}</Text>
+        <Text style={styles.title}>{title}</Text>
         {isImportant && <Text style={styles.importantMark}>*</Text>}
       </View>
       <TextInput

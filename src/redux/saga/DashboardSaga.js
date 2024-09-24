@@ -20,6 +20,8 @@ import {
   getActivePatientSessionFailure,
   getEvaluationReviewSuccess,
   getEvaluationReviewFailure,
+  getAcknowledgementSuccess,
+  getAcknowledgementFailure,
 } from '../reducer/DashboardReducer';
 
 let getItem = state => state.AuthReducer;
@@ -232,6 +234,30 @@ export function* getEvaluationReviewSaga(action) {
   }
 }
 
+export function* getAcknowledgeSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+
+  try {
+    let response = yield call(
+      getApi,
+      'acknowledge-list',
+      header,
+    );
+    if (response?.data?.status == 200) {
+      yield put(getAcknowledgementSuccess(response?.data?.data));
+    } else {
+      yield put(getAcknowledgementFailure(response?.data));
+    }
+  } catch (error) {
+    yield put(getAcknowledgementFailure(error?.response));
+  }
+}
+
 const watchFunction = [
   (function* () {
     yield takeLatest('Dashboard/getDashboardReq', getDashboardSaga);
@@ -273,6 +299,12 @@ const watchFunction = [
     yield takeLatest(
       'Dashboard/getEvaluationReviewReq',
       getEvaluationReviewSaga,
+    );
+  })(),
+  (function* () {
+    yield takeLatest(
+      'Dashboard/getAcknowledgementReq',
+      getAcknowledgeSaga,
     );
   })(),
 ];

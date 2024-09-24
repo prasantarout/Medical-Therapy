@@ -12,6 +12,7 @@ const initialState = {
   getEvaluationReviewData: {},
   patientEnrolmentRes: {},
   evaluationRes: {},
+  acknowledgementRes: {},
 };
 
 const DashboardSlice = createSlice({
@@ -132,6 +133,19 @@ const DashboardSlice = createSlice({
       state.error = action.error;
       state.status = action.type;
     },
+
+  
+    getAcknowledgementReq(state, action) {
+      state.status = action.type;
+    },
+    getAcknowledgementSuccess(state, action) {
+      state.acknowledgementRes = action?.payload;
+      state.status = action.type;
+    },
+    getAcknowledgementFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
   },
 });
 
@@ -171,6 +185,10 @@ export const {
   getEvaluationReviewReq,
   getEvaluationReviewSuccess,
   getEvaluationReviewFailure,
+
+  getAcknowledgementReq,
+  getAcknowledgementSuccess,
+  getAcknowledgementFailure
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

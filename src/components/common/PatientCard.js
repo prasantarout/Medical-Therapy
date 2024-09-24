@@ -25,7 +25,7 @@ const getDateDetails = date => {
   return {
     isPast: dateMoment.isBefore(today, 'day'),
     isFuture: dateMoment.isAfter(today, 'day'),
-    daysRemaining: dateMoment.diff(today, 'days'),
+    daysRemaining: dateMoment.diff(today, 'days') + 1,
     dateMoment,
   };
 };
@@ -46,16 +46,39 @@ const DateInfo = ({date, label, isPMDue}) => {
   let displayText = 'N/A';
   let textColor = colors.black;
   if (isPMDue) {
-    backgroundColor = isPast || isFuture ? 'green' : 'transparent';
-    textColor = isPast || isFuture ? 'white' : colors.black;
-    displayText = isPast ? 'Past Due' : `${daysRemaining} days`;
+    if (isPast) {
+      backgroundColor = 'red';
+      displayText = 'Past Due';
+      textColor = 'white';
+    } else if (daysRemaining <= 7) {
+      backgroundColor = 'red';
+      displayText = `${daysRemaining} days`;
+      textColor = 'white';
+    } else if (daysRemaining > 7 && daysRemaining <= 30) {
+      backgroundColor = 'yellow';
+      displayText = `${daysRemaining} days `;
+      textColor = colors.black;
+    } else if (daysRemaining > 30) {
+      backgroundColor = 'green';
+      displayText = `${daysRemaining} days`;
+      textColor = 'white';
+    }
   } else if (isPast) {
-    backgroundColor = 'green';
+    backgroundColor = 'red';
     displayText = 'Past Due';
     textColor = 'white';
-  } else if (isFuture) {
+  } else if (daysRemaining <= 7) {
+    backgroundColor = 'red';
+    displayText = `${daysRemaining} days`;
+    textColor = 'white';
+  } else if (daysRemaining > 7 && daysRemaining <= 30) {
     backgroundColor = 'yellow';
     displayText = `${daysRemaining} days`;
+    textColor = colors.black;
+  } else if (daysRemaining > 30) {
+    backgroundColor = 'green';
+    displayText = `${daysRemaining} days`;
+    textColor = 'white';
   }
 
   return (
@@ -67,19 +90,8 @@ const DateInfo = ({date, label, isPMDue}) => {
         </Text>
       </View>
       {date && (
-        <View
-          style={[
-            styles.statusContainer,
-            {
-              padding: isPast ? 6 : 0,
-              backgroundColor: isFuture ? 'transparent' : 'red',
-            },
-          ]}>
-          <Text
-            style={[
-              styles.statusText,
-              {color: isFuture ? 'black' : textColor},
-            ]}>
+        <View style={[styles.statusContainer]}>
+          <Text style={[styles.statusText, {color: 'black'}]}>
             ({displayText})
           </Text>
         </View>
@@ -102,11 +114,25 @@ const PatientCard = props => {
     PMDue,
     complaints,
     medicalDevices,
+    patientId,
+    status,
   } = props;
-
+  const determineBackgroundColor = () => {
+    if (status === true) {
+      return '#cbd1d3';
+    } else {
+      return '#dae3eb';
+    }
+  };
   return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.mainCard, style]}>
-      {image ? (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[
+        styles.mainCard,
+        {backgroundColor: determineBackgroundColor()},
+        style,
+      ]}>
+      {/* {image ? (
         <ImageBackground
           resizeMode="stretch"
           source={{uri: image}}
@@ -114,10 +140,23 @@ const PatientCard = props => {
         />
       ) : (
         <Skeleton style={styles.profile} />
-      )}
+      )} */}
       <View style={[{height: 40}, css.jcc]}>
         {name ? (
-          <Txt style={styles.titleTxt}>{name}</Txt>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={styles.titleTxts}
+              numberOfLines={2}
+              ellipsizeMode="tail">
+              {name}
+            </Text>
+            <Txt style={styles.titleTxt}>#{patientId}</Txt>
+          </View>
         ) : (
           <Skeleton style={styles.skeletonText} />
         )}
@@ -128,21 +167,23 @@ const PatientCard = props => {
 
       <View style={[css.row, css.aic, css.mb1]}>
         <Image source={icons.Location} style={styles.IconStyle} />
-        <Txt style={styles.subTxt}>{location || 'N/A'}</Txt>
+        <Txt style={styles.subTxt}>{location ? location : 'N/A'}</Txt>
       </View>
-
       <View style={[css.row, css.aic, css.mb1]}>
         <Image source={icons.devices} style={styles.IconStyle} />
         <Txt style={styles.subTxt}>{medicalDevices?.trim() || 'N/A'}</Txt>
       </View>
-
       <View style={[css.row, css.aic, css.mb1]}>
         <Image source={icons.masks} style={styles.IconStyle} />
         <Txt style={styles.subTxt}>{'N/A'}</Txt>
       </View>
-
       <View style={[css.row, css.aic, css.mb1]}>
-        <Text style={styles.subTxt}>Compliant: </Text>
+        <Text style={styles.subTxt}>Billing: </Text>
+        <Image source={icons.close} style={styles.IconStyle} />
+        <Txt style={styles.subTxt}>{'0'} %</Txt>
+      </View>
+      <View style={[css.row, css.aic, css.mb1]}>
+        <Text style={styles.subTxt}>Clinical: </Text>
         <Image source={icons.close} style={styles.IconStyle} />
         <Txt style={styles.subTxt}>{complaints || '0'} %</Txt>
       </View>
@@ -161,7 +202,10 @@ const PatientCard = props => {
       )}
 
       {Button && (
-        <TouchableOpacity onPress={navigateTo} style={styles.btn}>
+        <TouchableOpacity
+          onPress={navigateTo}
+          style={styles.btn}
+          disabled={status}>
           <Txt style={styles.btnTxt}>Submit Evaluation</Txt>
         </TouchableOpacity>
       )}
@@ -173,7 +217,6 @@ const styles = StyleSheet.create({
   mainCard: {
     justifyContent: 'center',
     marginBottom: normalize(10),
-    backgroundColor: colors.white,
     paddingVertical: normalize(8),
     paddingHorizontal: normalize(3),
     borderRadius: normalize(5),
@@ -189,8 +232,13 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
   },
+  titleTxts: {
+    fontSize: normalize(5.5),
+    fontFamily: fonts.SemiBold,
+    color: colors.primary,
+  },
   titleTxt: {
-    fontSize: 20,
+    fontSize: normalize(5.5),
     fontFamily: fonts.SemiBold,
   },
   IconStyle: {
@@ -209,9 +257,10 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 13,
     borderWidth: 2,
-    borderColor: '#E0E0E0',
+    borderColor: colors.primary,
     borderRadius: 10,
     marginTop: 16,
+    backgroundColor: '#fff',
   },
   btnTxt: {
     fontSize: 18,

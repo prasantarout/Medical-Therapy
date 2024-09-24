@@ -83,7 +83,7 @@ const MyPatientsSession = () => {
     }
   }, [isFocused]);
 
-  console.log(route?.params?.ecn,">>>>>ecn")
+  // console.log(route?.params?.ecn,">>>>>ecn")
 
   if (dashboardStatus === '' || PatientReducer.status !== dashboardStatus) {
     switch (PatientReducer.status) {

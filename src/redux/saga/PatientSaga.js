@@ -33,10 +33,17 @@ import {
   submitEvaluationFailure,
   patientDetailsSuccess,
   patientDetailsFailure,
+  updatePatientSuccess,
+  updatePatientFailure,
+  deviceListSuccess,
+  deviceListFailure,
+  cityListSuccess,
+  cityListFailure,
 } from '../reducer/PatientReducer';
 import CustomToast from '../../utils/Toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import constants from '../../utils/constants';
+import { updatePasswordFailure } from '../reducer/CmsReducer';
 
 let getItem = state => state.AuthReducer;
 
@@ -44,7 +51,7 @@ export function* getMyPatientSaga(action) {
 
 
   const { currentPage,filters } = action.payload ?action.payload: {};
-  console.log(filters,">>>>>>>actions")
+  // console.log(filters,">>>>>>>actions")
   const token = yield call(AsyncStorage.getItem, constants.APP_TOKEN);
   // console.log(token,">>>>>>edd")
   let header = {
@@ -62,7 +69,7 @@ export function* getMyPatientSaga(action) {
       header,
     );
 
-    console.log(response,">>>>>>response")
+    // console.log(response,">>>>>>response")
    
     if (response?.data?.status == 200) {
       yield put(getMyPatientSuccess(response?.data));
@@ -91,7 +98,7 @@ export function* getMyPatientSessionSaga(action) {
       action?.payload,
       header,
     );
-    console.log(response,">>>>>>????>>edd")
+    // console.log(response,">>>>>>????>>edd")
     if (response?.data?.status == 200) {
       yield put(getMyPatientSessionSuccess(response?.data));
     } else {
@@ -118,7 +125,7 @@ export function* getMyPatientSessionDetailsSaga(action) {
       header,
     );
 
-    console.log('response?.data?.data', response);
+    // console.log('response?.data?.data', response);
     const formattedData = {
       sessions: {
         clinical_metrics: response?.data?.data?.sessions?.clinical_metrics
@@ -564,6 +571,95 @@ export function* patientDetailsSaga(action) {
   }
 }
 
+
+export function* updatePatientSaga(action) {
+  console.log(action.payload, "action")
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    Authorization: `Bearer ${item?.token}`,
+  };
+
+  try {
+    let response = yield call(
+      postApi,
+      `update-patient-data/${action.payload.patientId}`,
+      { ...action.payload },
+      header,
+    );
+    // console.log(response,">>>>>>>>>?response")
+    if (response?.data?.status == true) {
+      yield put(updatePatientSuccess(response?.data));
+      console.log(response,">>>>>>>>>?response")
+      CustomToast(response.data.message);
+    } else {
+      yield put(updatePatientFailure(response?.data));
+      Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(updatePatientFailure(error?.response));
+    console.log('error: ', error);
+  }
+}
+
+
+
+export function* DeviceListSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+  try {
+    let response = yield call(
+      getApi,
+      'device-types',
+      // action?.payload,
+      header,
+    );
+    if (response?.data?.status == "success") {
+      yield put(deviceListSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(deviceListFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(deviceListFailure(error?.response));
+    CustomToast(error?.response?.message);
+  }
+}
+
+export function* CityListSaga(action) {
+  let item = yield select(getItem);
+  let header = {
+    accept: 'application/json',
+    contenttype: 'application/json',
+    accessToken: `Bearer ${item?.token}`,
+  };
+  try {
+    let response = yield call(
+      getApi,
+      'city-list',
+      // action?.payload,
+      header,
+    );
+    if (response?.data?.status == "success") {
+      yield put(cityListSuccess(response?.data));
+      // CustomToast(response?.data?.message);
+    } else {
+      yield put(cityListFailure(response?.data));
+      // Toast(response?.data?.message);
+    }
+  } catch (error) {
+    yield put(cityListFailure(error?.response));
+    CustomToast(error?.response?.message);
+  }
+}
+
+
 export function* clearSatisfactionSaga(action) {
   try {
     yield put(clearQuestionListSuccess(action.payload));
@@ -623,6 +719,15 @@ const watchFunction = [
   })(),
   (function* () {
     yield takeLatest('PATIENT/patientDetailsReq', patientDetailsSaga);
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/updatePatientReq', updatePatientSaga);
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/deviceListReq', DeviceListSaga);
+  })(),
+  (function* () {
+    yield takeLatest('PATIENT/cityListReq', CityListSaga);
   })(),
 ];
 

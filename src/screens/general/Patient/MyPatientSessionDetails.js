@@ -57,8 +57,9 @@ const MyPatientSessionDetails = props => {
     }
   }
 
-  console.log(item, '>>>>>>>teee');
 
+  // console.log(item, '>>>>>>>teee');
+  
   return (
     <SafeView {...props}>
       <View style={styles.headerContainer}>

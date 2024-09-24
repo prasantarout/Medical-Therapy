@@ -71,8 +71,10 @@ const NavBar = props => {
 
   const handleLogout = () => {
     setLogoutModal(false);
+    AsyncStorage.removeItem('acknowledged');
     setTimeout(() => {
       dispatch(LogoutRequest());
+     
     }, 500);
   };
 

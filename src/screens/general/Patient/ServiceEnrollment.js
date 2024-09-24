@@ -60,7 +60,7 @@ const ServiceEnrollment = props => {
     props?.route?.params?.isPatient !== false
       ? props?.route?.params?.data
       : props?.route?.params?.data.data;
-  console.log(data, 'dataServiceEnrollment');
+  // console.log(data, 'dataServiceEnrollment');
   const tags = ['Satisfied', 'Need Improvement', 'Not Satisfied', 'Great'];
 
   const showDatePicker = () => {
@@ -134,7 +134,7 @@ const ServiceEnrollment = props => {
         dispatch(submitEvaluationReq(obj));
       })
       .catch(err => {
-        console.log(err, 'err');
+        // console.log(err, 'err');
         CustomToast('Please connect To Internet');
       });
   };
@@ -223,6 +223,9 @@ const ServiceEnrollment = props => {
       }
     }
   }, [PatientReducer?.status]);
+
+
+  // console.log(sortedQuestions, 'sortedQuestions');
 
   const hasNumberRatingQuestions =
     sortedQuestions?.length > 0 &&

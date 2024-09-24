@@ -2,7 +2,7 @@ import axios from 'axios';
 import constants from './constants.js';
 
 export async function getApi(url, header) {
-  console.log(header,">>>>>>")
+  // console.log(header,">>>>>>")
   return await axios.get(`${constants.BASE_URL}/${url}`, {
     headers: {
       Accept: header?.accept,
@@ -23,7 +23,7 @@ export async function getApiWitPayload(url, header, payload) {
 }
 
 export async function getApiWithParam(url, header, param) {
-  console.log('url', url, param, header);
+  // console.log('url', url, param, header);
   return await axios.get(`${constants.BASE_URL}/${url}`, {
     headers: {
       Accept: header?.accept,
@@ -45,7 +45,7 @@ export async function getApiWithUrlParam(url, header, param) {
 }
 
 export async function postApi(url, payload, header) {
-  console.log('url', url, payload, header);
+  // console.log('url', url, payload, header);
   let response = await axios.post(`${constants.BASE_URL}/${url}`, payload, {
     headers: {
       Accept: header?.accept,

@@ -73,6 +73,9 @@ const PendingEvaulation = () => {
     }
   }, [isFocused]);
 
+
+  
+
   if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
     switch (DashboardReducer.status) {
       case 'Dashboard/getPendingEvaulationReq':

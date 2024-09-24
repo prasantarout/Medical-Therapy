@@ -68,6 +68,7 @@ export const icons = {
   hourglass: require('../assets/icons/hourglass.png'),
   radioActive: require('../assets/icons/radioActive.png'),
   radioInactive: require('../assets/icons/radioInactive.png'),
+  information:require('../assets/icons/information.png'),
   // Animations
   waves: require('../assets/json/waves.json'),
   heart: require('../assets/json/heart.json'),

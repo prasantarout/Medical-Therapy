@@ -72,7 +72,6 @@ const ActivePatients = () => {
         row[headerDataArr[2].label] = bodyDataRow?.Setup_Date || 'N/A';
         row[headerDataArr[3].label] = bodyDataRow?.device || 'N/A';
         row[headerDataArr[4].label] = bodyDataRow?.total_usage || 'N/A';
-
         formattedData.push(row);
       },
     );

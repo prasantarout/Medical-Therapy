@@ -32,7 +32,9 @@ import Button from '../../../components/buttons/Button';
 import Divider from '../../../components/micro/Divider';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  cityListReq,
   clearQuestionListReq,
+  deviceListReq,
   getMyPatientReq,
   getPatientReq,
 } from '../../../redux/reducer/PatientReducer';
@@ -60,7 +62,10 @@ const MyPatient = props => {
   const [itemsPerPage] = useState(8); // Number of items to display per page
   const [totalPages, setTotalPages] = useState(0);
   const [selectedDue, setSelectedDue] = useState(null);
+  const [selectedDue1, setSelectedDue1] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectDropdown, setSelectDropdown] = useState(false);
 
   const PatientReducer = useSelector(state => state?.PatientReducer);
   const orientation = useOrientation();
@@ -73,7 +78,11 @@ const MyPatient = props => {
         obj: {},
       }),
     );
-  }, []);
+    if (selectDropdown !== false) {
+      dispatch(cityListReq());
+      dispatch(deviceListReq());
+    }
+  }, [selectDropdown]);
 
   let firstDropdown = [
     {
@@ -107,15 +116,15 @@ const MyPatient = props => {
       value: 'Patient added on',
       label: 'Patient added on',
     },
+    {
+      value: 'City/Location',
+      label: 'City/Location',
+    },
+    {
+      value: 'Device Type',
+      label: 'Device Type',
+    },
   ];
-
-  const handleChangeDue = text => {
-    setSelectedDue(text);
-  };
-
-  const handleChangeActive = text => {
-    setSelectedStatus(text);
-  };
 
   const paginateData = data => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -127,10 +136,12 @@ const MyPatient = props => {
     // console.log('Page change requested:', page); // Debugging log
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-      dispatch(getMyPatientReq({
-        page:page,
-        obj: {},
-      }));
+      dispatch(
+        getMyPatientReq({
+          page: page,
+          obj: {},
+        }),
+      );
     }
   };
 
@@ -176,11 +187,37 @@ const MyPatient = props => {
 
   // console.log(currentPage,totalPages)
 
-  const Modalinfo = ({title, value}) => {
+  const Modalinfo = ({title, value, isBtn,isDevice,deviceValue}) => {
     return (
       <View style={[css.row, css.aic]}>
         <Txt style={styles.title}>{title}</Txt>
         <Txt style={[styles.value]}>{value}</Txt>
+        {isDevice && (
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 10,
+              backgroundColor:deviceValue ? colors.primary:'none',
+              borderRadius: 5,
+              marginLeft: normalize(10),
+            }}>
+            <Text style={[css.fs16, css.textWhite]}>{deviceValue}</Text>
+          </TouchableOpacity>
+        )}
+        {isBtn && (
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 10,
+              backgroundColor: 'red',
+              borderRadius: 5,
+              marginLeft: normalize(10),
+            }}>
+            <Text style={[css.fs16, css.textWhite]}>Not Compliant</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -254,11 +291,13 @@ const MyPatient = props => {
           selectedStatus === 'Patient added on',
         active: selectedDue === 'active' || selectedStatus === 'active',
         inactive: selectedDue === 'inactive' || selectedStatus === 'inactive',
+        location: selectedDue === 'Device Type' ? selectedDue1?.value : '',
+        device_type: selectedDue === 'City/Location' ? selectedDue1?.value : '',
       };
 
       dispatch(getMyPatientReq({page: 1, obj: filters}));
     }
-  }, [selectedDue, selectedStatus]);
+  }, [selectedDue, selectedStatus, selectedDue1]);
 
   const renderEmptyComponent = () => {
     return (
@@ -280,6 +319,7 @@ const MyPatient = props => {
         //   setModalInfo(item);
         // }}
         name={item.full_name}
+        patientId={item?.patientId}
         medicalDevices={
           item?.resmeduser
             ? item?.resmeduser?.device_serial_no +
@@ -287,10 +327,11 @@ const MyPatient = props => {
               item?.resmeduser?.device_type_desc
             : ''
         }
+        status={item?.status === 0}
         nextVisit={item?.next_visit_date}
         complaints={item?.compliance_percentage}
         PMDue={item?.pm_due_date}
-        location={item?.city_address?.slice(0, 20) + '...'}
+        location={item?.location}
         date={moment(item?.dob).format('MM-DD-YYYY')}
         image={item?.profile_photo_url}
         Button={true}
@@ -321,6 +362,70 @@ const MyPatient = props => {
     );
   };
 
+  const DropdownWrapper = ({visible}) => {
+    if (!visible) return null;
+
+    const dropdownItems = [
+      {label: 'Edit', key: 'edit'},
+      {label: 'Evaluation Form', key: 'evaluation'},
+    ];
+
+    return (
+      <View style={styles.dropdowns}>
+        {dropdownItems.map((item, index) => (
+          <TouchableOpacity
+            key={item.key}
+            style={[
+              styles.dropdownItem,
+              index === dropdownItems.length - 1 && {borderBottomWidth: 0},
+            ]}
+            onPress={() => {
+              if (item.key == 'edit') {
+                setModalVisible(false);
+                setModalInfo('');
+                setDropdownVisible(false);
+                setTimeout(() => {
+                  navigation.navigate('UpdatePatient', {patient: modalInfo});
+                }, 1000);
+              } else {
+                setModalVisible(false);
+                setModalInfo('');
+                setDropdownVisible(false);
+                setTimeout(() => {
+                  navigation.navigate('EvaluationList', {patient: modalInfo});
+                }, 1000);
+              }
+            }}>
+            <Text style={styles.dropdownText}>{item.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+  // console.log(PatientReducer?.cityListRes,">>>>>>edd")
+  const citiesWithIds =
+    PatientReducer?.cityListRes?.data?.length > 0 &&
+    PatientReducer?.cityListRes?.data.map((city, index) => ({
+      id: index + 1,
+      value: city,
+    }));
+  const devicesWithIds =
+    PatientReducer?.deviceListRes?.data?.length > 0 &&
+    PatientReducer?.deviceListRes?.data.map((city, index) => ({
+      id: index + 1,
+      value: city,
+    }));
+
+  let dataItem = [];
+
+  if (selectedDue === 'Device Type') {
+    dataItem = devicesWithIds.length > 0 ? devicesWithIds : [];
+  } else if (selectedDue === 'City/Location') {
+    dataItem = citiesWithIds.length > 0 ? citiesWithIds : [];
+  }
+
+  // console.log(dataItem,">>>>>>>edd")
+
   return (
     <>
       <SafeView {...props}>
@@ -349,11 +454,47 @@ const MyPatient = props => {
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
                   setSelectedDue(item.value);
+                  if (
+                    item.value === 'Device Type' ||
+                    item.value === 'City/Location'
+                  ) {
+                    setSelectDropdown(true);
+                  } else {
+                    setSelectDropdown(false);
+                  }
                   setIsFocus(false);
 
                   // dispatch(getMyPatientReq(obj));
                 }}
               />
+              {selectDropdown && (
+                <Dropdown
+                  style={[styles.dropdown]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  itemTextStyle={styles.itemTextStyle}
+                  iconStyle={styles.iconStyle}
+                  data={dataItem}
+                  labelField="value"
+                  valueField="id"
+                  placeholder={
+                    selectedDue === 'Device Type'
+                      ? 'select device type'
+                      : 'select city'
+                  }
+                  value={selectedDue1}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    // console.log(item);
+                    setSelectedDue1(item);
+                    setIsFocus(false);
+
+                    // dispatch(getMyPatientReq(obj));
+                  }}
+                />
+              )}
               <Dropdown
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
@@ -380,7 +521,13 @@ const MyPatient = props => {
               <SearchInput
                 style={[]}
                 placeholder="Search here..."
-                value={searchData}
+                value={
+                  selectedDue === 'None'
+                    ? ''
+                    : selectedDue1
+                    ? selectedDue1?.value
+                    : searchData
+                }
                 onChangeText={text => handleSearch(text)}
                 onPressFilter={() => setShowFilter(!showFilter)}
               />
@@ -499,16 +646,25 @@ const MyPatient = props => {
               onPress={() => {
                 setModalVisible(false);
                 setModalInfo('');
+                setDropdownVisible(false);
               }}>
               <Image source={icons.closeIcon} style={[styles.closeBtn]} />
             </TouchableOpacity>
-            <Txt style={[styles.modalTitle, {fontSize: wp(2, width)}]}>
-              Patient Details
-            </Txt>
+            <View style={styles.container}>
+              <View style={styles.informationBtn}>
+                <Text style={[styles.modalTitle, {fontSize: wp(2, width)}]}>
+                  Patient Details
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setDropdownVisible(!dropdownVisible)}>
+                  <Image source={icons.information} style={styles.closeBtn1} />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={[css.row, css.mt1]}>
               <View style={[css.jcc, css.aic]}>
                 <ImageBackground
-                  source={{uri: `${modalInfo?.profile_photo_url}&size=${200}`}}
+                  source={icons.close}
                   resizeMode="cover"
                   style={[
                     styles.profileImage,
@@ -518,7 +674,9 @@ const MyPatient = props => {
                     },
                   ]}
                 />
-
+                <View style={{marginTop: normalize(10)}}>
+                  <Txt style={[css.fw8, css.fs20, css.mt2]}>Not Compliant!</Txt>
+                </View>
                 <Button
                   title="View Session"
                   style={[css.mt2, css.w100]}
@@ -578,6 +736,8 @@ const MyPatient = props => {
                       ? modalInfo?.resmeduser?.device_type_desc
                       : 'N/A'
                   }
+                  deviceValue={modalInfo?.resmeduser?.device?.device_type}
+                  isDevice={true}
                 />
 
                 <Divider style={[styles.dividerGap]} />
@@ -611,8 +771,8 @@ const MyPatient = props => {
                 <Modalinfo
                   title="Last Visit:"
                   value={
-                    modalInfo?.resmeduser?.last_visit_date
-                      ? modalInfo?.resmeduser?.last_visit_date
+                    modalInfo?.last_visit_date
+                      ? modalInfo?.last_visit_date
                       : 'N/A'
                   }
                 />
@@ -640,6 +800,7 @@ const MyPatient = props => {
                       ? modalInfo?.compliance_percentage + '%'
                       : 'N/A'
                   }
+                  isBtn={true}
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
@@ -660,16 +821,26 @@ const MyPatient = props => {
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="Date:"
-                  value={moment(modalInfo?.created_at).format('YYYY-MM-DD')}
+                  value={
+                    modalInfo?.created_at !== null
+                      ? moment(modalInfo?.created_at).format('YYYY-MM-DD')
+                      : 'N/A'
+                  }
                 />
                 <Divider style={[styles.dividerGap]} />
                 <Modalinfo
                   title="Time:"
-                  value={moment(modalInfo?.created_at).format('hh:mm A')}
+                  value={
+                    modalInfo?.created_at !== null
+                      ? moment(modalInfo?.created_at).format('hh:mm A')
+                      : 'N/A'
+                  }
                 />
               </View>
             </View>
+            <DropdownWrapper visible={dropdownVisible} />
           </View>
+          {/* <Dropdown visible={dropdownVisible} /> */}
         </View>
       </Modal>
     </>
@@ -740,6 +911,12 @@ const styles = StyleSheet.create({
     height: 55,
     width: 55,
     resizeMode: 'contain',
+  },
+  closeBtn1: {
+    height: normalize(15),
+    width: normalize(15),
+    resizeMode: 'contain',
+    tintColor: colors.primaryTextColor,
   },
   modalTitle: {
     color: colors.primaryTextColor,
@@ -851,5 +1028,50 @@ const styles = StyleSheet.create({
   },
   itemTextStyle: {
     color: colors.ternaryTextColor,
+  },
+  informationBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  container: {
+    // flex: 1,
+    padding: 20,
+  },
+  informationBtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  modalTitle: {
+    fontWeight: 'bold',
+  },
+  closeBtn1: {
+    width: 24,
+    height: 24,
+  },
+  dropdowns: {
+    position: 'absolute',
+    top: normalize(34), // adjust as needed
+    right: normalize(28),
+    backgroundColor: 'white',
+    borderColor: colors.placeholder,
+    borderWidth: 2,
+    borderRadius: 4,
+    padding: 10,
+    width: 200,
+    zIndex: 900,
+    elevation: 5,
+    // Ensure dropdown appears above other components
+  },
+  dropdownItem: {
+    paddingVertical: 10,
+    paddingHorizontal: normalize(2),
+    borderBottomWidth: 0.5,
+  },
+  dropdownText: {
+    fontSize: normalize(8),
+    color: colors.primaryTextColor,
   },
 });

@@ -38,6 +38,7 @@ const BottomTab = props => {
       <Tab.Screen name="My Patients" component={MyPatientNavigator} />
       <Tab.Screen name="Help & Support" component={HelpnSupport} />
       <Tab.Screen name="My Profile" component={MyProfile} />
+     
     </Tab.Navigator>
   );
 };

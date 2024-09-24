@@ -114,6 +114,8 @@ const PatientSession = props => {
       });
   };
 
+  // console.log(startDate,">>>>>>eddd")
+
   const handleSelect = ecn => {
     const isSelected = selectedItems.includes(ecn);
     if (isSelected) {
@@ -232,6 +234,21 @@ const PatientSession = props => {
     }
   }
 
+  let patientData = {
+    options: [
+      {
+        id: 1,
+        name: 'spiderman',
+        votes: 0,
+      },
+      {
+        id: 2,
+        name: 'batman',
+        votes: 0,
+      },
+    ],
+  };
+
   return (
     <>
       <SafeView {...props}>
@@ -267,8 +284,7 @@ const PatientSession = props => {
                   css.jcc,
                   css.aifs,
                   css.w100,
-                Platform.OS === 'ios'
-                  ? {height: height - normalize(130)}:0,
+                  Platform.OS === 'ios' ? {height: height - normalize(130)} : 0,
                 ]}>
                 <FlatList
                   data={sessionData}

@@ -7,17 +7,21 @@ import {useEffect, useState} from 'react';
 import moment from 'moment';
 import {
   EvaluationEnrolmentReq,
+  getAcknowledgementReq,
   getDashboardReq,
   patientEnrolmentReq,
 } from '../../../redux/reducer/DashboardReducer';
 import TitleTxt from '../../../components/common/TitleTxt';
 import {
+  FlatList,
   Image,
   ImageBackground,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Switch,
 } from 'react-native';
 import ScoreCard from '../../../components/common/ScoreCard';
 import css, {width, height} from '../../../themes/space';
@@ -56,6 +60,8 @@ const Home = props => {
   const [sessionsData, setSessionsData] = useState([]);
   const AuthReducer = useSelector(state => state?.AuthReducer);
   const PatientReducer = useSelector(state => state?.PatientReducer);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [checkedUsers, setCheckedUsers] = useState({});
 
   useEffect(() => {
     let obj = {
@@ -65,10 +71,9 @@ const Home = props => {
     dispatch(getDashboardReq(obj));
     dispatch(patientEnrolmentReq());
     dispatch(EvaluationEnrolmentReq());
-    // console.log('helloe');
+    dispatch(getAcknowledgementReq());
+    checkAcknowledgment();
   }, [isFocused]);
-
-  // console.log(PatientReducer?.patientDetailsRes?.data, '>>>>>>>???>>>');
 
   let paddingLast = {paddingRight: orientation === 'PORTRAIT' ? 0 : 16};
   let paddingRight = {paddingRight: orientation === 'PORTRAIT' ? 16 : 0};
@@ -109,8 +114,6 @@ const Home = props => {
     setAndGetSessionValue();
   }, []);
 
- 
-
   const onDateSelected = selectedDate => {
     const selected_Date = moment(selectedDate).format('YYYY-MM-DD');
     let obj = {
@@ -134,6 +137,89 @@ const Home = props => {
       setModalVisible(true);
     }
   }, [PatientReducer?.status]);
+
+  // Function to check if the acknowledgment has been done
+  const checkAcknowledgment = async () => {
+    const acknowledgmentStatus = await AsyncStorage.getItem('acknowledged');
+    if (!acknowledgmentStatus) {
+      setModalOpen(true); // Show the modal if not acknowledged
+    }
+  };
+  // Handle user checkbox
+
+  const handleCheck = userFullName => {
+    setCheckedUsers(prevState => ({
+      ...prevState,
+      [userFullName]: !prevState[userFullName],
+    }));
+  };
+
+  // Handle acknowledgment button press
+  const handleAcknowledge = async () => {
+    const allChecked = DashboardReducer?.acknowledgementRes?.every(
+      user => checkedUsers[user.full_name],
+    );
+    if (allChecked) {
+      // console.log('hel;ll');
+      setModalOpen(false);
+      await AsyncStorage.setItem('acknowledged', 'true');
+    } else {
+      alert('Please acknowledge all users before confirming.');
+    }
+  };
+
+  const renderUser = ({item}) => {
+    const {full_name, pm_due_date} = item;
+    const isChecked = checkedUsers[full_name] || false;
+
+    return (
+      <View style={styles.userContainer}>
+        <TouchableOpacity
+          onPress={() => handleCheck(full_name)}
+          style={{
+            width: normalize(10),
+            height: normalize(10),
+            borderWidth: 2,
+            borderColor: '#1E6CA5',
+            borderRadius: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {isChecked && (
+            <View
+              style={{
+                backgroundColor: '#1692f8',
+                height: normalize(10),
+                width: normalize(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 5,
+              }}>
+              <Image
+                style={{
+                  width: normalize(7),
+                  height: normalize(7),
+                  resizeMode: 'contain',
+                  tintColor: 'white',
+                }}
+                source={icons.done}
+              />
+            </View>
+          )}
+        </TouchableOpacity>
+        <Text
+          style={{
+            marginLeft: normalize(10),
+            fontSize: normalize(7),
+            fontWeight: '500',
+            color:'#000000'
+          }}>
+          {full_name} (PM Due:{' '}
+          {moment(pm_due_date).format('MM/DD/YYYY') || 'N/A'})
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <>
@@ -563,6 +649,39 @@ const Home = props => {
           </View>
         </View>
       </Modal>
+      <Modal
+        transparent={true}
+        backdropOpacity={0}
+        visible={modalOpen}
+        style={[css.m0, css.p0]}
+        statusBarTranslucent={true}
+        onRequestClose={() => setModalOpen(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>
+              Missed/Past Due Appointments!
+            </Text>
+            <ScrollView style={styles.scrollView}>
+              <FlatList
+                data={DashboardReducer?.acknowledgementRes}
+                renderItem={renderUser}
+                keyExtractor={item => item.full_name}
+              />
+            </ScrollView>
+            <Text style={styles.acknowledgeText}>
+              By acknowledging, you affirm your commitment to promptly address
+              and resolve these past due appointments.
+            </Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={handleAcknowledge}
+                style={styles.btn_wrapper}>
+                <Text style={styles.btn_text}>Acknowledge</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -699,5 +818,67 @@ const styles = StyleSheet.create({
   },
   activePage: {
     backgroundColor: colors.primary,
+  },
+  userContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: 'red',
+    textTransform: 'uppercase',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    paddingBottom: 5,
+  },
+  acknowledgeText: {
+    marginTop: normalize(10),
+    marginBottom: 10,
+    fontSize: normalize(9),
+    // textAlign: 'start',
+    marginHorizontal: normalize(5),
+    color:'#000000'
+  },
+  scrollView: {
+    maxHeight: 400,
+    marginTop: normalize(10),
+    
+  },
+  buttonContainer: {
+    //  flex:1
+    width: normalize(100),
+  },
+  btn_wrapper: {
+    paddingHorizontal: 14,
+    paddingVertical: normalize(7),
+    borderRadius: 5,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: normalize(10),
+  },
+  btn_text: {
+    color: colors.white,
+    fontSize: normalize(10),
+    fontWeight: 'bold',
   },
 });

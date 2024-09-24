@@ -59,7 +59,7 @@ const Login = props => {
           password: password_value,
         });
       } else {
-        console.log('rememberMe not found');
+        // console.log('rememberMe not found');
       }
     } catch (e) {
       console.error('error', e);

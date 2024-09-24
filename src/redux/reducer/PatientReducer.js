@@ -15,6 +15,9 @@ const initialState = {
   questionListRes: {},
   submitEvaluationRes: {},
   patientDetailsRes: {},
+  updatePatientRes: {},
+  deviceListRes: [],
+  cityListRes: [],
 };
 
 const PATIENTSlice = createSlice({
@@ -177,6 +180,43 @@ const PATIENTSlice = createSlice({
       state.status = action.type;
     },
 
+    //Submit evaluation
+    updatePatientReq(state, action) {
+      state.status = action.type;
+    },
+    updatePatientSuccess(state, action) {
+      state.updatePatientRes = action?.payload;
+      state.status = action.type;
+    },
+    updatePatientFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    cityListReq(state, action) {
+      state.status = action.type;
+    },
+    cityListSuccess(state, action) {
+      state.cityListRes = action?.payload;
+      state.status = action.type;
+    },
+    cityListFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
+    deviceListReq(state, action) {
+      state.status = action.type;
+    },
+    deviceListSuccess(state, action) {
+      state.deviceListRes = action?.payload;
+      state.status = action.type;
+    },
+    deviceListFailure(state, action) {
+      state.error = action.error;
+      state.status = action.type;
+    },
+
     clearQuestionListReq(state, action) {
       state.status = action.type;
     },
@@ -238,6 +278,18 @@ export const {
   patientDetailsReq,
   patientDetailsSuccess,
   patientDetailsFailure,
+
+  updatePatientReq,
+  updatePatientSuccess,
+  updatePatientFailure,
+
+  cityListReq,
+  cityListSuccess,
+  cityListFailure,
+
+  deviceListReq,
+  deviceListSuccess,
+  deviceListFailure,
 } = PATIENTSlice.actions;
 
 export default PATIENTSlice.reducer;

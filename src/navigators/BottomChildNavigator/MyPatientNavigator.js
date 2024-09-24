@@ -9,6 +9,8 @@ import MyPatientSessionDetails from '../../screens/general/Patient/MyPatientSess
 import MyPatientsSession from '../../screens/general/Patient/MyPatientsSession';
 import FlatList from '../../screens/general/Home/FlatList';
 import FlatListView from '../../screens/general/Home/FlatList';
+import UpdatePatient from '../../screens/general/Patient/UpdatePatient';
+import EvaluationList from '../../screens/general/Patient/EvaluationList';
 
 const MyPatientStack = createStackNavigator();
 const MyPatientNavigator = () => {
@@ -24,6 +26,8 @@ const MyPatientNavigator = () => {
         name="ServiceEnrollment"
         component={ServiceEnrollment}
       />
+      <MyPatientStack.Screen name="UpdatePatient" component={UpdatePatient} />
+      <MyPatientStack.Screen name="EvaluationList" component={EvaluationList} />
       <MyPatientStack.Screen
         name="MyPatientsSession"
         component={MyPatientsSession}
@@ -32,10 +36,7 @@ const MyPatientNavigator = () => {
         name="MyPatientSessionDetails"
         component={MyPatientSessionDetails}
       />
-         <MyPatientStack.Screen
-        name="FlatListView"
-        component={FlatListView}
-      />
+      <MyPatientStack.Screen name="FlatListView" component={FlatListView} />
     </MyPatientStack.Navigator>
   );
 };

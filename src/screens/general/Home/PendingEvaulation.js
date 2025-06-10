@@ -68,7 +68,7 @@ const PendingEvaulation = () => {
   };
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && isFocused) {
       dispatch(getPendingEvaulationReq());
     }
   }, [isFocused]);
@@ -85,7 +85,7 @@ const PendingEvaulation = () => {
         dashboardStatus = DashboardReducer.status;
         setTableBodyDataArr(
           tableFormatConvert(
-            DashboardReducer?.getPendingEvaulationResponse?.data,
+            DashboardReducer?.getPendingEvaulationResponse?.data.length>0 && DashboardReducer?.getPendingEvaulationResponse?.data
           ),
         );
         break;

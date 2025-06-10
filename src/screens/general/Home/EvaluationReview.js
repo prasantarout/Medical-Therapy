@@ -82,10 +82,10 @@ const EvaluationReview = () => {
     dispatch(getEvaluationReviewReq({param: route?.params?.id}));
   }, []);
 
-  if (dashboardStatus === '' || DashboardReducer.status !== dashboardStatus) {
-    switch (DashboardReducer.status) {
+  if (dashboardStatus === '' || DashboardReducer?.status !== dashboardStatus) {
+    switch (DashboardReducer?.status) {
       case 'Dashboard/getEvaluationReviewReq':
-        dashboardStatus = DashboardReducer.status;
+        dashboardStatus = DashboardReducer?.status;
         break;
       case 'Dashboard/getEvaluationReviewSuccess':
         dashboardStatus = DashboardReducer.status;

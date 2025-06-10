@@ -70,14 +70,14 @@ const InactivePatients = () => {
     DashboardReducer?.getInactivePatientResponse?.data?.map(
       (bodyDataRow, bodyDataIndex) => {
         let row = {};
-        row[headerDataArr[0].label] = bodyDataRow?.patient?.full_name || 'N/A';
-        row[headerDataArr[1].label] = bodyDataRow?.patient?.setupDate || 'N/A';
-        row[headerDataArr[2].label] = bodyDataRow.device_serial_no || 'N/A';
-        row[headerDataArr[3].label] =
+        row[headerDataArr[0]?.label] = bodyDataRow?.patient?.full_name || 'N/A';
+        row[headerDataArr[1]?.label] = bodyDataRow?.patient?.setupDate || 'N/A';
+        row[headerDataArr[2]?.label] = bodyDataRow.device_serial_no || 'N/A';
+        row[headerDataArr[3]?.label] =
           bodyDataRow.total_usage_hours_on_device || 'N/A';
-        row[headerDataArr[4].label] =
+        row[headerDataArr[4]?.label] =
           getFormattedDate(bodyDataRow.session_date, 'Do-MMM') || 'N/A';
-        row[headerDataArr[5].label] = bodyDataRow.session_time || 'N/A';
+        row[headerDataArr[5]?.label] = bodyDataRow.session_time || 'N/A';
 
         formattedData.push(row);
       },
@@ -97,7 +97,7 @@ const InactivePatients = () => {
         dashboardStatus = DashboardReducer.status;
         break;
       case 'Dashboard/getInactivePatientSuccess':
-        dashboardStatus = DashboardReducer.status;
+        dashboardStatus = DashboardReducer?.status;
         setTableBodyDataArr(
           tableFormatConvert(DashboardReducer?.getInactivePatientResponse),
         );

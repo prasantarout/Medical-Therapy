@@ -212,7 +212,7 @@ const MyProfile = props => {
       CustomToast('Please enter old password');
     } else if (!validNewPassword) {
       CustomToast(
-        'The new password should contain at least one number, one capital letter, and one special character.',
+        'The new password should contain at least one number, one capital letter, and one special character',
       );
     } else if (passwords?.confirm_password != passwords?.new_password) {
       CustomToast('New Password and Confirm Password does not match');

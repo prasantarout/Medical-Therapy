@@ -242,10 +242,10 @@ const MyPatient = props => {
       const total = PatientReducer.getMyPatientResponse?.data?.total;
       setTotalPages(Math.ceil(total / itemsPerPage));
       setPatientInfo(
-        paginateData(PatientReducer.getMyPatientResponse?.data?.data),
+        paginateData(PatientReducer?.getMyPatientResponse?.data?.data),
       );
     }
-  }, [currentPage, PatientReducer.getMyPatientResponse?.data?.data]);
+  }, [currentPage, PatientReducer?.getMyPatientResponse?.data?.data]);
 
   // console.log(PatientReducer.getMyPatientResponse?.data,">>>>??>")
 

@@ -7,7 +7,7 @@ import {getApi, postApi, putApi} from '../../utils/ApiRequest';
 // } from '../reducer/AssignmentsReducer';
 import CustomToast from '../../utils/Toast';
 
-let getItem = state => state.AuthReducer;
+// let getItem = state => state.AuthReducer;
 
 // export function* getUpcomingAssignmentsSaga(action) {
 //   // let item = yield select(getItem);
